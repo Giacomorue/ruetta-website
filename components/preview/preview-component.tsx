@@ -451,7 +451,7 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
         <div
           className={`transition-all duration-150 w-full lg:h-auto ${
             isFullScreen
-              ? "lg:w-[100%] h-[calc(100vh-80px-80px-24px-24px)] pr-6"
+              ? "lg:w-[100%] h-[calc(100dvh-80px-80px-24px-24px)] pr-6"
               : "lg:w-[60%] h-[50vh] pr-6 lg:p-0"
           } flex items-center justify-center lg:rounded-r-[10px] overflow-hidden relative group pl-6`}
         >
