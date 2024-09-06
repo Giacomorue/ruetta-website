@@ -67,7 +67,7 @@ export default function TrailerCanvas({
       {isVisible && (
         <Canvas
           // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          dpr={device === "high"? [1.5, 2] : [0.5, 1] }
+          dpr={0.4}
           shadows
           gl={{
             powerPreference: "high-performance", // Ottimizza per GPU performanti
