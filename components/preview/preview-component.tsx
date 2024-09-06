@@ -438,7 +438,7 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
   const hasColor = variant.colors.some((c) => c.visible === true);
 
   return (
-    <div className="h-screen w-screen md:max-h-screen max-w-full bg-white flex flex-col">
+    <div className="h-[100dvh] w-screen md:max-h-screen max-w-full bg-white flex flex-col">
       <NavbarPreview />
 
       {/* Layout per schermi lg e oltre */}
