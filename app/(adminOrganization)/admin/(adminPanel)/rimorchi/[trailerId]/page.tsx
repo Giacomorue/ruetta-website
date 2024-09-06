@@ -41,6 +41,14 @@ async function page({
 }: {
   params: { trailerId: string };
 }) {
+  return (
+    <AusiliarPage trailerId={trailerId} />
+  )
+}
+
+export default page;
+
+const AusiliarPage = async ({trailerId} : {trailerId: string}) => {
   const trailer = await GetTrailerById(trailerId);
 
   if (!trailer) {
@@ -79,5 +87,3 @@ async function page({
     </div>
   );
 }
-
-export default page;

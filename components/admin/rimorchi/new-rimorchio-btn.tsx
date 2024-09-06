@@ -101,7 +101,7 @@ function NewRimorchioBtn({ images }: { images: Image[] | null }) {
   if (!isClient) {
     return (
       <>
-        <Button size={"lg"} className="gap-x-2">
+        <Button className="gap-x-2">
           <FaPlus className="w-4 h-4" />
           <span>Aggiungi un rimorchio</span>
         </Button>
@@ -112,7 +112,7 @@ function NewRimorchioBtn({ images }: { images: Image[] | null }) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button size={"lg"} className="gap-x-2">
+        <Button className="gap-x-2">
           <FaPlus className="w-4 h-4" />
           <span>Aggiungi un rimorchio</span>
         </Button>

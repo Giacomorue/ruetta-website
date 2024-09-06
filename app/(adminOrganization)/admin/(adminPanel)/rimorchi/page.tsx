@@ -37,6 +37,14 @@ const transformTrailers = (trailers: any[]): RimorchiColumnType[] => {
 };
 
 async function page() {
+  return (
+    <AusiliarPage />
+  )
+}
+
+export default page;
+
+const AusiliarPage = async () => {
   const images = await GetAllImages();
 
   const trailers = await GetAllTrailerDescIncludeCategories();
@@ -56,5 +64,3 @@ async function page() {
     </>
   );
 }
-
-export default page;
