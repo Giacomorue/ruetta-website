@@ -15,7 +15,7 @@ import * as THREE from "three";
 
 export default function TrailerCanvas({
   children,
-  shadowCounter
+  shadowCounter,
 }: {
   children: React.ReactNode;
   shadowCounter: number;
@@ -44,16 +44,47 @@ export default function TrailerCanvas({
     };
   }, []);
 
+  let device = "low";
+
+  const t0 = performance.now();
+  // Render di una scena
+  const t1 = performance.now();
+
+  const frameTime = t1 - t0;
+
+  if (frameTime > 16.7) {
+    // Bassa performance - riduci la risoluzione
+    device = "low";
+  } else if (frameTime < 10) {
+    // Alta performance - aumenta la risoluzione
+    device = "high";
+  }
+
+  console.log(`Frame time: ${frameTime}ms, device: ${device}`);
+
   return (
     <div id="canvas-container" className="w-full h-full relative" ref={div}>
       {isVisible && (
         <Canvas
           // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          dpr={[1, 2]}
+          dpr={device === "high"? [1.5, 2] : [0.5, 1] }
           shadows
+          gl={{
+            powerPreference: "high-performance", // Ottimizza per GPU performanti
+            antialias: true, // Smoothing dei bordi
+          }}
         >
           <Suspense fallback={<CanvasLoader />}>
-            <ContactShadows resolution={512} frames={1} position={[0, -4, 0]} scale={15} blur={1} opacity={0.2} far={20} key={shadowCounter} />
+            <ContactShadows
+              resolution={512}
+              frames={1}
+              position={[0, -4, 0]}
+              scale={15}
+              blur={1}
+              opacity={0.2}
+              far={20}
+              key={shadowCounter}
+            />
             <Center>{children}</Center>
           </Suspense>
           <Hangar />
