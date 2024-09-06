@@ -1,0 +1,229 @@
+"filename", "language", "JSON", "TypeScript", "TypeScript JSX", "JSON with Comments", "XML", "Markdown", "JavaScript", "WebAssembly Text Format", "HTML", "Prisma", "CSS", "Properties", "comment", "blank", "total"
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\.env", "Properties", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 4, 4, 15
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\.eslintrc.json", "JSON", 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\README.md", "Markdown", 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 14, 37
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\actions\images.ts", "TypeScript", 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7, 58
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\actions\login.ts", "TypeScript", 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 31
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\actions\trailer.ts", "TypeScript", 0, 3485, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 168, 702, 4355
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\immagini\page.tsx", "TypeScript JSX", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 25
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\layout.tsx", "TypeScript JSX", 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 28
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\page.tsx", "TypeScript JSX", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 12
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\[categoryId]\[variantId]\color\[colorId]\page.tsx", "TypeScript JSX", 0, 0, 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 70
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\[categoryId]\[variantId]\configurazione\[configurationId]\page.tsx", "TypeScript JSX", 0, 0, 143, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 155
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\[categoryId]\[variantId]\layout.tsx", "TypeScript JSX", 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 37
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\[categoryId]\[variantId]\page.tsx", "TypeScript JSX", 0, 0, 176, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 196
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\[categoryId]\[variantId]\selector\[selectorId]\page.tsx", "TypeScript JSX", 0, 0, 134, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20, 155
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\[categoryId]\page.tsx", "TypeScript JSX", 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 15, 103
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\not-found.tsx", "TypeScript JSX", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 18
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\[trailerId]\page.tsx", "TypeScript JSX", 0, 0, 75, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 84
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\(adminPanel)\rimorchi\page.tsx", "TypeScript JSX", 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7, 61
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\auth\page.tsx", "TypeScript JSX", 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 33
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\layout.tsx", "TypeScript JSX", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\(adminOrganization)\admin\preview\[accessibleUUID]\page.tsx", "TypeScript JSX", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 23
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\api\auth\[[...nextauth]]\route.ts", "TypeScript", 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\globals.css", "CSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 179, 0, 3, 13, 195
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\layout.tsx", "TypeScript JSX", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 30
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\app\page.tsx", "TypeScript JSX", 0, 0, 107, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 114
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\auth.config.ts", "TypeScript", 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 27
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\auth.ts", "TypeScript", 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components.json", "JSON", 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\CanvasLoader.tsx", "TypeScript JSX", 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 31
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ServiceWorkerManager.tsx", "TypeScript JSX", 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 19
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\data-table-faceted-filter.tsx", "TypeScript JSX", 0, 0, 143, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 147
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\data-table-pagination.tsx", "TypeScript JSX", 0, 0, 91, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 94
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\data-table-view-options.tsx", "TypeScript JSX", 0, 0, 93, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 98
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\data-table.tsx", "TypeScript JSX", 0, 0, 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 129
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\header-bar.tsx", "TypeScript JSX", 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 39
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\immagini\delete-image-btn.tsx", "TypeScript JSX", 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6, 49
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\immagini\images-list.tsx", "TypeScript JSX", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 25
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\immagini\upload-image-btn.tsx", "TypeScript JSX", 0, 0, 161, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 174
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\layout\navbar.tsx", "TypeScript JSX", 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 33
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\layout\search-admin.tsx", "TypeScript JSX", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 17
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\layout\sidebar.tsx", "TypeScript JSX", 0, 0, 156, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 14, 175
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\loading-admin.tsx", "TypeScript JSX", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 20
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\react-quill-component.tsx", "TypeScript JSX", 0, 0, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 43
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\all-rimorchi-data-table.tsx", "TypeScript JSX", 0, 0, 141, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 9, 168
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\new-rimorchio-btn.tsx", "TypeScript JSX", 0, 0, 169, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 13, 184
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchi-column.tsx", "TypeScript JSX", 0, 0, 262, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8, 272
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\all-category-table.tsx", "TypeScript JSX", 0, 0, 136, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 9, 163
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\all-variant-table.tsx", "TypeScript JSX", 0, 0, 152, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 9, 179
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\delete-category-btn.tsx", "TypeScript JSX", 0, 0, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 80
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\edit-category.tsx", "TypeScript JSX", 0, 0, 177, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 18, 197
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\new-variant-btn.tsx", "TypeScript JSX", 0, 0, 168, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 181
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variant-column.tsx", "TypeScript JSX", 0, 0, 335, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 342
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\color-column.tsx", "TypeScript JSX", 0, 0, 331, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10, 343
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\color-data-table.tsx", "TypeScript JSX", 0, 0, 158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 9, 185
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\color\delete-color-btn.tsx", "TypeScript JSX", 0, 0, 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 94
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\color\edit-color-form.tsx", "TypeScript JSX", 0, 0, 536, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 37, 588
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\color\select-3d-model.tsx", "TypeScript JSX", 0, 0, 140, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 152
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration-column.tsx", "TypeScript JSX", 0, 0, 336, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 15, 352
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\add-configuration-value-btn.tsx", "TypeScript JSX", 0, 0, 193, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 208
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\add-configuration-visibility-condtion-btn.tsx", "TypeScript JSX", 0, 0, 371, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 18, 391
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\change\change-configuration-value.tsx", "TypeScript JSX", 0, 0, 220, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 26, 250
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\change\delete-configuration-change-btn.tsx.tsx", "TypeScript JSX", 0, 0, 84, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 7, 94
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\change\edit-configuration-change-btn.tsx", "TypeScript JSX", 0, 0, 842, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 41, 887
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\change\new-configuration-change-btn.tsx", "TypeScript JSX", 0, 0, 798, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 40, 841
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\change\view-configuration-cange.tsx", "TypeScript JSX", 0, 0, 420, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 22, 446
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\configuration-value-list.tsx", "TypeScript JSX", 0, 0, 139, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 13, 154
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\configuration-visibility-condition.tsx", "TypeScript JSX", 0, 0, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 60
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\delete-configuration-btn.tsx", "TypeScript JSX", 0, 0, 156, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9, 166
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\delete-configuration-visibility-condition-btn.tsx", "TypeScript JSX", 0, 0, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 85
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\delete-value-btn.tsx", "TypeScript JSX", 0, 0, 145, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9, 155
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\edit-configuration-visibility-condition-btn.tsx", "TypeScript JSX", 0, 0, 370, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 24, 396
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\edit-configutation.tsx", "TypeScript JSX", 0, 0, 167, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 18, 187
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\edit-value-form.tsx", "TypeScript JSX", 0, 0, 266, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 20, 288
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configuration\view-configuration-visibility-condition.tsx", "TypeScript JSX", 0, 0, 155, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 13, 170
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\configurations-data-table.tsx", "TypeScript JSX", 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 142
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\delete-variante-btn.tsx", "TypeScript JSX", 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 88
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\edit-node-btn.tsx", "TypeScript JSX", 0, 0, 137, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 152
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\edit-variant.tsx", "TypeScript JSX", 0, 0, 375, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 20, 402
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\new-color-btn.tsx", "TypeScript JSX", 0, 0, 114, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13, 128
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\new-configuration-btn.tsx", "TypeScript JSX", 0, 0, 193, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 14, 208
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\new-node-btn.tsx", "TypeScript JSX", 0, 0, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16, 161
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\new-selector-btn.tsx", "TypeScript JSX", 0, 0, 416, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 33, 464
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\node-column.tsx", "TypeScript JSX", 0, 0, 261, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 270
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\node-data-table.tsx", "TypeScript JSX", 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 138
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\reorder-color-btn.tsx", "TypeScript JSX", 0, 0, 106, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 115
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\reorder-configurations-btn.tsx", "TypeScript JSX", 0, 0, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 117
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\reorder-selectors-btn.tsx", "TypeScript JSX", 0, 0, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 118
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector-column.tsx", "TypeScript JSX", 0, 0, 359, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 15, 375
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector-data-table.tsx", "TypeScript JSX", 0, 0, 159, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 9, 186
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\add-selector-value-btn.tsx", "TypeScript JSX", 0, 0, 191, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 205
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\add-visibility-condition-btn.tsx", "TypeScript JSX", 0, 0, 399, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 21, 424
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\change-selector-value.tsx", "TypeScript JSX", 0, 0, 148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 16, 167
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\delete-selector-btn.tsx", "TypeScript JSX", 0, 0, 91, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 98
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\delete-selector-value-btn.tsx", "TypeScript JSX", 0, 0, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 136
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\delete-visibility-condition-btn.tsx", "TypeScript JSX", 0, 0, 79, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7, 88
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\edit-selector-form.tsx", "TypeScript JSX", 0, 0, 226, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 19, 247
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\edit-selector-value-form.tsx", "TypeScript JSX", 0, 0, 349, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 29, 380
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\edit-visibility-condition-btn.tsx", "TypeScript JSX", 0, 0, 403, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 24, 432
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\reorder-select-value-btn.tsx", "TypeScript JSX", 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 109
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\selector-change\delete-selector-option-change.tsx", "TypeScript JSX", 0, 0, 85, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 7, 95
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\selector-change\edit-selector-option-change.tsx", "TypeScript JSX", 0, 0, 607, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 31, 640
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\selector-change\new-selector-change-btn.tsx", "TypeScript JSX", 0, 0, 568, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 27, 599
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\selector-change\view-selector-change.tsx", "TypeScript JSX", 0, 0, 371, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 24, 395
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\selector-value-list.tsx", "TypeScript JSX", 0, 0, 155, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17, 174
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\view-visibility-condition.tsx", "TypeScript JSX", 0, 0, 153, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 13, 168
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\categoria\variante\selector\visibility-condition.tsx", "TypeScript JSX", 0, 0, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 58
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\category-column.tsx", "TypeScript JSX", 0, 0, 232, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 239
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\delete-rimorchio-btn.tsx", "TypeScript JSX", 0, 0, 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 80
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\edit-rimorchio.tsx", "TypeScript JSX", 0, 0, 264, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 19, 286
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\rimorchi\rimorchio\new-category-btn.tsx", "TypeScript JSX", 0, 0, 136, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 149
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\admin\select-images.tsx", "TypeScript JSX", 0, 0, 195, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 206
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\auth\login-form.tsx", "TypeScript JSX", 0, 0, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7, 109
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\Mesh.tsx", "TypeScript JSX", 0, 0, 319, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 58, 394
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\TrailerCanvas.tsx", "TypeScript JSX", 0, 0, 189, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 24, 239
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\color-list.tsx", "TypeScript JSX", 0, 0, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 13, 178
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\footer-preview.tsx", "TypeScript JSX", 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 5, 40
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\image-carousel-preview.tsx", "TypeScript JSX", 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6, 49
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\navbar-preview.tsx", "TypeScript JSX", 0, 0, 107, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 13, 127
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\preview-component.tsx", "TypeScript JSX", 0, 0, 463, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 70, 553
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\preview\selector-list.tsx", "TypeScript JSX", 0, 0, 286, 0, 0, 0, 0, 0, 0, 0, 0, 0, 68, 56, 410
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\accordion.tsx", "TypeScript JSX", 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 58
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\alert-dialog.tsx", "TypeScript JSX", 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 142
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\alert.tsx", "TypeScript JSX", 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 60
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\aspect-ratio.tsx", "TypeScript JSX", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 8
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\avatar.tsx", "TypeScript JSX", 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 51
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\badge.tsx", "TypeScript JSX", 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 37
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\breadcrumb.tsx", "TypeScript JSX", 0, 0, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 116
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\button.tsx", "TypeScript JSX", 0, 0, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 59
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\calendar.tsx", "TypeScript JSX", 0, 0, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 73
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\card.tsx", "TypeScript JSX", 0, 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 77
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\carousel.tsx", "TypeScript JSX", 0, 0, 232, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 263
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\checkbox.tsx", "TypeScript JSX", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 31
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\collapsible.tsx", "TypeScript JSX", 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 12
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\command.tsx", "TypeScript JSX", 0, 0, 137, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 156
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\context-menu.tsx", "TypeScript JSX", 0, 0, 186, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 205
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\dialog.tsx", "TypeScript JSX", 0, 0, 110, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 124
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\drawer.tsx", "TypeScript JSX", 0, 0, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 119
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\dropdown-menu.tsx", "TypeScript JSX", 0, 0, 187, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 206
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\form.tsx", "TypeScript JSX", 0, 0, 152, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 177
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\hover-card.tsx", "TypeScript JSX", 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 30
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\input-otp.tsx", "TypeScript JSX", 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 72
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\input.tsx", "TypeScript JSX", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 26
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\label.tsx", "TypeScript JSX", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 27
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\menubar.tsx", "TypeScript JSX", 0, 0, 221, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 241
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\navigation-menu.tsx", "TypeScript JSX", 0, 0, 117, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 129
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\pagination.tsx", "TypeScript JSX", 0, 0, 111, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 122
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\popover.tsx", "TypeScript JSX", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 34
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\progress.tsx", "TypeScript JSX", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 29
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\radio-group.tsx", "TypeScript JSX", 0, 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 45
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\resizable.tsx", "TypeScript JSX", 0, 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 46
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\scroll-area.tsx", "TypeScript JSX", 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 49
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\select.tsx", "TypeScript JSX", 0, 0, 151, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 165
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\separator.tsx", "TypeScript JSX", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 32
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\sheet.tsx", "TypeScript JSX", 0, 0, 125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 141
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\skeleton.tsx", "TypeScript JSX", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 16
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\slider.tsx", "TypeScript JSX", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 29
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\sonner.tsx", "TypeScript JSX", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 32
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\switch.tsx", "TypeScript JSX", 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 30
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\table.tsx", "TypeScript JSX", 0, 0, 110, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 121
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\tabs.tsx", "TypeScript JSX", 0, 0, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 56
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\textarea.tsx", "TypeScript JSX", 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 25
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\toast.tsx", "TypeScript JSX", 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 130
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\toaster.tsx", "TypeScript JSX", 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 36
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\toggle-group.tsx", "TypeScript JSX", 0, 0, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 62
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\toggle.tsx", "TypeScript JSX", 0, 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 46
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\tooltip.tsx", "TypeScript JSX", 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 31
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\components\ui\use-toast.ts", "TypeScript", 0, 160, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 32, 195
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\constants.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\data\images.tsx", "TypeScript JSX", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\data\trailer.ts", "TypeScript", 0, 397, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42, 439
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\hooks\useAdminLoader.ts", "TypeScript", 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\lib\prisma.ts", "TypeScript", 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 11
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\lib\utils.ts", "TypeScript", 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\middleware.ts", "TypeScript", 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 30
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\next.config.mjs", "JavaScript", 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 1, 2, 14
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\package-lock.json", "JSON", 10756, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10757
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\package.json", "JSON", 94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 95
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\postcss.config.mjs", "JavaScript", 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 1, 2, 9
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\prisma\schema.prisma", "Prisma", 0, 0, 0, 0, 0, 0, 0, 0, 0, 246, 0, 0, 8, 109, 363
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_decoder.js", "JavaScript", 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 4, 7, 35
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_decoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 6613, 0, 0, 0, 0, 0, 67, 6680
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_decoder_gltf.js", "JavaScript", 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 4, 7, 34
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_decoder_gltf.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 4298, 0, 0, 0, 0, 0, 49, 4347
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_encoder.js", "JavaScript", 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 4, 7, 36
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_encoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 8848, 0, 0, 0, 0, 0, 125, 8973
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_encoder_wrapper.js", "JavaScript", 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 1, 99
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_wasm_wrapper.js", "JavaScript", 0, 0, 0, 0, 0, 0, 117, 0, 0, 0, 0, 0, 0, 1, 118
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\draco_wasm_wrapper_gltf.js", "JavaScript", 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 1, 117
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\example\DRACOLoader.js", "JavaScript", 0, 0, 0, 0, 0, 0, 381, 0, 0, 0, 0, 0, 38, 252, 671
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\example\README.md", "Markdown", 0, 0, 0, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 24, 73
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\example\geometry_helper.js", "JavaScript", 0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 27, 13, 103
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\example\webgl_loader_draco.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 105, 0, 0, 0, 0, 30, 135
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\example\webgl_loader_draco_advanced.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 148, 0, 0, 0, 0, 23, 171
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\README.md", "Markdown", 0, 0, 0, 0, 0, 61, 0, 0, 0, 0, 0, 0, 0, 25, 86
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco3d.js", "JavaScript", 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 3, 3, 12
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_decoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 6613, 0, 0, 0, 0, 0, 67, 6680
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_decoder_nodejs.js", "JavaScript", 0, 0, 0, 0, 0, 0, 117, 0, 0, 0, 0, 0, 0, 1, 118
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_encoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 8848, 0, 0, 0, 0, 0, 125, 8973
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_encoder_nodejs.js", "JavaScript", 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 1, 99
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_minimal_decoder_example.js", "JavaScript", 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 11, 7, 33
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_minimal_encoder_decoder_example.js", "JavaScript", 0, 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 16, 8, 50
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_minimal_encoder_example.js", "JavaScript", 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 10, 7, 32
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\draco_nodejs_example.js", "JavaScript", 0, 0, 0, 0, 0, 0, 123, 0, 0, 0, 0, 0, 34, 26, 183
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3d\package.json", "JSON", 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\README.md", "Markdown", 0, 0, 0, 0, 0, 49, 0, 0, 0, 0, 0, 0, 0, 21, 70
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\draco3dgltf.js", "JavaScript", 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 3, 3, 12
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\draco_decoder_gltf.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 4298, 0, 0, 0, 0, 0, 49, 4347
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\draco_decoder_gltf_nodejs.js", "JavaScript", 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 1, 117
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\draco_encoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 8848, 0, 0, 0, 0, 0, 125, 8973
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\draco_encoder_gltf_nodejs.js", "JavaScript", 0, 0, 0, 0, 0, 0, 98, 0, 0, 0, 0, 0, 0, 1, 99
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\draco_nodejs_example.js", "JavaScript", 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 34, 26, 180
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\npm\draco3dgltf\package.json", "JSON", 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\time_draco_decode.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 177, 0, 0, 0, 0, 33, 210
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\with_asserts\draco_decoder.js", "JavaScript", 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 4, 7, 35
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\with_asserts\draco_decoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 6583, 0, 0, 0, 0, 0, 79, 6662
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\with_asserts\draco_encoder.js", "JavaScript", 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 4, 7, 36
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\with_asserts\draco_encoder.wasm", "WebAssembly Text Format", 0, 0, 0, 0, 0, 0, 0, 8762, 0, 0, 0, 0, 0, 107, 8869
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\with_asserts\draco_encoder_wrapper.js", "JavaScript", 0, 0, 0, 0, 0, 0, 115, 0, 0, 0, 0, 0, 0, 1, 116
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\draco-gltf\with_asserts\draco_wasm_wrapper.js", "JavaScript", 0, 0, 0, 0, 0, 0, 128, 0, 0, 0, 0, 0, 0, 1, 129
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\next.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\public\vercel.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\routes.ts", "TypeScript", 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\schemas\schema-auth.ts", "TypeScript", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\schemas\schema-image.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\schemas\schema-trailer.ts", "TypeScript", 0, 414, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 58, 492
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\tailwind.config.ts", "TypeScript", 0, 84, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 87
+"c:\Users\giaco\Desktop\Sviluppo web\Ruetta\ruetta-website\tsconfig.json", "JSON with Comments", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 28
+"Total", "-", 10912, 4712, 22526, 27, 2, 182, 1896, 63711, 430, 246, 179, 7, 773, 4313, 109916
