@@ -435,6 +435,20 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  const [shadowCounter, setShadowCounter] = useState(0);
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => { setIsClient(true) }, []);
+
+  useEffect(() => {
+
+    setShadowCounter(prev => prev + 1);
+
+  }, [color, configurations, setIsClient]);
+
+  if(!isClient) return null;
+
   const hasColor = variant.colors.some((c) => c.visible === true);
 
   return (
@@ -457,13 +471,14 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
         >
           {variant.has3DModel ? (
             <div className="h-full w-full rounded-[10px] overflow-hidden relative">
-              <TrailerCanvas>
+              <TrailerCanvas shadowCounter={shadowCounter}>
                 <>
                   {color ? (
                     <Mesh
                       variant={variant}
                       currentColor={color}
                       configurations={configurations}
+                      updateShadowCounter={() => setShadowCounter(prev => prev + 1)}
                     />
                   ) : (
                     <CanvasLoader />

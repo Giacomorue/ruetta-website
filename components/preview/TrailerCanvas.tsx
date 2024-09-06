@@ -1,14 +1,10 @@
 "use client";
 
-import React, {
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Center,
+  ContactShadows,
   PerformanceMonitor,
   PerspectiveCamera,
   useTexture,
@@ -17,7 +13,13 @@ import CanvasLoader from "../CanvasLoader";
 import { Leva, useControls } from "leva";
 import * as THREE from "three";
 
-export default function TrailerCanvas({children} : {children: React.ReactNode}) {
+export default function TrailerCanvas({
+  children,
+  shadowCounter
+}: {
+  children: React.ReactNode;
+  shadowCounter: number;
+}) {
   const div = useRef<HTMLDivElement>(null);
 
   const [isVisible, setIsVisible] = useState(false);
@@ -42,25 +44,17 @@ export default function TrailerCanvas({children} : {children: React.ReactNode}) 
     };
   }, []);
 
-  const [shadowCounter, setShadowCounter] = useState(0);
-
-  // useEffect(() => {
-  //   setShadowCounter(prev => prev + 1);
-  // }, [color, model, data]);
-
   return (
     <div id="canvas-container" className="w-full h-full relative" ref={div}>
       {isVisible && (
         <Canvas
           // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          // dpr={[1, 1]}
+          dpr={[1, 2]}
           shadows
         >
-          <Suspense fallback={<CanvasLoader />}> 
-          {/* <ContactShadows resolution={512} frames={1} position={[0, -4, 0]} scale={15} blur={1} opacity={0.2} far={20} key={shadowCounter} /> */}
-          <Center>
-            {children}
-          </Center>
+          <Suspense fallback={<CanvasLoader />}>
+            <ContactShadows resolution={512} frames={1} position={[0, -4, 0]} scale={15} blur={1} opacity={0.2} far={20} key={shadowCounter} />
+            <Center>{children}</Center>
           </Suspense>
           <Hangar />
           {/* <Environment preset="city" /> */}
@@ -69,11 +63,22 @@ export default function TrailerCanvas({children} : {children: React.ReactNode}) 
             position={[10, 50, 10]}
             intensity={1}
           /> */}
-          <directionalLight
+          {/* <directionalLight
             position={[-10, 50, -10]}
             intensity={3.5}
           />
           <directionalLight
+            position={[10, 50, 10]}
+            intensity={3.5}
+          /> */}
+          <directionalLight
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-left={-50}
+            shadow-camera-right={50}
+            shadow-camera-top={50}
+            shadow-camera-bottom={-50}
             position={[10, 50, 10]}
             intensity={3.5}
           />
@@ -221,7 +226,12 @@ function Hangar() {
         receiveShadow
       >
         <planeGeometry args={[75, 25]} />
-        <meshStandardMaterial map={logoMap} transparent opacity={0.15} color={"black"} />
+        <meshStandardMaterial
+          map={logoMap}
+          transparent
+          opacity={0.15}
+          color={"black"}
+        />
       </mesh>
 
       {/* Logo sulla parete sinistra */}
@@ -231,7 +241,12 @@ function Hangar() {
         receiveShadow
       >
         <planeGeometry args={[75, 25]} />
-        <meshStandardMaterial map={logoMap} transparent opacity={0.15} color={"black"} />
+        <meshStandardMaterial
+          map={logoMap}
+          transparent
+          opacity={0.15}
+          color={"black"}
+        />
       </mesh>
     </>
   );

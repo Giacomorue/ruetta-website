@@ -57,10 +57,12 @@ const Mesh = ({
   variant,
   currentColor,
   configurations,
+  updateShadowCounter,
 }: {
   variant: VariantData;
   currentColor: Colors;
   configurations: { configurationId: string; valueId: string }[];
+  updateShadowCounter: () => void;
 }) => {
   const adminLoader = useAdminLoader();
 
@@ -69,6 +71,10 @@ const Mesh = ({
     dracoLoader.setDecoderPath("/draco-gltf/"); // Assicurati che questo percorso corrisponda alla posizione dei file decoder Draco
     loader.setDRACOLoader(dracoLoader);
   });
+
+  useEffect(() => {
+    updateShadowCounter();
+  }, [gltf])
 
   function traverseNodes(node: any, variant: VariantData, newNodes: string[]) {
     // Controlla se il nodo esiste già nella variante
