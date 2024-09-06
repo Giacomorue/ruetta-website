@@ -24,7 +24,7 @@ function NavbarPreview() {
 
 
   return (
-    <div className="w-full h-[80px] border-b border-border shadow-sm flex items-center justify-center">
+    <div className="w-full min-h-[80px] border-b border-border shadow-sm flex items-center justify-center">
       <div className="w-full max-w-[1600px] h-full flex flex-row items-center justify-between px-5 md:px-3 lg:px-10 relative">
         <Image
           src={"/logo.png"}
