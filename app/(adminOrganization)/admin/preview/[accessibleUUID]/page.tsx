@@ -16,6 +16,12 @@ async function Page({
     notFound();
   }
 
+  const haveSelectorVisible = variant.selectors.some((s) => s.visible === true);
+
+  if(!haveSelectorVisible) {
+    notFound();
+  }
+
   return <PreviewComponent variant={variant} />;
 }
 
