@@ -67,7 +67,7 @@ export default function TrailerCanvas({
       {isVisible && (
         <Canvas
           // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          // dpr={0.7}
+          dpr={0.7}
           shadows
           gl={{
             powerPreference: "high-performance", // Ottimizza per GPU performanti
@@ -103,13 +103,13 @@ export default function TrailerCanvas({
             intensity={3.5}
           /> */}
           <directionalLight
-            castShadow
-            shadow-mapSize-width={1024}
-            shadow-mapSize-height={1024}
-            shadow-camera-left={-50}
-            shadow-camera-right={50}
-            shadow-camera-top={50}
-            shadow-camera-bottom={-50}
+            // castShadow
+            // shadow-mapSize-width={1024}
+            // shadow-mapSize-height={1024}
+            // shadow-camera-left={-50}
+            // shadow-camera-right={50}
+            // shadow-camera-top={50}
+            // shadow-camera-bottom={-50}
             position={[10, 50, 10]}
             intensity={3.5}
           />
