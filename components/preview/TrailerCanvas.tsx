@@ -45,21 +45,6 @@ export default function TrailerCanvas({
     };
   }, []);
 
-  async function getDevicePerformanceLevel() {
-    const frameRate = await runBenchmark();
-
-    // return frameRate;
-
-    // Categorizzazione basata su GPU e frame rate
-    if (frameRate > 60) {
-      return "high";
-    } else if (frameRate >= 25) {
-      return "mid";
-    } else {
-      return "low";
-    }
-  }
-
   async function runBenchmark(duration = 1000): Promise<number> {
     let frameCount = 0;
     const startTime = performance.now();
@@ -81,18 +66,17 @@ export default function TrailerCanvas({
     });
   }
 
-  const [levelOfDevicePerformance, setLevelOfDevicePerformance] = useState<"low" | "mid" | "high">("low");
+  const [levelOfDevicePerformance, setLevelOfDevicePerformance] =
+    useState<number>(0);
 
   useEffect(() => {
-
     const SetFpsDetails = async () => {
-      const fpsDetails = await getDevicePerformanceLevel()
+      const fpsDetails = await runBenchmark();
       setLevelOfDevicePerformance(fpsDetails);
       console.log(`Device performance level: ${fpsDetails}`);
-    }
+    };
 
     SetFpsDetails();
-
   }, []);
 
   return (
@@ -100,7 +84,17 @@ export default function TrailerCanvas({
       {isVisible && (
         <Canvas
           // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          dpr={levelOfDevicePerformance === "low" ? 0.6 : levelOfDevicePerformance === "mid"? 1 : 1.5}
+          dpr={
+            levelOfDevicePerformance > 20
+              ? 0.9
+              : levelOfDevicePerformance > 30
+              ? 1.2
+              : levelOfDevicePerformance > 45
+              ? 1.5
+              : levelOfDevicePerformance > 60
+              ? 2
+              : 0.7
+          }
           shadows
           gl={{
             powerPreference: "high-performance", // Ottimizza per GPU performanti
