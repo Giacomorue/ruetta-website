@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import {
   Center,
   ContactShadows,
+  Html,
   PerformanceMonitor,
   PerspectiveCamera,
   useTexture,
@@ -44,23 +45,39 @@ export default function TrailerCanvas({
     };
   }, []);
 
-  let device = "low";
+  async function getDevicePerformanceLevel() {
+    const frameRate = await runBenchmark();
 
-  // const t0 = performance.now();
-  // // Render di una scena
-  // const t1 = performance.now();
+    // Categorizzazione basata su GPU e frame rate
+    if (frameRate >= 60) {
+      return "high-end";
+    } else if (frameRate >= 30) {
+      return "mid-range";
+    } else {
+      return "low-end";
+    }
+  }
 
-  // const frameTime = t1 - t0;
+  async function runBenchmark(duration = 1000): Promise<number> {
+    let frameCount = 0;
+    const startTime = performance.now();
 
-  // if (frameTime > 16.7) {
-  //   // Bassa performance - riduci la risoluzione
-  //   device = "low";
-  // } else if (frameTime < 10) {
-  //   // Alta performance - aumenta la risoluzione
-  //   device = "high";
-  // }
+    return new Promise((resolve) => {
+      function renderLoop() {
+        frameCount++;
+        const elapsedTime = performance.now() - startTime;
 
-  // console.log(`Frame time: ${frameTime}ms, device: ${device}`);
+        if (elapsedTime < duration) {
+          requestAnimationFrame(renderLoop);
+        } else {
+          const fps = frameCount / (elapsedTime / 1000);
+          resolve(fps); // Restituisci il frame rate calcolato
+        }
+      }
+
+      renderLoop();
+    });
+  }
 
   return (
     <div id="canvas-container" className="w-full h-full relative" ref={div}>
@@ -74,6 +91,18 @@ export default function TrailerCanvas({
             antialias: true, // Smoothing dei bordi
           }}
         >
+          <Html
+            as="div"
+            center
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            {getDevicePerformanceLevel()}
+          </Html>
           <Suspense fallback={<CanvasLoader />}>
             <ContactShadows
               resolution={512}
