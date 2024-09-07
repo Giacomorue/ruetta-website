@@ -53,7 +53,7 @@ export default function TrailerCanvas({
     // Categorizzazione basata su GPU e frame rate
     if (frameRate > 60) {
       return "high";
-    } else if (frameRate >= 30) {
+    } else if (frameRate >= 25) {
       return "mid";
     } else {
       return "low";
@@ -99,13 +99,13 @@ export default function TrailerCanvas({
     <div id="canvas-container" className="w-full h-full relative" ref={div}>
       {isVisible && (
         <Canvas
-          gl={{ logarithmicDepthBuffer: true, antialias: true }}
+          // gl={{ logarithmicDepthBuffer: true, antialias: true }}
           dpr={levelOfDevicePerformance === "low" ? 0.6 : levelOfDevicePerformance === "mid"? 1 : 1.5}
           shadows
-          // gl={{
-          //   powerPreference: "high-performance", // Ottimizza per GPU performanti
-          //   antialias: true, // Smoothing dei bordi
-          // }}
+          gl={{
+            powerPreference: "high-performance", // Ottimizza per GPU performanti
+            antialias: true, // Smoothing dei bordi
+          }}
         >
           <Html
             as="div"
@@ -117,7 +117,7 @@ export default function TrailerCanvas({
               flexDirection: "column",
             }}
           >
-            {getDevicePerformanceLevel()}
+            {levelOfDevicePerformance}
           </Html>
           <Suspense fallback={<CanvasLoader />}>
             <ContactShadows
