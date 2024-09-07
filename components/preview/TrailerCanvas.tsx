@@ -48,6 +48,8 @@ export default function TrailerCanvas({
   async function getDevicePerformanceLevel() {
     const frameRate = await runBenchmark();
 
+    return frameRate;
+
     // Categorizzazione basata su GPU e frame rate
     if (frameRate > 60) {
       return "high";
@@ -79,32 +81,44 @@ export default function TrailerCanvas({
     });
   }
 
-  const [levelOfDevicePerformance, setLevelOfDevicePerformance] = useState<"low" | "mid" | "high">("low");
+  // const [levelOfDevicePerformance, setLevelOfDevicePerformance] = useState<"low" | "mid" | "high">("low");
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const SetFpsDetails = async () => {
-      const fpsDetails = await getDevicePerformanceLevel()
-      setLevelOfDevicePerformance(fpsDetails);
-      console.log(`Device performance level: ${fpsDetails}`);
-    }
+  //   const SetFpsDetails = async () => {
+  //     const fpsDetails = await getDevicePerformanceLevel()
+  //     setLevelOfDevicePerformance(fpsDetails);
+  //     console.log(`Device performance level: ${fpsDetails}`);
+  //   }
 
-    SetFpsDetails();
+  //   SetFpsDetails();
 
-  }, [])
+  // }, []);
 
   return (
     <div id="canvas-container" className="w-full h-full relative" ref={div}>
       {isVisible && (
         <Canvas
           // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          dpr={levelOfDevicePerformance === "low" ? 0.6 : levelOfDevicePerformance === "mid"? 1 : 1.5}
+          // dpr={levelOfDevicePerformance === "low" ? 0.6 : levelOfDevicePerformance === "mid"? 1 : 1.5}
           shadows
           gl={{
             powerPreference: "high-performance", // Ottimizza per GPU performanti
             antialias: true, // Smoothing dei bordi
           }}
         >
+          <Html
+            as="div"
+            center
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            {getDevicePerformanceLevel()}
+          </Html>
           <Suspense fallback={<CanvasLoader />}>
             <ContactShadows
               resolution={512}
