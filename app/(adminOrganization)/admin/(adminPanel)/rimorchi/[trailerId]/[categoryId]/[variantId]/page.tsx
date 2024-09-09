@@ -35,15 +35,23 @@ async function page({
 }: {
   params: { trailerId: string; categoryId: string; variantId: string };
 }) {
-  const variant = await GetVariantyById(variantId);
+  
+  const [variant, images, allConfiguration, allSelector, allNode, allColor] = await Promise.all([
+    GetVariantyById(variantId),
+    GetAllImages(),
+    GetConfigurationByVariantId(variantId),
+    GetAllSelectorByVariantId(variantId),
+    GetNodesByVariantId(variantId),
+    GetAllColorByVariantId(variantId),
+  ]);
 
   if (!variant) {
     notFound();
   }
 
-  const images = await GetAllImages();
+  // const images = await GetAllImages();
 
-  const allConfiguration = await GetConfigurationByVariantId(variantId);
+  // const allConfiguration = await GetConfigurationByVariantId(variantId);
 
   const allConfigurationsForTable = allConfiguration
     ? allConfiguration.map((config) => ({
@@ -59,7 +67,7 @@ async function page({
       }))
     : [];
 
-  const allSelector = await GetAllSelectorByVariantId(variantId);
+  // const allSelector = await GetAllSelectorByVariantId(variantId);
 
   const allSelectorForTable = allSelector
     ? allSelector.map((selector) => ({
@@ -80,7 +88,7 @@ async function page({
     ? allSelector.filter((f) => f.visible === true).length > 0
     : false;
 
-  const allNode = await GetNodesByVariantId(variantId);
+  // const allNode = await GetNodesByVariantId(variantId);
 
   const allNodeForTable = allNode
     ? allNode.map((node) => ({
@@ -93,7 +101,7 @@ async function page({
       }))
     : [];
 
-  const allColor = await GetAllColorByVariantId(variantId);
+  // const allColor = await GetAllColorByVariantId(variantId);
 
   const allColorForTable = allColor.map((color) => ({
     id: color.id,

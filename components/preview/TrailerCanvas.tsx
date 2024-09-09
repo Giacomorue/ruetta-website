@@ -111,7 +111,7 @@ export default function TrailerCanvas({
   const getLightIntensity = () => {
     switch (performanceLevel) {
       case "low":
-        return 1.5;
+        return 2.5;
       case "medium":
         return 2.5;
       case "high":
@@ -149,9 +149,9 @@ export default function TrailerCanvas({
               resolution={performanceLevel === "high" ? 1024 : 512}
               frames={1}
               position={[0, -4, 0]}
-              scale={15}
+              scale={performanceLevel === "high" || performanceLevel === "medium" ? 30 : 20}
               blur={1}
-              opacity={0.2}
+              opacity={performanceLevel === "high" || performanceLevel === "medium" ? 0.4 : 0.2}
               far={20}
               key={shadowCounter}
             />
