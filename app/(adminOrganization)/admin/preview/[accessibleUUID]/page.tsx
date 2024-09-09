@@ -10,19 +10,21 @@ async function Page({
 }: {
   params: { accessibleUUID: string };
 }) {
-  const variant = await GetVariantDataByAccessibleUUID(accessibleUUID);
+  // const variant = await GetVariantDataByAccessibleUUID(accessibleUUID);
 
-  if (!variant) {
-    notFound();
-  }
+  // if (!variant) {
+  //   notFound();
+  // }
 
-  const haveSelectorVisible = variant.selectors.some((s) => s.visible === true);
+  // const haveSelectorVisible = variant.selectors.some((s) => s.visible === true);
 
-  if(!haveSelectorVisible) {
-    notFound();
-  }
+  // if(!haveSelectorVisible) {
+  //   notFound();
+  // }
 
-  return <PreviewComponent variant={variant} />;
+  // variant={variant}
+
+  return <PreviewComponent accessibleUUID={accessibleUUID} />;
 }
 
 export default Page;

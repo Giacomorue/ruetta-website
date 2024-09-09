@@ -63,8 +63,37 @@ export type VariantData = Variant & {
 
 const DEBOUNCE_TIME = 100;
 
+// { variant }: { variant: VariantData }
 
-function PreviewComponent({ variant }: { variant: VariantData }) {
+function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
+
+  const [variant, setVariant] = useState<VariantData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!accessibleUUID) return;
+
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Imposta lo stato di caricamento
+        const response = await fetch(`/api/variant/${accessibleUUID}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch variant data");
+        }
+
+        const data = await response.json();
+        setVariant(data); // Imposta i dati della variante
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false); // Fine caricamento
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const router = useRouter();
   const [configurations, setConfigurations] = useState<
     { configurationId: string; valueId: string }[]
@@ -72,6 +101,10 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
   const [color, setColor] = useState<Colors | null>(null);
 
   useEffect(() => {
+
+    console.log("Configurations: ", configurations);
+
+    if(!variant) return;
 
     const queryParams = new URLSearchParams(window.location.search);
     const updatedParams = new URLSearchParams();
@@ -161,11 +194,14 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
       const url = `${pathname}?${updatedParams.toString()}`;
       router.replace(url);
     }
-  }, []);
+  }, [variant]);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleClickColor = (color: Colors) => {
+
+    if(!variant) return;
+
     const params = new URLSearchParams(window.location.search);
 
     if (timeoutRef.current) {
@@ -213,6 +249,9 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
     option: SelectorOption,
     configName: string
   ) => {
+
+    if(!variant) return;
+
     const params = new URLSearchParams(window.location.search);
 
     if (timeoutRef.current) {
@@ -274,6 +313,9 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
     newValueId: string,
     params: URLSearchParams
   ) => {
+
+    if(!variant) return;
+
     const configuration = variant.configurations.find(
       (c) => c.id === configurationId
     );
@@ -448,6 +490,8 @@ function PreviewComponent({ variant }: { variant: VariantData }) {
   }, [color, configurations, setIsClient]);
 
   if(!isClient) return null;
+
+  if(!variant) return;
 
   const hasColor = variant.colors.some((c) => c.visible === true);
 
