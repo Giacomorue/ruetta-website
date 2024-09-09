@@ -22,8 +22,8 @@ export default function TrailerCanvas({
   shadowCounter: number;
 }) {
   const div = useRef<HTMLDivElement>(null);
-
   const [isVisible, setIsVisible] = useState(false);
+  const [performanceLevel, setPerformanceLevel] = useState<"low" | "medium" | "high">("medium");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -58,7 +58,7 @@ export default function TrailerCanvas({
           requestAnimationFrame(renderLoop);
         } else {
           const fps = frameCount / (elapsedTime / 1000);
-          resolve(fps); // Restituisci il frame rate calcolato
+          resolve(fps);
         }
       }
 
@@ -66,39 +66,70 @@ export default function TrailerCanvas({
     });
   }
 
-  const [levelOfDevicePerformance, setLevelOfDevicePerformance] =
-    useState<number>(0);
-
   useEffect(() => {
-    const SetFpsDetails = async () => {
-      const fpsDetails = await runBenchmark();
-      setLevelOfDevicePerformance(fpsDetails);
-      console.log(`Device performance level: ${fpsDetails}`);
+    const categorizePerformance = async () => {
+      const fps = await runBenchmark();
+      if (fps < 20) {
+        setPerformanceLevel("low");
+      } else if (fps < 40) {
+        setPerformanceLevel("medium");
+      } else {
+        setPerformanceLevel("high");
+      }
+      console.log(`Performance category: ${performanceLevel}`);
     };
 
-    SetFpsDetails();
+    categorizePerformance();
   }, []);
+
+  const getDpr = () => {
+    switch (performanceLevel) {
+      case "low":
+        return 0.8;
+      case "medium":
+        return 1.0;
+      case "high":
+        return 2.0;
+      default:
+        return 1.0;
+    }
+  };
+
+  const getShadowQuality = () => {
+    switch (performanceLevel) {
+      case "low":
+        return false;
+      case "medium":
+        return true;
+      case "high":
+        return true;
+      default:
+        return true;
+    }
+  };
+
+  const getLightIntensity = () => {
+    switch (performanceLevel) {
+      case "low":
+        return 1.5;
+      case "medium":
+        return 2.5;
+      case "high":
+        return 3.5;
+      default:
+        return 2.5;
+    }
+  };
 
   return (
     <div id="canvas-container" className="w-full h-full relative" ref={div}>
       {isVisible && (
         <Canvas
-          // gl={{ logarithmicDepthBuffer: true, antialias: true }}
-          dpr={
-            levelOfDevicePerformance > 20
-              ? 0.9
-              : levelOfDevicePerformance > 30
-              ? 1.2
-              : levelOfDevicePerformance > 45
-              ? 1.5
-              : levelOfDevicePerformance > 60
-              ? 2
-              : 0.7
-          }
-          shadows
+          dpr={getDpr()}
+          shadows={getShadowQuality()}
           gl={{
-            powerPreference: "high-performance", // Ottimizza per GPU performanti
-            antialias: true, // Smoothing dei bordi
+            powerPreference: "high-performance",
+            antialias: true,
           }}
         >
           <Html
@@ -111,11 +142,11 @@ export default function TrailerCanvas({
               flexDirection: "column",
             }}
           >
-            {levelOfDevicePerformance}
+            {performanceLevel.toUpperCase()} Performance
           </Html>
           <Suspense fallback={<CanvasLoader />}>
             <ContactShadows
-              resolution={512}
+              resolution={performanceLevel === "high" ? 1024 : 512}
               frames={1}
               position={[0, -4, 0]}
               scale={15}
@@ -127,31 +158,8 @@ export default function TrailerCanvas({
             <Center>{children}</Center>
           </Suspense>
           <Hangar />
-          {/* <Environment preset="city" /> */}
-          <ambientLight intensity={3.5} />
-          {/* <directionalLight
-            position={[10, 50, 10]}
-            intensity={1}
-          /> */}
-          {/* <directionalLight
-            position={[-10, 50, -10]}
-            intensity={3.5}
-          />
-          <directionalLight
-            position={[10, 50, 10]}
-            intensity={3.5}
-          /> */}
-          <directionalLight
-            // castShadow
-            // shadow-mapSize-width={1024}
-            // shadow-mapSize-height={1024}
-            // shadow-camera-left={-50}
-            // shadow-camera-right={50}
-            // shadow-camera-top={50}
-            // shadow-camera-bottom={-50}
-            position={[10, 50, 10]}
-            intensity={3.5}
-          />
+          <ambientLight intensity={getLightIntensity()} />
+          <directionalLight position={[10, 50, 10]} intensity={getLightIntensity()} />
           <Leva hidden />
           <PerformanceMonitor />
           <PerspectiveCamera position={[-20, 10, 40]} fov={50} makeDefault />
