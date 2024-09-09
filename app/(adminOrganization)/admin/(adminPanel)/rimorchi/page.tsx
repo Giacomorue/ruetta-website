@@ -8,12 +8,11 @@ import {
 import { Fornitori } from "@/constants";
 // import NewRimorchioBtn from "@/components/admin/rimorchi/new-rimorchio-btn";
 import { GetAllImages } from "@/data/images";
-import {
-  GetAllTrailerDescIncludeCategories,
-} from "@/data/trailer";
+import { GetAllTrailerDescIncludeCategories } from "@/data/trailer";
 import dynamic from "next/dynamic";
 import { Category } from "prisma/prisma-client";
 import React, { Suspense } from "react";
+import { ImSpinner2 } from "react-icons/im";
 
 const NewRimorchioBtn = dynamic(
   () => import("@/components/admin/rimorchi/new-rimorchio-btn"),
@@ -38,16 +37,20 @@ const transformTrailers = (trailers: any[]): RimorchiColumnType[] => {
 
 async function page() {
   return (
-    <AusiliarPage />
-  )
+    <Suspense fallback={<Loader />}>
+      <AusiliarPage />
+    </Suspense>
+  );
 }
 
 export default page;
 
 const AusiliarPage = async () => {
-  const images = await GetAllImages();
+  const [images, trailers] = await Promise.all([
+    GetAllImages(),
+    GetAllTrailerDescIncludeCategories(),
+  ]);
 
-  const trailers = await GetAllTrailerDescIncludeCategories();
   const trailersForTable: RimorchiColumnType[] = trailers
     ? transformTrailers(trailers)
     : [];
@@ -63,4 +66,12 @@ const AusiliarPage = async () => {
       />
     </>
   );
-}
+};
+
+const Loader = () => {
+  return (
+    <div className="z-[100] flex flex-col items-center justify-center inset-0 bg-background/30 fixed top-0 left-0 h-[100vh] w-[100vw]">
+      <ImSpinner2 className="animate-spin w-20 h-20 text-primary" />
+    </div>
+  );
+};

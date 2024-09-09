@@ -10,12 +10,13 @@ import NewCategoryBtn from "@/components/admin/rimorchi/rimorchio/new-category-b
 import { GetAllImages } from "@/data/images";
 import { GetAllCategoryDescByTrailerId, GetTrailerById } from "@/data/trailer";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import { Category } from "prisma/prisma-client";
 import { AllCategoryTable } from "@/components/admin/rimorchi/rimorchio/all-category-table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
+import { ImSpinner2 } from "react-icons/im";
 
 function mapCategoryToCategoryColumnType(
   category: Category
@@ -42,21 +43,25 @@ async function page({
   params: { trailerId: string };
 }) {
   return (
-    <AusiliarPage trailerId={trailerId} />
+    <Suspense fallback={<Loader />}>
+      <AusiliarPage trailerId={trailerId} />
+    </Suspense>
   )
 }
 
 export default page;
 
 const AusiliarPage = async ({trailerId} : {trailerId: string}) => {
-  const trailer = await GetTrailerById(trailerId);
+
+  const [trailer, allImages, allCategory] = await Promise.all([
+    GetTrailerById(trailerId),
+    GetAllImages(),
+    GetAllCategoryDescByTrailerId(trailerId),
+  ])
 
   if (!trailer) {
     notFound();
   }
-
-  const allImages = await GetAllImages();
-  const allCategory = await GetAllCategoryDescByTrailerId(trailerId);
 
   const categoryForTable: CategoryColumnType[] = allCategory
     ? mapCategoriesToCategoryColumnTypes(allCategory)
@@ -87,3 +92,11 @@ const AusiliarPage = async ({trailerId} : {trailerId: string}) => {
     </div>
   );
 }
+
+const Loader = () => {
+  return (
+    <div className="z-[100] flex flex-col items-center justify-center inset-0 bg-background/30 fixed top-0 left-0 h-[100vh] w-[100vw]">
+      <ImSpinner2 className="animate-spin w-20 h-20 text-primary" />
+    </div>
+  );
+};

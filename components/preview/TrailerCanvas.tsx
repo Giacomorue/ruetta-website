@@ -89,7 +89,7 @@ export default function TrailerCanvas({
       case "medium":
         return 1.0;
       case "high":
-        return 2.0;
+        return 1.2;
       default:
         return 1.0;
     }
@@ -117,7 +117,7 @@ export default function TrailerCanvas({
       case "high":
         return 3.5;
       default:
-        return 2.5;
+        return 3.5;
     }
   };
 
@@ -132,7 +132,7 @@ export default function TrailerCanvas({
             antialias: true,
           }}
         >
-          <Html
+          {/* <Html
             as="div"
             center
             style={{
@@ -143,15 +143,15 @@ export default function TrailerCanvas({
             }}
           >
             {performanceLevel.toUpperCase()} Performance
-          </Html>
+          </Html> */}
           <Suspense fallback={<CanvasLoader />}>
             <ContactShadows
-              resolution={performanceLevel === "high" ? 1024 : 512}
+              resolution={512}
               frames={1}
               position={[0, -4, 0]}
-              scale={performanceLevel === "high" || performanceLevel === "medium" ? 30 : 20}
+              scale={performanceLevel === "high" ? 30 : performanceLevel === "medium" ? 25 : 20}
               blur={1}
-              opacity={performanceLevel === "high" || performanceLevel === "medium" ? 0.4 : 0.2}
+              opacity={performanceLevel === "high" ? 0.5 : performanceLevel === "medium" ? 0.4 : 0.2}
               far={20}
               key={shadowCounter}
             />
