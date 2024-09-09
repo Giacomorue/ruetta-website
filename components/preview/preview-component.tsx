@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import {
@@ -34,6 +34,7 @@ import { FaArrowLeft, FaExpand } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import { AiOutlineFullscreenExit, AiOutlineFullscreen } from "react-icons/ai";
+import { ImSpinner2 } from "react-icons/im";
 
 export type VariantData = Variant & {
   nodes: (Node & {
@@ -77,7 +78,7 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
     const fetchData = async () => {
       try {
         setLoading(true); // Imposta lo stato di caricamento
-        const response = await fetch(`/api/variant/${accessibleUUID}`);
+        const response = await fetch(`/api/variant/${accessibleUUID}`, { method: "GET", cache: "no-cache" });
         if (!response.ok) {
           throw new Error("Failed to fetch variant data");
         }
@@ -101,8 +102,6 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
   const [color, setColor] = useState<Colors | null>(null);
 
   useEffect(() => {
-
-    console.log("Configurations: ", configurations);
 
     if(!variant) return;
 
@@ -489,9 +488,17 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
 
   }, [color, configurations, setIsClient]);
 
-  if(!isClient) return null;
+  if(!isClient || !variant) return (
+    <div className="z-[100] flex flex-col items-center justify-center inset-0 bg-background/30 fixed top-0 left-0 h-[100vh] w-[100vw]">
+      <ImSpinner2 className="animate-spin w-20 h-20 text-primary" />
+    </div>
+  );
 
-  if(!variant) return;
+  const haveSelectorVisible = variant.selectors.some((s) => s.visible === true);
+
+  if(!haveSelectorVisible) {
+    notFound();
+  }
 
   const hasColor = variant.colors.some((c) => c.visible === true);
 
