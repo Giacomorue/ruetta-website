@@ -36,11 +36,7 @@ const transformTrailers = (trailers: any[]): RimorchiColumnType[] => {
 };
 
 async function page() {
-  return (
-    <Suspense fallback={<Loader />}>
-      <AusiliarPage />
-    </Suspense>
-  );
+  return <AusiliarPage />;
 }
 
 export default page;
@@ -65,13 +61,5 @@ const AusiliarPage = async () => {
         data={trailersForTable}
       />
     </>
-  );
-};
-
-const Loader = () => {
-  return (
-    <div className="z-[100] flex flex-col items-center justify-center inset-0 bg-background/30 fixed top-0 left-0 h-[100vh] w-[100vw]">
-      <ImSpinner2 className="animate-spin w-20 h-20 text-primary" />
-    </div>
   );
 };
