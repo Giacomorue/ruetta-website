@@ -78,7 +78,7 @@ function SelectorPage({
           "/" +
           variantId +
           "/selector/" +
-          selectorId
+          selectorId, { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -126,7 +126,7 @@ function SelectorPage({
           "/" +
           variantId +
           "/selector/" +
-          selectorId
+          selectorId, { cache: "no-cache" }
       );
       const data = await response.json();
 

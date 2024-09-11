@@ -34,7 +34,7 @@ function CategoryPage({
   const fetchData = async () => {
     adminLoading.startLoading();
     try {
-      const response = await fetch("/api/trailerPage/" + trailerId + "/" + categoryId);
+      const response = await fetch("/api/trailerPage/" + trailerId + "/" + categoryId, { cache: "no-cache" });
       const data = await response.json();
 
       if (!data.trailer || data.trailer === null) {
@@ -63,7 +63,7 @@ function CategoryPage({
 
   const fetchDataWithoutLoading = async () => {
     try {
-      const response = await fetch("/api/trailerPage/" + trailerId + "/" + categoryId);
+      const response = await fetch("/api/trailerPage/" + trailerId + "/" + categoryId, { cache: "no-cache" });
       const data = await response.json();
 
       if (!data.trailer || data.trailer === null) {

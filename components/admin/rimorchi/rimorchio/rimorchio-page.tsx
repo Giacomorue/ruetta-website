@@ -28,7 +28,7 @@ function RimorchioPage({ trailerId }: { trailerId: string }) {
   const fetchData = async () => {
     adminLoading.startLoading();
     try {
-      const response = await fetch("/api/trailerPage/" + trailerId);
+      const response = await fetch("/api/trailerPage/" + trailerId, { cache: "no-cache" });
       const data = await response.json();
 
       if (!data.trailer || data.trailer === null) {
@@ -48,7 +48,7 @@ function RimorchioPage({ trailerId }: { trailerId: string }) {
 
   const fetchDataWithoutLoading = async () => {
     try {
-      const response = await fetch("/api/trailerPage/" + trailerId);
+      const response = await fetch("/api/trailerPage/" + trailerId, { cache: "no-cache" });
       const data = await response.json();
 
       if (!data.trailer || data.trailer === null) {

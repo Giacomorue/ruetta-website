@@ -21,7 +21,7 @@ const RimorchiPage = () => {
   const fetchData = async () => {
     adminLoading.startLoading();
     try {
-      await fetch("/api/trailer")
+      await fetch("/api/trailer", { cache: "no-cache" })
         .then((response) => response.json())
         .then((data) => setTrailers(data));
     } catch (error) {
@@ -34,7 +34,7 @@ const RimorchiPage = () => {
   const fetchDataWithoutLoading = async () => {
     // adminLoading.startLoading();
     try {
-      await fetch("/api/trailer")
+      await fetch("/api/trailer", { cache: "no-cache" })
         .then((response) => response.json())
         .then((data) => setTrailers(data));
     } catch (error) {

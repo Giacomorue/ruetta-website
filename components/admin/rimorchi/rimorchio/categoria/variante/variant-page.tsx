@@ -71,7 +71,7 @@ function VariantPage({
     adminLoading.startLoading();
     try {
       const response = await fetch(
-        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId
+        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId, { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -104,7 +104,7 @@ function VariantPage({
   const fetchDataWithoutLoading = async () => {
     try {
       const response = await fetch(
-        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId
+        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId, { cache: "no-cache" }
       );
       const data = await response.json();
 

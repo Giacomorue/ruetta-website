@@ -40,7 +40,7 @@ function ColorPage({
           "/" +
           variantId +
           "/color/" +
-          colorId
+          colorId, { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -80,7 +80,7 @@ function ColorPage({
           "/" +
           variantId +
           "/color/" +
-          colorId
+          colorId, { cache: "no-cache" }
       );
       const data = await response.json();
 

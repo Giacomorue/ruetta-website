@@ -66,7 +66,7 @@ function ConfigurationPage({
           "/" +
           variantId +
           "/configurazione/" +
-          configurationId
+          configurationId, { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -110,7 +110,7 @@ function ConfigurationPage({
           "/" +
           variantId +
           "/configurazione/" +
-          configurationId
+          configurationId, { cache: "no-cache" }
       );
       const data = await response.json();
 

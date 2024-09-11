@@ -19,7 +19,7 @@ function ImagesPage() {
     adminLoading.startLoading();
     try {
       const response = await fetch(
-        "/api/images"
+        "/api/images", { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -37,7 +37,7 @@ function ImagesPage() {
     adminLoading.startLoading();
     try {
       const response = await fetch(
-        "/api/images"
+        "/api/images", { cache: "no-cache" }
       );
       const data = await response.json();
 
