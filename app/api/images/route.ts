@@ -2,6 +2,8 @@ import { GetAllImages } from "@/data/images";
 import { GetVariantDataByAccessibleUUID } from "@/data/trailer";
 import { NextRequest, NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
     const images = await GetAllImages();

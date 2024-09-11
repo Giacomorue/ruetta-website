@@ -1,6 +1,8 @@
 import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
     const trailers = await db.trailer.findMany({

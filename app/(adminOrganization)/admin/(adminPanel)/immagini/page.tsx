@@ -9,6 +9,8 @@ import Image from "next/image";
 import React from "react";
 import { FaTrash } from "react-icons/fa6";
 
+export const dynamic = 'force-dynamic'
+
 async function page() {
 
   return (
