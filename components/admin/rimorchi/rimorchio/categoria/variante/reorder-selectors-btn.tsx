@@ -23,10 +23,14 @@ function ReorderSelectorsBtn({
   selectors,
   variantId,
   disabled,
+  socketId,
+  onRevalidate
 }: {
   selectors: Selector[];
   variantId: string;
   disabled: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const [ordersSelector, setOrdersSelector] = useState(selectors);
@@ -40,7 +44,7 @@ function ReorderSelectorsBtn({
 
   const onSave = async () => {
     adminLoader.startLoading();
-    await ReorderSelectors(ordersSelector, variantId).then((res) => {
+    await ReorderSelectors(ordersSelector, variantId, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -56,6 +60,7 @@ function ReorderSelectorsBtn({
           description: "Selettori riordinati con successo",
         });
         setIsOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

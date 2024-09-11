@@ -23,15 +23,19 @@ import { toast } from "@/components/ui/use-toast";
 
 function DeleteVisibilityConditionBtn({
   condition,
+  socketId,
+  onRevalidate,
 }: {
   condition: SelectorVisibilityCondition;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelete = async () => {
     adminLoader.startLoading();
-    await DeleteVisibilityCondition(condition.id).then((res) => {
+    await DeleteVisibilityCondition(condition.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -46,6 +50,7 @@ function DeleteVisibilityConditionBtn({
           title: "Successo",
           description: "Condizione di visibilità cancellata con successo",
         });
+        onRevalidate(); 
         // Se necessario, ricarica la pagina o naviga altrove
         // router.refresh(); // Esempio di refresh della pagina
       }

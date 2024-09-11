@@ -67,6 +67,8 @@ function EditSelectorForm({
   canSetVisible,
   selectorOprtionValueText,
   configurations,
+  onRevalidate,
+  socketId,
 }: {
   selector: Selector;
   canSetVisible: boolean;
@@ -89,6 +91,8 @@ function EditSelectorForm({
     updatedAt: Date;
     variantId: string;
   })[];
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -103,6 +107,12 @@ function EditSelectorForm({
   });
 
   useEffect(() => {
+    form.setValue("name", selector.name);
+    form.setValue("description", selector.description || "");
+    form.setValue("visible",!canSetVisible? false : selector.visible);
+  }, [selector]);
+
+  useEffect(() => {
     if (canSetVisible === false) {
       form.setValue("visible", false);
     }
@@ -110,7 +120,7 @@ function EditSelectorForm({
 
   const onSubmit = async (data: EditSelectorType) => {
     adminLoader.startLoading();
-    await EditSelector(data, selector.id).then((res) => {
+    await EditSelector(data, selector.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -126,7 +136,8 @@ function EditSelectorForm({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        // router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

@@ -48,6 +48,8 @@ function ViewConfigurationChanges({
   allNodes,
   configurationValue,
   isElse,
+  onRevalidate,
+  socketId,
 }: {
   configurationChange: {
     id: string;
@@ -117,6 +119,8 @@ function ViewConfigurationChanges({
   allNodes: Node[];
   configurationValue: ConfigurationValue2;
   isElse: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isElseExpanded, setIsElseExpanded] = useState(true);
@@ -179,8 +183,14 @@ function ViewConfigurationChanges({
                 configurations={allConfigurations}
                 nodes={allNodes}
                 configurationValue={configurationValue}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
               />
-              <DeleteConfigurationChangeBtn change={configurationChange} />
+              <DeleteConfigurationChangeBtn
+                change={configurationChange}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
+              />
             </div>
           </div>
 
@@ -235,6 +245,8 @@ function ViewConfigurationChanges({
                           }
                           configurationValue={configurationValue}
                           isElse={isElse}
+                          socketId={socketId}
+                          onRevalidate={onRevalidate}
                         />
                       );
                     })}
@@ -272,6 +284,8 @@ function ViewConfigurationChanges({
                     parentId={configurationChange.id}
                     configurationValue={configurationValue}
                     isElse={isElse}
+                    socketId={socketId}
+                    onRevalidate={onRevalidate}
                   />
                 )}
               </div>
@@ -340,6 +354,8 @@ function ViewConfigurationChanges({
                             }
                             configurationValue={configurationValue}
                             isElse={isElse}
+                            socketId={socketId}
+                            onRevalidate={onRevalidate}
                           />
                         );
                       })}
@@ -377,6 +393,8 @@ function ViewConfigurationChanges({
                       parentId={configurationChange.id}
                       configurationValue={configurationValue}
                       isElse={isElse}
+                      socketId={socketId}
+                      onRevalidate={onRevalidate}
                     />
                   )}
                 </div>
@@ -401,8 +419,14 @@ function ViewConfigurationChanges({
                 configurations={allConfigurations}
                 nodes={allNodes}
                 configurationValue={configurationValue}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
               />
-              <DeleteConfigurationChangeBtn change={configurationChange} />
+              <DeleteConfigurationChangeBtn
+                change={configurationChange}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
+              />
             </div>
           </div>
 

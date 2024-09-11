@@ -23,15 +23,19 @@ import { toast } from "@/components/ui/use-toast";
 
 function DeleteConfigurationVisibilityConditionBtn({
   condition,
+  socketId,
+  onRevalidate,
 }: {
   condition: ConfigurationVisibilityCondition;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelete = async () => {
     adminLoader.startLoading();
-    await DeleteConfigurationVisibilityCondition(condition.id).then((res) => {
+    await DeleteConfigurationVisibilityCondition(condition.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -49,6 +53,7 @@ function DeleteConfigurationVisibilityConditionBtn({
         });
         // Se necessario, ricarica la pagina o naviga altrove
         // router.refresh(); // Esempio di refresh della pagina
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

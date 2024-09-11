@@ -37,7 +37,7 @@ import {
 } from "@/schemas/schema-trailer";
 import { CreateVariant } from "@/actions/trailer";
 
-function NewVariantBtn({ category }: { category: Category }) {
+function NewVariantBtn({ category, socketId }: { category: Category, socketId: string }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,7 +52,7 @@ function NewVariantBtn({ category }: { category: Category }) {
 
   const onSubmit = async (data: CreateNewVariantType) => {
     adminLoader.startLoading();
-    await CreateVariant(data, category.id).then((res) => {
+    await CreateVariant(data, category.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

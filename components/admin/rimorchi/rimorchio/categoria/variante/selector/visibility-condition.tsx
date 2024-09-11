@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Selector } from "prisma/prisma-client";
 import {
@@ -7,22 +9,34 @@ import {
 import AddVisibilityConditionBtn from "./add-visibility-condition-btn";
 import ViewVisibilityCondition from "./view-visibility-condition";
 
-async function VisibilityCondition({
+import { SelectorVisibilityCondition, Prisma } from "prisma/prisma-client";
+
+type configurationType = Prisma.ConfigurationGetPayload<{
+  include: { values: true };
+}>;
+
+function VisibilityCondition({
   selector,
   variantId,
+  allConfiguration,
+  visibilityConditions,
+  onRevalidate,
+  socketId,
 }: {
   selector: Selector;
   variantId: string;
+  allConfiguration: configurationType[];
+  visibilityConditions: SelectorVisibilityCondition[];
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   let visibilityCondition = null;
 
   if (selector.visibilityConditionId) {
-    visibilityCondition = await GetVisibilityConditionById(
-      selector.visibilityConditionId
+    visibilityCondition = visibilityConditions.find(
+      (c) => c.id === selector.visibilityConditionId
     );
   }
-
-  const allConfiguration = await GetConfigurationByVariantId(variantId);
 
   const allConfigurationCanUse = allConfiguration
     ? allConfiguration?.filter((c) => c.id != selector.configurationToRefer)
@@ -40,6 +54,8 @@ async function VisibilityCondition({
             parentId={selector.id}
             isElseRec={false}
             isIfRec={false}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
           />
         </div>
       ) : (
@@ -48,6 +64,9 @@ async function VisibilityCondition({
           visibilityConditionId={visibilityCondition.id}
           variantId={variantId}
           configurations={allConfigurationCanUse}
+          socketId={socketId}
+          onRevalidate={onRevalidate}
+          visibilityConditions={visibilityConditions}
         />
       )}
     </div>

@@ -48,9 +48,11 @@ import ReactQuillComponent from "../../react-quill-component";
 function EditRimorchio({
   trailer,
   images,
+  socketId,
 }: {
   trailer: Trailer;
   images: ImageType[] | null;
+  socketId: string,
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -66,9 +68,19 @@ function EditRimorchio({
     },
   });
 
+  useEffect(() => {
+
+    form.setValue("name", trailer.name);
+    form.setValue("description", trailer.description??"");
+    form.setValue("images", trailer.images);
+    form.setValue("fornitore", trailer.fornitore);
+    form.setValue("visible", trailer.visible);
+
+  }, [trailer]);
+
   const onSubmit = async (data: CreateNewTrailerType) => {
     adminLoader.startLoading();
-    await UpdateTrailer(data, trailer.id).then((res) => {
+    await UpdateTrailer(data, trailer.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

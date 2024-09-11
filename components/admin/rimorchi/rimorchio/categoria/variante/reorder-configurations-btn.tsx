@@ -23,10 +23,14 @@ function ReorderConfigurationsBtn({
   configurations,
   variantId,
   disabled,
+  socketId,
+  onRevalidate
 }: {
   configurations: Configuration[];
   variantId: string;
   disabled: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const [ordersConfiguration, setOrdersConfiguration] =
@@ -41,7 +45,7 @@ function ReorderConfigurationsBtn({
 
   const onSave = async () => {
     adminLoader.startLoading();
-    await ReorderConfigurations(ordersConfiguration, variantId).then((res) => {
+    await ReorderConfigurations(ordersConfiguration, variantId, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -57,6 +61,7 @@ function ReorderConfigurationsBtn({
           description: "Configurazioni riordinate con successo",
         });
         setIsOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

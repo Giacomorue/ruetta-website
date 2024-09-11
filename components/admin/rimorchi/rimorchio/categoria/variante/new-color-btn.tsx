@@ -29,7 +29,7 @@ import { toast } from "@/components/ui/use-toast";
 import { NewColorSchema, NewColorType } from "@/schemas/schema-trailer";
 import { AddNewColor } from "@/actions/trailer";
 
-function NewColorBtn({ variant }: { variant: Variant }) {
+function NewColorBtn({ variant, socketId }: { variant: Variant, socketId: string }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -44,7 +44,7 @@ function NewColorBtn({ variant }: { variant: Variant }) {
   const onSubmit = async (data: NewColorType) => {
     adminLoader.startLoading();
 
-    await AddNewColor(data, variant.id).then((res) => {
+    await AddNewColor(data, variant.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

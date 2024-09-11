@@ -46,7 +46,7 @@ import {
 import { Fornitori } from "@/constants";
 import { CreateTrailer } from "@/actions/trailer";
 
-function NewRimorchioBtn({ images }: { images: Image[] | null }) {
+function NewRimorchioBtn({ socketId, onRevalidate } : { socketId: string, onRevalidate: () => void }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -63,7 +63,7 @@ function NewRimorchioBtn({ images }: { images: Image[] | null }) {
 
   const onSubmit = async (data: CreateNewTrailerType) => {
     adminLoader.startLoading();
-    await CreateTrailer(data)
+    await CreateTrailer(data, socketId)
       .then((res) => {
         if (!res) return;
         if (res.error) {
@@ -75,13 +75,14 @@ function NewRimorchioBtn({ images }: { images: Image[] | null }) {
         }
         if (res.trailer) {
           router.push("/admin/rimorchi/" + res.trailer.id);
+          adminLoader.stopLoading();
+          onRevalidate();
         }
       })
       .catch((err) => {
         console.log(err);
         adminLoader.stopLoading();
       });
-    adminLoader.stopLoading();
   };
 
   const modules = {

@@ -75,10 +75,12 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
   useEffect(() => {
     if (!accessibleUUID) return;
 
+    console.log("Fetching variant data...");
+
     const fetchData = async () => {
       try {
         setLoading(true); // Imposta lo stato di caricamento
-        const response = await fetch(`/api/variant/${accessibleUUID}`, { method: "GET", cache: "no-cache" });
+        const response = await fetch(`/api/preview/${accessibleUUID}`, { method: "GET", cache: "no-cache" });
         if (!response.ok) {
           throw new Error("Failed to fetch variant data");
         }

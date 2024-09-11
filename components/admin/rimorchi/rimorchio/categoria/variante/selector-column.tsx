@@ -46,6 +46,8 @@ export type SelectorColumnType = {
   createdAt: Date;
   updatedAt: Date;
   order: number;
+  socketId: string;
+  onRevalidate: () => void;
 };
 
 export const SelectorColumnSchema: ColumnDef<SelectorColumnType>[] = [
@@ -262,7 +264,7 @@ const CellAction = ({ row }: { row: Row<SelectorColumnType> }) => {
 
   const onDelete = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteSelector(id).then((res) => {
+    await DeleteSelector(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -277,6 +279,7 @@ const CellAction = ({ row }: { row: Row<SelectorColumnType> }) => {
           title: "Successo",
           description: "Selettore cancellato con successo",
         });
+        row.original.onRevalidate();
       }
     });
     setAlertDialogOpen(false);
@@ -285,7 +288,7 @@ const CellAction = ({ row }: { row: Row<SelectorColumnType> }) => {
 
   const onDuplicate = async (id: string) => {
     adminLoader.startLoading();
-    await DuplicateSelector(id).then((res) => {
+    await DuplicateSelector(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -300,6 +303,7 @@ const CellAction = ({ row }: { row: Row<SelectorColumnType> }) => {
           title: "Successo",
           description: "Configurazione duplicata con successo",
         });
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();

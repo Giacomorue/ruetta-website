@@ -55,6 +55,8 @@ export type ColorColumnType = {
   createdAt: Date;
   updatedAt: Date;
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 };
 
 export const ColorColumnSchema: ColumnDef<ColorColumnType>[] = [
@@ -266,7 +268,7 @@ const CellAction = ({ row }: { row: Row<ColorColumnType> }) => {
 
   const onDelete = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteColor(id).then((res) => {
+    await DeleteColor(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -283,6 +285,7 @@ const CellAction = ({ row }: { row: Row<ColorColumnType> }) => {
           description: "Colore cancellato con successo",
         });
         setAlertDialogOpen(false);
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();

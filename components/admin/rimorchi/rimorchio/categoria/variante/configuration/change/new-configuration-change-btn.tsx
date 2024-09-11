@@ -93,6 +93,8 @@ function NewConfigurationChangeBtn({
   isElseRec,
   configurationValue,
   isElse,
+  onRevalidate,
+  socketId,
 }: {
   configurationValue: ConfigurationValue2;
   configurations: AllConfigurations;
@@ -102,6 +104,8 @@ function NewConfigurationChangeBtn({
   isIfRec: boolean;
   isElseRec: boolean;
   isElse: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -168,7 +172,7 @@ function NewConfigurationChangeBtn({
 
   const onSubmit = async (data: AddNewConfigurationChangeType) => {
     adminLoader.startLoading();
-    await CreateConfigurationChange(configurationValue.id, data).then((res) => {
+    await CreateConfigurationChange(configurationValue.id, data, socketId).then((res) => {
       if (!res) return;
 
       if (res.error) {
@@ -189,6 +193,7 @@ function NewConfigurationChangeBtn({
         setHaveIf(false);
         // router.refresh();
         // window.location.reload();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

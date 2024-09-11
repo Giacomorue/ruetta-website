@@ -17,73 +17,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
 import { ImSpinner2 } from "react-icons/im";
+import RimorchioPage from "@/components/admin/rimorchi/rimorchio/rimorchio-page";
 
-function mapCategoryToCategoryColumnType(
-  category: Category
-): CategoryColumnType {
-  return {
-    id: category.id,
-    name: category.name,
-    updatedAt: category.updatedAt,
-    createdAt: category.createdAt,
-    visible: category.visible,
-    trailerId: category.trailerId,
-  };
-}
-
-function mapCategoriesToCategoryColumnTypes(
-  categories: Category[]
-): CategoryColumnType[] {
-  return categories.map(mapCategoryToCategoryColumnType);
-}
 
 async function page({
   params: { trailerId },
 }: {
   params: { trailerId: string };
 }) {
-  return <AusiliarPage trailerId={trailerId} />;
+  return <RimorchioPage trailerId={trailerId} />;
 }
 
 export default page;
-
-const AusiliarPage = async ({ trailerId }: { trailerId: string }) => {
-  const [trailer, allImages, allCategory] = await Promise.all([
-    GetTrailerById(trailerId),
-    GetAllImages(),
-    GetAllCategoryDescByTrailerId(trailerId),
-  ]);
-
-  if (!trailer) {
-    notFound();
-  }
-
-  const categoryForTable: CategoryColumnType[] = allCategory
-    ? mapCategoriesToCategoryColumnTypes(allCategory)
-    : [];
-
-  return (
-    <div>
-      <HeaderBar
-        title={"Rimorchio " + trailer.name}
-        possibleBackButton={
-          <>
-            <Button variant={"ghost"}>
-              <Link href={"/admin/rimorchi/"}>
-                <IoArrowBack className="w-6 h-6" />
-              </Link>
-            </Button>
-          </>
-        }
-      >
-        <DeleteRimorchioBtn trailer={trailer} />
-      </HeaderBar>
-      <NewCategoryBtn trailer={trailer} />
-      <AllCategoryTable
-        columns={CategoryColumnSchema}
-        data={categoryForTable}
-      />
-      <EditRimorchio trailer={trailer} images={allImages} />
-    </div>
-  );
-};

@@ -102,10 +102,14 @@ function EditVisibilityConditionBtn({
   selector,
   configurations,
   visibilityCondition,
+  socketId,
+  onRevalidate,
 }: {
   selector: Selector;
   configurations: AllConfigurations;
   visibilityCondition: SelectorVisibilityCondition;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -126,7 +130,7 @@ function EditVisibilityConditionBtn({
     console.log(data);
     adminLoader.startLoading();
     console.log(data);
-    await EditVisibilityCondition(visibilityCondition.id, data).then((res) => {
+    await EditVisibilityCondition(visibilityCondition.id, data, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -142,6 +146,7 @@ function EditVisibilityConditionBtn({
           description: "Condizione di visibilità modificata con successo",
         });
         setIsDialogOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

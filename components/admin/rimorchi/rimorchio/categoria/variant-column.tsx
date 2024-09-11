@@ -47,6 +47,8 @@ export type VariantColumnType = {
   has3DModel: boolean;
   updatedAt: Date;
   createdAt: Date;
+  socketId: string;
+  onRevalidate: () => void;
 };
 
 export const VariantColumnSchema: ColumnDef<VariantColumnType>[] = [
@@ -260,7 +262,7 @@ const CellAction = ({ row }: { row: Row<VariantColumnType> }) => {
 
   const onDelte = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteVariant(id).then((res) => {
+    await DeleteVariant(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -275,6 +277,7 @@ const CellAction = ({ row }: { row: Row<VariantColumnType> }) => {
           title: "Successo",
           description: "Variante cancellata con successo",
         });
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();

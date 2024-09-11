@@ -50,9 +50,11 @@ import ReactQuillComponent from "@/components/admin/react-quill-component";
 function EditCategory({
   category,
   canChangeVisibility,
+  socketId
 }: {
   category: Category;
   canChangeVisibility: boolean;
+  socketId: string,
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -66,9 +68,17 @@ function EditCategory({
     },
   });
 
+  useEffect(() => {
+
+    form.setValue("name", category.name);
+    form.setValue("description", category.description || "");
+    form.setValue("visible", category.visible);
+
+  }, [category])
+
   const onSubmit = async (data: CreateNewSottocategoriaType) => {
     adminLoader.startLoading();
-    await UpdateCategory(data, category.id).then((res) => {
+    await UpdateCategory(data, category.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

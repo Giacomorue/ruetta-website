@@ -57,11 +57,15 @@ function EditVariant({
   images,
   canSet3DModel,
   canSetConfigurabile,
+  onRevalidate,
+  socketId
 }: {
   variant: Variant;
   images: ImageType[] | null;
   canSetConfigurabile: boolean;
   canSet3DModel: boolean;
+  socketId: string,
+  onRevalidate: () => void,
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -80,9 +84,22 @@ function EditVariant({
     },
   });
 
+  useEffect(() => {
+
+    form.setValue("name", variant.name);
+    form.setValue("prezzo", variant.prezzo);
+    form.setValue("description", variant.description || "");
+    form.setValue("descriptionPrev", variant.descriptionPrev);
+    form.setValue("images", variant.images);
+    form.setValue("visible", variant.visible);
+    form.setValue("configurable", canSetConfigurabile? variant.configurable : false);
+    form.setValue("has3DModel", variant.has3DModel);
+
+  }, [variant]);
+
   const onSubmit = async (data: CreateNewVariantType) => {
     adminLoader.startLoading();
-    await UpdateVariant(data, variant.id).then((res) => {
+    await UpdateVariant(data, variant.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -98,7 +115,7 @@ function EditVariant({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

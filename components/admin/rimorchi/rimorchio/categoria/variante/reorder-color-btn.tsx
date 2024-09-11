@@ -23,10 +23,14 @@ function ReorderColorsBtn({
   colors,
   variantId,
   disabled,
+  onRevalidate,
+  socketId,
 }: {
   colors: Colors[];
   variantId: string;
   disabled: boolean;
+  socketId: string,
+  onRevalidate: () => void,
 }) {
   const adminLoader = useAdminLoader();
   const [ordersColor, setOrdersColor] = useState(colors);
@@ -40,7 +44,7 @@ function ReorderColorsBtn({
 
   const onSave = async () => {
     adminLoader.startLoading();
-    await ReorderColors(ordersColor, variantId).then((res) => {
+    await ReorderColors(ordersColor, variantId, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -56,6 +60,7 @@ function ReorderColorsBtn({
           description: "Colori riordinati con successo",
         });
         setIsOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

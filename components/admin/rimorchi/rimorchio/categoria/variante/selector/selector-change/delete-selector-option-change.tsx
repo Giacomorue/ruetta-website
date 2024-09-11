@@ -23,15 +23,19 @@ import { toast } from "@/components/ui/use-toast";
 
 function DeleteSelectorOptionChangeBtn({
   change,
+  onRevalidate,
+  socketId,
 }: {
   change: SelectorOptionChange;
+  socketId: string;
+  onRevalidate: () => void; 
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelete = async () => {
     adminLoader.startLoading();
-    await DeleteSelectorOptionChange(change.id).then((res) => {
+    await DeleteSelectorOptionChange(change.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -47,6 +51,7 @@ function DeleteSelectorOptionChangeBtn({
           description:
             "Cambiamento dell'opzione selettore cancellato con successo",
         });
+        onRevalidate();
         // Se necessario, ricarica la pagina o naviga altrove
         // router.refresh(); // Esempio di refresh della pagina
         // window.location.reload();

@@ -89,12 +89,16 @@ function ChangeSelectorValue({
   configuration,
   value,
   allSelectorOptionWithChange,
+  socketId,
+  onRevalidate,
 }: {
   selector: Selector;
   allConfigurations: AllConfigurations;
   configuration: Configuration2;
   value: SelectorOption;
   allSelectorOptionWithChange: SelectorOptionWithChanges;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const hasConfigurations = allConfigurations && allConfigurations.length > 0;
 
@@ -128,6 +132,8 @@ function ChangeSelectorValue({
             allSelectorChangeOptions={
               allSelectorOptionWithChange.selectorOptionChange
             }
+            socketId={socketId}
+          onRevalidate={onRevalidate}
           />
         );
       })}
@@ -157,6 +163,8 @@ function ChangeSelectorValue({
           isElseRec={false}
           parentId={value.id}
           selectorOption={value}
+          socketId={socketId}
+          onRevalidate={onRevalidate}
         />
       )}
     </div>

@@ -39,11 +39,13 @@ function DeleteConfigurationBtn({
   variantId,
   trailerId,
   categoryId,
+  socketId
 }: {
   configuration: Configuration;
   variantId: string;
   trailerId: string;
   categoryId: string;
+  socketId: string;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -59,7 +61,7 @@ function DeleteConfigurationBtn({
 
   const onDelete = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteConfiguration(id).then((res) => {
+    await DeleteConfiguration(id, socketId).then((res) => {
       if (!res) return;
       if (res.youCant && res.message) {
         toast({

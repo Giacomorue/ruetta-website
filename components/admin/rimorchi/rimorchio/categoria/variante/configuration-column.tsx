@@ -47,6 +47,8 @@ export type ConfigurationColumnType = {
   createdAt: Date;
   updatedAt: Date;
   order: number;
+  socketId: string;
+  onRevalidate: () => void;
 };
 
 export const ConfigurationColumnSchema: ColumnDef<ConfigurationColumnType>[] = [
@@ -193,7 +195,7 @@ const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
 
   const onDelete = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteConfiguration(id).then((res) => {
+    await DeleteConfiguration(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.youCant && res.message) {
         toast({
@@ -221,6 +223,7 @@ const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
           description: "Configurazione cancellata con successo",
         });
         setAlertDialogOpen(false);
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();
@@ -228,7 +231,7 @@ const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
 
   const onDuplicate = async (id: string) => {
     adminLoader.startLoading();
-    await DuplicateConfiguration(id).then((res) => {
+    await DuplicateConfiguration(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -243,6 +246,7 @@ const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
           title: "Successo",
           description: "Configurazione duplicata con successo",
         });
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();

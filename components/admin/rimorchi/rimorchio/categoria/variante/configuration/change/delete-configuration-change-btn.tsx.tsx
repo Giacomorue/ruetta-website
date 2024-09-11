@@ -23,15 +23,19 @@ import { toast } from "@/components/ui/use-toast";
 
 function DeleteConfigurationChangeBtn({
   change,
+  onRevalidate,
+  socketId,
 }: {
   change: ConfigurationChange;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelete = async () => {
     adminLoader.startLoading();
-    await DeleteConfigurationChange(change.id).then((res) => {
+    await DeleteConfigurationChange(change.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -49,13 +53,14 @@ function DeleteConfigurationChangeBtn({
         // Se necessario, ricarica la pagina o naviga altrove
         // router.refresh(); // Esempio di refresh della pagina
         // window.location.reload();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog >
       <AlertDialogTrigger asChild onClick={(e) => e.stopPropagation()}>
         <Button variant="outline" className="gap-2" type="button">
           <Trash className="w-4 h-4" />

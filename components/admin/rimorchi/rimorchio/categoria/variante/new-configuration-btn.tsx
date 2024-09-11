@@ -42,9 +42,11 @@ import { CreateConfiguration, CreateVariant } from "@/actions/trailer";
 function NewConfiguration({
   variant,
   trailerId,
+  socketId,
 }: {
   variant: Variant;
   trailerId: string;
+  socketId: string,
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -67,7 +69,7 @@ function NewConfiguration({
   const onSubmit = async (data: CreateNewConfigurationType) => {
     adminLoader.startLoading();
     console.log(data);
-    await CreateConfiguration(data, variant.id).then((res) => {
+    await CreateConfiguration(data, variant.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

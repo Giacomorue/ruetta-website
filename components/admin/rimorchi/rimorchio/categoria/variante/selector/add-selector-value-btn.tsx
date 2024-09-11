@@ -58,6 +58,8 @@ function AddSelectorValueBtn({
   trailerId,
   categoryId,
   variantId,
+  socketId,
+  onRevalidate
 }: {
   canAdd: boolean;
   selector: Selector;
@@ -65,6 +67,8 @@ function AddSelectorValueBtn({
   trailerId: string;
   categoryId: string;
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -81,7 +85,7 @@ function AddSelectorValueBtn({
   const onSubmit = async (data: AddSelectorOptionType) => {
     adminLoader.startLoading();
     console.log(data);
-    await AddSelectorOption(data, selector.id).then((res) => {
+    await AddSelectorOption(data, selector.id, socketId).then((res) => {
       if (!res) return;
       form.reset();
       if (res.error) {
@@ -98,6 +102,7 @@ function AddSelectorValueBtn({
           description: "Valori aggiunti con successo",
         });
         setIsDialogOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

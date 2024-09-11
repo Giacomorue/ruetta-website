@@ -47,6 +47,8 @@ function ViewSelectorChanges({
   allSelectorChangeOptions,
   allConfigurations,
   selectorChange,
+  onRevalidate,
+  socketId,
 }: {
   selectorChange: {
     id: string;
@@ -106,6 +108,8 @@ function ViewSelectorChanges({
   }[];
   selectorOption: SelectorOption;
   allConfigurations: AllConfigurations;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isElseExpanded, setIsElseExpanded] = useState(true);
@@ -166,8 +170,14 @@ function ViewSelectorChanges({
               <EditSelectorChangeBtn
                 selectorOptionChange={selectorChange}
                 configurations={allConfigurations}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
               />{" "}
-              <DeleteSelectorOptionChangeBtn change={selectorChange} />
+              <DeleteSelectorOptionChangeBtn
+                change={selectorChange}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
+              />
             </div>
           </div>
 
@@ -209,6 +219,8 @@ function ViewSelectorChanges({
                         selectorOption={selectorOption}
                         allConfigurations={allConfigurations}
                         allSelectorChangeOptions={allSelectorChangeOptions}
+                        socketId={socketId}
+                        onRevalidate={onRevalidate}
                       />
                     );
                   })}
@@ -245,6 +257,8 @@ function ViewSelectorChanges({
                     isElseRec={false}
                     parentId={selectorChange.id}
                     selectorOption={selectorOption}
+                    socketId={socketId}
+                    onRevalidate={onRevalidate}
                   />
                 )}
               </div>
@@ -301,6 +315,8 @@ function ViewSelectorChanges({
                             selectorOption={selectorOption}
                             allConfigurations={allConfigurations}
                             allSelectorChangeOptions={allSelectorChangeOptions}
+                            socketId={socketId}
+                            onRevalidate={onRevalidate}
                           />
                         );
                       })}
@@ -337,6 +353,8 @@ function ViewSelectorChanges({
                       isElseRec={true}
                       parentId={selectorChange.id}
                       selectorOption={selectorOption}
+                      socketId={socketId}
+                      onRevalidate={onRevalidate}
                     />
                   )}
                 </div>
@@ -359,8 +377,14 @@ function ViewSelectorChanges({
               <EditSelectorChangeBtn
                 selectorOptionChange={selectorChange}
                 configurations={allConfigurations}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
               />{" "}
-              <DeleteSelectorOptionChangeBtn change={selectorChange} />
+              <DeleteSelectorOptionChangeBtn
+                change={selectorChange}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
+              />
             </div>
           </div>
 

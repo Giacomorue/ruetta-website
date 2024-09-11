@@ -64,6 +64,8 @@ type AllConfigurations = Configuration2[] | null;
 function EditSelectorChangeBtn({
   selectorOptionChange,
   configurations,
+  onRevalidate,
+  socketId,
 }: {
   selectorOptionChange: SelectorOptionChange & {
     change: {
@@ -82,6 +84,8 @@ function EditSelectorChangeBtn({
     }[];
   };
   configurations: AllConfigurations;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -110,6 +114,21 @@ function EditSelectorChangeBtn({
       })),
     },
   });
+
+  useEffect(() => {
+    form.setValue("haveIf", selectorOptionChange.haveIf);
+    form.setValue("configurationId", selectorOptionChange.configurationId);
+    form.setValue("checkType", selectorOptionChange.checkType);
+    form.setValue("expectedValue", selectorOptionChange.expectedValue);
+    form.setValue("change", selectorOptionChange.change.map((action) => ({
+      configurationToChangeId: action.configurationToChangeId,
+      newValueValue: action.newValueValue || "",
+    })));
+    form.setValue("elseChange", selectorOptionChange.elseChange.map((action) => ({
+      configurationToChangeId: action.configurationToChangeId,
+      newValueValue: action.newValueValue || "",
+    })));
+  }, [selectorOptionChange])
 
   const {
     fields: changeFields,
@@ -199,7 +218,7 @@ function EditSelectorChangeBtn({
   const onSubmit = async (data: EditNewSelectorOptionChangeType) => {
     adminLoader.startLoading();
 
-    await UpdateSelectorOptionChange(selectorOptionChange.id, data).then(
+    await UpdateSelectorOptionChange(selectorOptionChange.id, data, socketId).then(
       (res) => {
         if (!res) return;
         if (res.error) {
@@ -217,6 +236,7 @@ function EditSelectorChangeBtn({
           });
           setIsDialogOpen(false);
           // window.location.reload();
+          onRevalidate();
         }
       }
     );

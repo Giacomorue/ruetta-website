@@ -25,17 +25,19 @@ function DeleteColorBtn({
   color,
   trailerId,
   categoryId,
+  socketId
 }: {
   color: Colors;
   trailerId: string;
   categoryId: string;
+  socketId: string;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelete = async () => {
     adminLoader.startLoading();
-    await DeleteColor(color.id).then((res) => {
+    await DeleteColor(color.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

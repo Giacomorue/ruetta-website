@@ -25,17 +25,19 @@ function DeleteVariantBtn({
   variant,
   trailerId,
   categoryId,
+  socketId,
 }: {
   variant: Variant;
   trailerId: string;
   categoryId: string;
+  socketId: string;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelte = async () => {
     adminLoader.startLoading();
-    await DeleteVariant(variant.id).then((res) => {
+    await DeleteVariant(variant.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

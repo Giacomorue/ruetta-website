@@ -21,13 +21,13 @@ import { useAdminLoader } from "@/hooks/useAdminLoader";
 import { DelteTrailer } from "@/actions/trailer";
 import { toast } from "@/components/ui/use-toast";
 
-function DeleteRimorchioBtn({ trailer }: { trailer: Trailer }) {
+function DeleteRimorchioBtn({ trailer, socketId }: { trailer: Trailer, socketId: string }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelte = async () => {
     adminLoader.startLoading();
-    await DelteTrailer(trailer.id).then((res) => {
+    await DelteTrailer(trailer.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

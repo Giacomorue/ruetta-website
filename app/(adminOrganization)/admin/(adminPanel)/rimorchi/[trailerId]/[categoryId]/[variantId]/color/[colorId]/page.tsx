@@ -19,51 +19,8 @@ async function page({
     colorId: string;
   };
 }) {
-  const color = await GetColorById(colorId);
 
-  if (!color) {
-    notFound();
-  }
-
-  if (color.variantId !== variantId) {
-    notFound();
-  }
-
-  const images = await GetAllImages();
-
-  return (
-    <div>
-      <HeaderBar
-        title={"Colore " + color.name}
-        possibleBackButton={
-          <>
-            <Button variant={"ghost"}>
-              <Link
-                href={
-                  "/admin/rimorchi/" +
-                  trailerId +
-                  "/" +
-                  categoryId +
-                  "/" +
-                  variantId
-                }
-              >
-                <IoArrowBack className="w-6 h-6" />
-              </Link>
-            </Button>
-          </>
-        }
-      >
-        <DeleteColorBtn
-          color={color}
-          trailerId={trailerId}
-          categoryId={categoryId}
-        />
-      </HeaderBar>
-
-      <EditColorForm variantId={variantId} color={color} images={images} />
-    </div>
-  );
+  
 }
 
 export default page;

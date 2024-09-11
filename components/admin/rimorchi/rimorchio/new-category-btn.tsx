@@ -37,7 +37,7 @@ import {
 } from "@/schemas/schema-trailer";
 import { CreateCategory } from "@/actions/trailer";
 
-function NewCategoryBtn({ trailer }: { trailer: Trailer }) {
+function NewCategoryBtn({ trailer, socketId, }: { trailer: Trailer, socketId: string }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -51,7 +51,7 @@ function NewCategoryBtn({ trailer }: { trailer: Trailer }) {
 
   const onSubmit = async (data: CreateNewSottocategoriaType) => {
     adminLoader.startLoading();
-    await CreateCategory(data, trailer.id).then((res) => {
+    await CreateCategory(data, trailer.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

@@ -1,5 +1,7 @@
+"use client"
+
 import React from "react";
-import { Configuration } from "prisma/prisma-client";
+import { Configuration, ConfigurationVisibilityCondition as ConfigurationVisibilityConditionType , Prisma} from "prisma/prisma-client";
 import {
   GetConfigurationByVariantId,
   GetConfigurationVisibilityCondition,
@@ -9,22 +11,32 @@ import ViewConfigurationVisibilityCondition from "./view-configuration-visibilit
 // import AddVisibilityConditionBtn from "./add-visibility-condition-btn";
 // import ViewVisibilityCondition from "./view-visibility-condition";
 
-async function ConfigurationVisibilityCondition({
+type configurationType = Prisma.ConfigurationGetPayload<{
+  include: { values: true, configurationVisibilityCondition: true };
+}>;
+
+function ConfigurationVisibilityCondition({
   configuration,
   variantId,
+  allVisibilityCondition,
+  editConfigurations,
+  onRevalidate,
+  socketId
 }: {
   configuration: Configuration;
   variantId: string;
+  allVisibilityCondition: ConfigurationVisibilityConditionType[];
+  editConfigurations: configurationType[],
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   let visibilityCondition = null;
 
   if (configuration.visibilityConditionId) {
-    visibilityCondition = await GetConfigurationVisibilityCondition(
-      configuration.visibilityConditionId
-    );
+    visibilityCondition = allVisibilityCondition.find((c) => c.id === configuration.visibilityConditionId);
   }
 
-  const allConfiguration = await GetConfigurationByVariantId(variantId);
+  const allConfiguration = editConfigurations;
 
   const allConfigurationCanUse = allConfiguration
     ? allConfiguration?.filter((c) => c.id != configuration.id)
@@ -42,6 +54,8 @@ async function ConfigurationVisibilityCondition({
             parentId={configuration.id}
             isElseRec={false}
             isIfRec={false}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
           />
         </div>
       ) : (
@@ -50,6 +64,9 @@ async function ConfigurationVisibilityCondition({
           visibilityConditionId={visibilityCondition.id}
           variantId={variantId}
           configurations={allConfigurationCanUse}
+          socketId={socketId}
+          onRevalidate={onRevalidate}
+          allVisibilityCondition={allVisibilityCondition}
         />
       )}
     </div>

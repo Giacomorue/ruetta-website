@@ -111,10 +111,14 @@ function EditSelectorValueForm({
   images,
   value,
   configurationValueName,
+  socketId,
+  onRevalidate,
 }: {
   images: ImageType[] | null;
   value: SelectorOptionWithChanges;
   configurationValueName: string;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -129,10 +133,17 @@ function EditSelectorValueForm({
     },
   });
 
+  useEffect(() => {
+    form.setValue("label", value.label);
+    form.setValue("visible", value.visible);
+    form.setValue("modalDescription", value.modalDescription || "");
+    form.setValue("images", value.images);
+  }, [value]);
+
   const onSubmit = async (data: EditSelectorOptionType) => {
     adminLoader.startLoading();
     console.log(data);
-    await EditSelectorValue(data, value.id).then((res) => {
+    await EditSelectorValue(data, value.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -148,7 +159,8 @@ function EditSelectorValueForm({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        // router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();
@@ -368,7 +380,12 @@ function EditSelectorValueForm({
             <Button className="" type="submit" disabled={!isModified}>
               Salva modifiche
             </Button>
-            <DeleteSelectorValueBtn value={value} disabled={false} />
+            <DeleteSelectorValueBtn
+              value={value}
+              disabled={false}
+              socketId={socketId}
+              onRevalidate={onRevalidate}
+            />
           </div>
         </form>
       </Form>

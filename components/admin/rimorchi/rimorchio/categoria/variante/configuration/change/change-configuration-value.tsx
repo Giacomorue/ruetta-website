@@ -111,11 +111,15 @@ function ChangeConfigurationValue({
   configuration,
   value,
   allNode,
+  socketId,
+  onRevalidate,
 }: {
   allConfigurations: AllConfigurations;
   configuration: Configuration;
   value: GetAllConfigurationWithConfigurationChangeByConfigurationIdReturnType;
   allNode: Node[];
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const hasNodes = allNode && allNode.length > 0;
 
@@ -151,6 +155,8 @@ function ChangeConfigurationValue({
               allConfigurationChangeOptions={value.configurationChange}
               configurationValue={value}
               isElse={false}
+              socketId={socketId}
+              onRevalidate={onRevalidate}
             />
           );
         })}
@@ -182,6 +188,8 @@ function ChangeConfigurationValue({
             nodes={allNode}
             configurationValue={value}
             isElse={false}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
           />
         )}
       </div>
@@ -208,6 +216,8 @@ function ChangeConfigurationValue({
               allConfigurationChangeOptions={value.configurationChange}
               configurationValue={value}
               isElse={true}
+              socketId={socketId}
+              onRevalidate={onRevalidate}
             />
           );
         })}
@@ -239,6 +249,8 @@ function ChangeConfigurationValue({
             nodes={allNode}
             configurationValue={value}
             isElse={true}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
           />
         )}
       </div>

@@ -45,6 +45,8 @@ export type NodeColumnType = {
   createdAt: Date;
   updatedAt: Date;
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 };
 
 export const NodeColumnSchema: ColumnDef<NodeColumnType>[] = [
@@ -147,7 +149,7 @@ const CellAction = ({ row }: { row: Row<NodeColumnType> }) => {
 
   const onDelete = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteNode(id).then((res) => {
+    await DeleteNode(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.youCant && res.message) {
         toast({
@@ -175,6 +177,7 @@ const CellAction = ({ row }: { row: Row<NodeColumnType> }) => {
           description: "Nodo cancellato con successo",
         });
         setAlertDialogOpen(false);
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();
@@ -259,6 +262,8 @@ const CellAction = ({ row }: { row: Row<NodeColumnType> }) => {
       </Dialog>
       {editDialogOpen && (
         <EditNodeBtn
+          socketId={row.original.socketId}
+          onRevalidate={row.original.onRevalidate}
           node={row.original}
           isOpen={editDialogOpen}
           onClose={() => setEditDialogOpen(false)}

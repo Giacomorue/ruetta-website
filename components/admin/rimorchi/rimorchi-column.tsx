@@ -46,6 +46,8 @@ export type RimorchiColumnType = {
   createdAt: Date;
   categories: Category[] | [];
   visibile: boolean;
+  onRefetch: () => void;
+  socketId: string;
 };
 
 export const RimorchiColumnSchema: ColumnDef<RimorchiColumnType>[] = [
@@ -195,7 +197,7 @@ const CellAction = ({ row }: { row: Row<RimorchiColumnType> }) => {
 
   const onDelte = async (id: string) => {
     adminLoader.startLoading();
-    await DelteTrailer(id).then((res) => {
+    await DelteTrailer(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -210,9 +212,10 @@ const CellAction = ({ row }: { row: Row<RimorchiColumnType> }) => {
           title: "Successo",
           description: "Rimorchio cancellato con successo",
         });
+        row.original.onRefetch();
+        adminLoader.stopLoading();
       }
     });
-    adminLoader.stopLoading();
     setAlertDialogOpen(false);
   };
 

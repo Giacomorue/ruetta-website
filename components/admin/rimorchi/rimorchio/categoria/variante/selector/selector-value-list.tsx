@@ -13,7 +13,7 @@ import {
   Selector,
   ConfigurationValue,
 } from "prisma/prisma-client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EditSelectorValueForm from "./edit-selector-value-form";
 import { Image as ImageType } from "prisma/prisma-client";
 import ChangeSelectorValue from "./change-selector-value";
@@ -96,6 +96,8 @@ function SelectorValueList({
   configurationValue,
   allConfigurations,
   allSelectorOptionWithChange,
+  socketId,
+  onRevalidate,
 }: {
   images: ImageType[] | null;
   selector: Selector;
@@ -103,7 +105,14 @@ function SelectorValueList({
   configurationValue: ConfigurationValue[];
   allConfigurations: AllConfigurations;
   allSelectorOptionWithChange: GetAllSelectorOptionWithSelectorOptionChangeBySelectroIdReturnType;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
+  const [updateCount, setUpdateCount] = useState(0); // Forza il re-render
+  const [openItems, setOpenItems] = useState<string[]>([]); // Gestione dei pannelli aperti
+  const scrollPositionRef = useRef<number>(0); // Per salvare la posizione di scroll
+
+  // Trova la configurazione corrispondente
   const configuration = allConfigurations?.find(
     (c) => c.id === selector.configurationToRefer
   );
@@ -113,11 +122,53 @@ function SelectorValueList({
   }
 
   const allConfigurationWithoutThis = allConfigurations
-    ? allConfigurations?.filter((c) => c.id !== configuration.id)
+    ? allConfigurations.filter((c) => c.id !== configuration.id)
     : [];
 
+  // UseEffect per forzare l'aggiornamento quando le dipendenze cambiano
+  useEffect(() => {
+    setUpdateCount((prev) => prev + 1); // Forza il re-render
+
+    scrollPositionRef.current = window.scrollY; // Salva la posizione corrente di scroll
+
+    // Aggiorna lo stato degli item aperti
+    setOpenItems((prevOpenItems) => {
+      return prevOpenItems.filter((openItem) =>
+        allSelectorOptionWithChange.some((item) => item.id === openItem)
+      );
+    });
+  }, [
+    selectorOption,
+    configurationValue,
+    allSelectorOptionWithChange,
+    allConfigurations,
+    selector,
+  ]);
+
+  // Ripristina la posizione di scroll dopo l'aggiornamento
+  useEffect(() => {
+    window.scrollTo(0, scrollPositionRef.current);
+  }, [updateCount]);
+
+  // Gestione dell'apertura e chiusura dei pannelli dell'Accordion
+  const handleAccordionChange = (id: string) => {
+    setOpenItems((prevOpenItems) => {
+      if (prevOpenItems.includes(id)) {
+        // Se l'item è già aperto, rimuovilo
+        return prevOpenItems.filter((item) => item !== id);
+      } else {
+        // Altrimenti, aggiungilo
+        return [...prevOpenItems, id];
+      }
+    });
+  };
+
   return (
-    <Accordion type="multiple">
+    <Accordion
+      type="multiple"
+      value={openItems} // Gestiamo qui un array di elementi aperti
+      onValueChange={(values) => setOpenItems(values)} // Impostiamo i valori aperti
+    >
       {selectorOption.length > 0 ? (
         <>
           {selectorOption.map((v) => {
@@ -125,7 +176,7 @@ function SelectorValueList({
               (va) => va.id === v.id
             );
 
-            if (!value) return;
+            if (!value) return null; // Non continuare se value non esiste
 
             const confName =
               configurationValue.find(
@@ -142,6 +193,7 @@ function SelectorValueList({
                   className={`text-lg text-neutral-600 ${
                     value.visible === true ? "!no-underline" : "line-through"
                   }`}
+                  onClick={() => handleAccordionChange(value.id)} // Gestione click per aprire/chiudere
                 >
                   {value.label}
                 </AccordionTrigger>
@@ -150,6 +202,8 @@ function SelectorValueList({
                     images={images}
                     value={value}
                     configurationValueName={confName}
+                    socketId={socketId}
+                    onRevalidate={onRevalidate}
                   />
                   <ChangeSelectorValue
                     selector={selector}
@@ -157,6 +211,8 @@ function SelectorValueList({
                     allConfigurations={allConfigurationWithoutThis}
                     configuration={configuration}
                     allSelectorOptionWithChange={value}
+                    socketId={socketId}
+                    onRevalidate={onRevalidate}
                   />
                 </AccordionContent>
               </AccordionItem>

@@ -75,10 +75,14 @@ function EditConfigurationVisibilityConditionBtn({
   configuration,
   configurations,
   visibilityCondition,
+  onRevalidate,
+  socketId
 }: {
   configuration: ConfigurationType;
   configurations: AllConfigurations;
   visibilityCondition: ConfigurationVisibilityCondition;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -94,12 +98,21 @@ function EditConfigurationVisibilityConditionBtn({
     },
   });
 
+  useEffect(() => {
+    form.setValue("configurationId", visibilityCondition.configurationId);
+    form.setValue("expectedValue", visibilityCondition.expectedValue);
+    form.setValue("checkType", visibilityCondition.checkType);
+    form.setValue("elseVisible", visibilityCondition.elseVisible);
+    form.setValue("ifVisible", visibilityCondition.ifVisible);
+  }, [visibilityCondition]);
+
   const onSubmit = async (data: EditConfigurationVisibilityConditionType) => {
     adminLoader.startLoading();
 
     await EditConfigurationVisibilityCondition(
       visibilityCondition.id,
-      data
+      data,
+      socketId
     ).then((res) => {
       if (!res) return;
       if (res.error) {
@@ -116,6 +129,7 @@ function EditConfigurationVisibilityConditionBtn({
           description: "Condizione di visibilità modificata con successo",
         });
         setIsDialogOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

@@ -34,10 +34,14 @@ function EditColorForm({
   color,
   variantId,
   images,
+  socketId,
+  onRevalidate,
 }: {
   color: Colors; // Assumi che Color sia il tipo corretto dal tuo modello Prisma
   variantId: string;
   images: ImageType[] | null;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -62,10 +66,23 @@ function EditColorForm({
     },
   });
 
+  useEffect(() => {
+    form.setValue("name", color.name);
+    form.setValue("description", color.description);
+    form.setValue("price", color.price);
+    form.setValue("fileUrl", color.fileUrl);
+    form.setValue("visible", color.visible);
+    form.setValue("has3DModel", color.has3DModel);
+    form.setValue("colorCodePrincipal", color.colorCodePrincipal);
+    form.setValue("colorCodeSecondary", color.colorCodeSecondary);
+    form.setValue("images", color.images);
+    form.setValue("hasSecondaryColor", color.hasSecondaryColor);
+  }, [color]);
+
   const onSubmit = async (data: UpdateColorType) => {
     adminLoader.startLoading();
     // Assumi che esista una funzione chiamata UpdateColor
-    await UpdateColor(data, color.id).then((res) => {
+    await UpdateColor(data, color.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -81,7 +98,7 @@ function EditColorForm({
           title: "Successo",
           description: "Colore aggiornato con successo",
         });
-        router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

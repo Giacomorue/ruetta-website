@@ -29,7 +29,7 @@ const s3Client = new S3Client({
   },
 });
 
-function UploadImageBtn() {
+function UploadImageBtn({onRevalidate, socketId} : {socketId: string, onRevalidate: () => void }){
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const adminLoader = useAdminLoader();
   const [links, setLinks] = useState<Array<string>>([]);
@@ -81,7 +81,7 @@ function UploadImageBtn() {
 
   const addToDB = async () => {
     adminLoader.startLoading();
-    await InsertImageInDb(links)
+    await InsertImageInDb(links, socketId)
       .then((res) => {
         if (!res) return;
         if (res.error) {
@@ -99,6 +99,7 @@ function UploadImageBtn() {
           });
           setLinks([]);
           setIsDialogOpen(false);
+          onRevalidate();
         }
       })
       .catch((error) => {

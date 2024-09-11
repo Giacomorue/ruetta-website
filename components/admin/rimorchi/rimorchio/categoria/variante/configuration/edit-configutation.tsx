@@ -57,9 +57,13 @@ import SelectImages from "@/components/admin/select-images";
 function EditConfiguration({
   configuration,
   values,
+  onRevalidate,
+  socketId,
 }: {
   configuration: Configuration;
   values: ConfigurationValue[];
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -72,9 +76,14 @@ function EditConfiguration({
     },
   });
 
+  useEffect(() => {
+    form.setValue("name", configuration.name);
+    form.setValue("defaultValue", configuration.defaultValue || "");
+  }, [configuration]);
+
   const onSubmit = async (data: EditConfigurationType) => {
     adminLoader.startLoading();
-    await UpdateConfiguration(data, configuration.id).then((res) => {
+    await UpdateConfiguration(data, configuration.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -90,7 +99,7 @@ function EditConfiguration({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

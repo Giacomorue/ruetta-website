@@ -75,6 +75,8 @@ function AddConfigurationVisibilityConditionBtn({
   isFirstNode,
   isElseRec,
   isIfRec,
+  onRevalidate,
+  socketId,
 }: {
   configuration: ConfigurationType;
   configurations: AllConfigurations;
@@ -82,6 +84,8 @@ function AddConfigurationVisibilityConditionBtn({
   isFirstNode: boolean;
   isElseRec: boolean;
   isIfRec: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -107,7 +111,8 @@ function AddConfigurationVisibilityConditionBtn({
     adminLoader.startLoading();
     await CreateANewConfigurationVisibilityCondition(
       configuration.id,
-      data
+      data,
+      socketId,
     ).then((res) => {
       if (!res) return;
       if (res.error) {
@@ -124,6 +129,7 @@ function AddConfigurationVisibilityConditionBtn({
           description: "Condizione di visibilità creata con successo",
         });
         setIsDialogOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

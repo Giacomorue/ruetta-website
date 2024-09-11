@@ -29,17 +29,19 @@ function DeleteSelectorBtn({
   selector,
   trailerId,
   categoryId,
+  socketId,
 }: {
   selector: Selector;
   trailerId: string;
   categoryId: string;
+  socketId: string;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelte = async () => {
     adminLoader.startLoading();
-    await DeleteSelector(selector.id).then((res) => {
+    await DeleteSelector(selector.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

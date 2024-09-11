@@ -18,6 +18,7 @@ import {
   GetVisibilityConditionById,
 } from "@/data/trailer";
 import { db } from "@/lib/prisma";
+import { pusher } from "@/lib/pusherServer";
 import {
   AddConfigurationValueSchema,
   AddConfigurationValueType,
@@ -88,7 +89,10 @@ import {
   ConfigurationChangeAction,
 } from "prisma/prisma-client";
 
-export async function CreateTrailer(data: CreateNewTrailerType) {
+export async function CreateTrailer(
+  data: CreateNewTrailerType,
+  socketId: string
+) {
   const validForm = CreateNewTrailerSchema.safeParse(data);
 
   if (!validForm.success) {
@@ -105,6 +109,10 @@ export async function CreateTrailer(data: CreateNewTrailerType) {
       },
     });
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     revalidatePath("/admin/rimorchi");
 
     return { trailer };
@@ -114,7 +122,7 @@ export async function CreateTrailer(data: CreateNewTrailerType) {
   }
 }
 
-export async function DelteTrailer(id: string) {
+export async function DelteTrailer(id: string, socketId: string) {
   const trailer = await GetTrailerById(id);
 
   if (!trailer) {
@@ -128,6 +136,10 @@ export async function DelteTrailer(id: string) {
       },
     });
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     revalidatePath("/admin/rimorchi");
 
     return { success: true };
@@ -137,7 +149,11 @@ export async function DelteTrailer(id: string) {
   }
 }
 
-export async function UpdateTrailer(data: CreateNewTrailerType, id: string) {
+export async function UpdateTrailer(
+  data: CreateNewTrailerType,
+  id: string,
+  socketId: string
+) {
   const trailer = await GetTrailerById(id);
 
   if (!trailer) {
@@ -169,6 +185,10 @@ export async function UpdateTrailer(data: CreateNewTrailerType, id: string) {
     revalidatePath("/admin/rimorchi/" + id);
     revalidatePath("/admin/rimorchi/");
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -178,7 +198,8 @@ export async function UpdateTrailer(data: CreateNewTrailerType, id: string) {
 
 export async function CreateCategory(
   data: CreateNewSottocategoriaType,
-  trailerId: string
+  trailerId: string,
+  socketId: string
 ) {
   const trailer = await GetTrailerById(trailerId);
 
@@ -204,6 +225,10 @@ export async function CreateCategory(
 
     revalidatePath("/admin/rimorchi/" + trailerId);
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { category };
   } catch (err) {
     console.log(err);
@@ -211,7 +236,7 @@ export async function CreateCategory(
   }
 }
 
-export async function DeleteCategory(id: string) {
+export async function DeleteCategory(id: string, socketId: string) {
   const category = await GetCategoryById(id);
 
   if (!category) {
@@ -227,6 +252,10 @@ export async function DeleteCategory(id: string) {
 
     revalidatePath("/admin/rimorchi/" + category.trailerId);
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -236,7 +265,8 @@ export async function DeleteCategory(id: string) {
 
 export async function UpdateCategory(
   data: CreateNewSottocategoriaType,
-  id: string
+  id: string,
+  socketId: string
 ) {
   const category = await GetCategoryById(id);
 
@@ -267,6 +297,10 @@ export async function UpdateCategory(
     revalidatePath("/admin/rimorchi/" + category.trailerId + "/" + category.id);
     revalidatePath("/admin/rimorchi/" + category.trailerId);
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -276,7 +310,8 @@ export async function UpdateCategory(
 
 export async function CreateVariant(
   data: CreateNewVariantType,
-  categoryId: string
+  categoryId: string,
+  socketId: string
 ) {
   const category = await GetCategoryById(categoryId);
 
@@ -303,6 +338,10 @@ export async function CreateVariant(
 
     revalidatePath("/admin/rimorchi/" + category.trailerId + "/" + categoryId);
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { variant };
   } catch (err) {
     console.log(err);
@@ -310,7 +349,7 @@ export async function CreateVariant(
   }
 }
 
-export async function DeleteVariant(id: string) {
+export async function DeleteVariant(id: string, socketId: string) {
   const variant = await GetVariantyById(id);
 
   if (!variant) {
@@ -330,6 +369,10 @@ export async function DeleteVariant(id: string) {
       "/admin/rimorchi/" + category?.trailerId + "/" + category?.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -337,7 +380,11 @@ export async function DeleteVariant(id: string) {
   }
 }
 
-export async function UpdateVariant(data: CreateNewVariantType, id: string) {
+export async function UpdateVariant(
+  data: CreateNewVariantType,
+  id: string,
+  socketId: string
+) {
   const variant = await GetVariantyById(id);
 
   if (!variant) {
@@ -394,6 +441,10 @@ export async function UpdateVariant(data: CreateNewVariantType, id: string) {
     );
     revalidatePath("/admin/rimorchi/" + category.trailerId + "/" + category.id);
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -403,7 +454,8 @@ export async function UpdateVariant(data: CreateNewVariantType, id: string) {
 
 export async function CreateConfiguration(
   data: CreateNewConfigurationType,
-  variantId: string
+  variantId: string,
+  socketId: string
 ) {
   const variant = await GetVariantyById(variantId);
 
@@ -471,6 +523,10 @@ export async function CreateConfiguration(
         variant.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { configuration };
   } catch (err) {
     console.log(err);
@@ -480,7 +536,8 @@ export async function CreateConfiguration(
 
 export async function UpdateConfiguration(
   data: EditConfigurationType,
-  id: string
+  id: string,
+  socketId: string
 ) {
   const configuration = await GetConfigurationById(id);
 
@@ -538,6 +595,10 @@ export async function UpdateConfiguration(
         id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -545,7 +606,7 @@ export async function UpdateConfiguration(
   }
 }
 
-export async function DeleteConfiguration(id: string) {
+export async function DeleteConfiguration(id: string, socketId: string) {
   const configuration = await GetConfigurationById(id);
 
   if (!configuration) {
@@ -756,6 +817,10 @@ export async function DeleteConfiguration(id: string) {
         variant.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -763,7 +828,10 @@ export async function DeleteConfiguration(id: string) {
   }
 }
 
-export async function DuplicateConfiguration(configurationId: string) {
+export async function DuplicateConfiguration(
+  configurationId: string,
+  socketId: string
+) {
   const originalConfig = await GetConfigurationById(configurationId);
 
   if (!originalConfig) {
@@ -839,6 +907,10 @@ export async function DuplicateConfiguration(configurationId: string) {
         "/" +
         variant.id
     );
+
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
 
     return { newConfig };
   } catch (err) {
@@ -962,7 +1034,7 @@ async function duplicateConfigurationValue(
       true,
       false,
       false,
-      true,
+      true
     );
   }
 }
@@ -1003,7 +1075,7 @@ async function DuplicateConfigurationChange(
   });
 
   if (isFirstNode) {
-    if(isElse){
+    if (isElse) {
       await db.configurationValue.update({
         where: { id: parentId },
         data: {
@@ -1012,8 +1084,7 @@ async function DuplicateConfigurationChange(
           },
         },
       });
-    }
-    else{
+    } else {
       await db.configurationValue.update({
         where: { id: parentId },
         data: {
@@ -1120,7 +1191,8 @@ async function DuplicateConfigurationChange(
 
 export async function ReorderConfigurations(
   data: Configuration[],
-  variantId: string
+  variantId: string,
+  socketId: string
 ) {
   // Trova la variante usando l'ID
   const variant = await GetVariantyById(variantId);
@@ -1157,6 +1229,10 @@ export async function ReorderConfigurations(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error("Errore nel riordinamento delle configurazioni:", err);
@@ -1166,7 +1242,8 @@ export async function ReorderConfigurations(
 
 export async function AddValuesToConfiguration(
   data: AddConfigurationValueType,
-  configurationId: string
+  configurationId: string,
+  socketId: string
 ) {
   const configuration = await GetConfigurationById(configurationId);
 
@@ -1221,6 +1298,10 @@ export async function AddValuesToConfiguration(
         configurationId
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -1228,7 +1309,7 @@ export async function AddValuesToConfiguration(
   }
 }
 
-export async function DeleteConfigurationValue(id: string) {
+export async function DeleteConfigurationValue(id: string, socketId: string) {
   const value = await GetConfigurationValueById(id);
 
   if (!value) {
@@ -1446,6 +1527,10 @@ export async function DeleteConfigurationValue(id: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/configurazione/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -1455,7 +1540,8 @@ export async function DeleteConfigurationValue(id: string) {
 
 export async function UpdateConfigurationValue(
   data: EditConfigurationValueType,
-  id: string
+  id: string,
+  socketId: string
 ) {
   const oldValue = await GetConfigurationValueById(id);
 
@@ -1527,6 +1613,10 @@ export async function UpdateConfigurationValue(
         configuration.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -1536,7 +1626,8 @@ export async function UpdateConfigurationValue(
 
 export async function CreateSelector(
   data: CreateNewSelectorType,
-  variantId: string
+  variantId: string,
+  socketId: string
 ) {
   const variant = await GetVariantyById(variantId);
 
@@ -1577,7 +1668,7 @@ export async function CreateSelector(
             label: value.label,
             valueOfConfigurationToRefer: value.valueOfConfigurationToRefer,
             order: index + 1,
-            modalDescription: `<p>${name} ${value.label}</p>`
+            modalDescription: `<p>${name} ${value.label}</p>`,
           })),
         },
       },
@@ -1592,6 +1683,10 @@ export async function CreateSelector(
         variant.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { selector };
   } catch (err) {
     console.log(err);
@@ -1599,7 +1694,7 @@ export async function CreateSelector(
   }
 }
 
-export async function DeleteSelector(id: string) {
+export async function DeleteSelector(id: string, socketId: string) {
   const selector = await GetSelectorById(id);
 
   if (!selector) {
@@ -1655,6 +1750,10 @@ export async function DeleteSelector(id: string) {
         variant.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -1662,7 +1761,11 @@ export async function DeleteSelector(id: string) {
   }
 }
 
-export async function ReorderSelectors(data: Selector[], variantId: string) {
+export async function ReorderSelectors(
+  data: Selector[],
+  variantId: string,
+  socketId: string
+) {
   // Ottieni la variante
   const variant = await GetVariantyById(variantId);
 
@@ -1693,6 +1796,10 @@ export async function ReorderSelectors(data: Selector[], variantId: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error("Errore nel riordinamento dei selettori:", err);
@@ -1702,7 +1809,8 @@ export async function ReorderSelectors(data: Selector[], variantId: string) {
 
 export async function AddSelectorOption(
   data: AddSelectorOptionType,
-  selectorId: string
+  selectorId: string,
+  socketId: string
 ) {
   const selector = await GetSelectorById(selectorId);
 
@@ -1746,7 +1854,7 @@ export async function AddSelectorOption(
         label,
         valueOfConfigurationToRefer,
         order: lastOrder?.order + 1,
-        modalDescription: `<p>${selector.name} ${label}</p>`
+        modalDescription: `<p>${selector.name} ${label}</p>`,
       },
     });
 
@@ -1761,6 +1869,10 @@ export async function AddSelectorOption(
         selector.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -1768,7 +1880,7 @@ export async function AddSelectorOption(
   }
 }
 
-export async function DeleteSelectorValue(id: string) {
+export async function DeleteSelectorValue(id: string, socketId: string) {
   const selectorValue = await GetSelectorOptionById(id);
 
   if (!selectorValue) {
@@ -1864,6 +1976,10 @@ export async function DeleteSelectorValue(id: string) {
       }
     }
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.log(err);
@@ -1873,7 +1989,8 @@ export async function DeleteSelectorValue(id: string) {
 
 export async function EditSelectorValue(
   data: EditSelectorOptionType,
-  id: string
+  id: string,
+  socketId: string
 ) {
   const selectorValue = await GetSelectorOptionById(id);
 
@@ -1968,13 +2085,21 @@ export async function EditSelectorValue(
       }
     }
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Qualcosa è andato storto nella modifica" };
   }
 }
 
-export async function EditSelector(data: EditSelectorType, id: string) {
+export async function EditSelector(
+  data: EditSelectorType,
+  id: string,
+  socketId: string
+) {
   const selector = await GetSelectorById(id);
 
   if (!selector) {
@@ -2043,6 +2168,10 @@ export async function EditSelector(data: EditSelectorType, id: string) {
         variant.id
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Errore nella modifica" };
@@ -2051,7 +2180,8 @@ export async function EditSelector(data: EditSelectorType, id: string) {
 
 export async function ReorderSelectorValue(
   data: SelectorOption[],
-  selectorId: string
+  selectorId: string,
+  socketId: string
 ) {
   const selector = await GetSelectorById(selectorId);
 
@@ -2086,6 +2216,10 @@ export async function ReorderSelectorValue(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Errore nel riordinamento" };
@@ -2094,7 +2228,8 @@ export async function ReorderSelectorValue(
 
 export async function CreateANewVisibilityCondition(
   selectorId: string,
-  data: AddNewVisibilityConditionType
+  data: AddNewVisibilityConditionType,
+  socketId: string
 ) {
   const selector = await GetSelectorById(selectorId);
 
@@ -2189,6 +2324,10 @@ export async function CreateANewVisibilityCondition(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Errore nella creazione" };
@@ -2197,7 +2336,8 @@ export async function CreateANewVisibilityCondition(
 
 export async function EditVisibilityCondition(
   visibilityConditionId: string,
-  data: EditVisibilityConditionType
+  data: EditVisibilityConditionType,
+  socketId: string
 ) {
   const visibilityCondition = await GetVisibilityConditionById(
     visibilityConditionId
@@ -2252,13 +2392,20 @@ export async function EditVisibilityCondition(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Errore nella creazione" };
   }
 }
 
-export async function DeleteVisibilityCondition(visibilityConditionId: string) {
+export async function DeleteVisibilityCondition(
+  visibilityConditionId: string,
+  socketId: string
+) {
   // Ottieni la condizione di visibilità corrente
   const visibilityCondition = await GetVisibilityConditionById(
     visibilityConditionId
@@ -2343,6 +2490,10 @@ export async function DeleteVisibilityCondition(visibilityConditionId: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error(err);
@@ -2352,7 +2503,8 @@ export async function DeleteVisibilityCondition(visibilityConditionId: string) {
 
 export async function CreateANewConfigurationVisibilityCondition(
   configurationId: string,
-  data: AddNewConfigurationVisibilityConditionType
+  data: AddNewConfigurationVisibilityConditionType,
+  socketId: string
 ) {
   const configuration = await GetConfigurationById(configurationId);
 
@@ -2449,6 +2601,10 @@ export async function CreateANewConfigurationVisibilityCondition(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/configurazione/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Errore nella creazione" };
@@ -2457,7 +2613,8 @@ export async function CreateANewConfigurationVisibilityCondition(
 
 export async function EditConfigurationVisibilityCondition(
   visibilityConditionId: string,
-  data: EditConfigurationVisibilityConditionType
+  data: EditConfigurationVisibilityConditionType,
+  socketId: string
 ) {
   const visibilityCondition = await GetConfigurationVisibilityCondition(
     visibilityConditionId
@@ -2514,6 +2671,10 @@ export async function EditConfigurationVisibilityCondition(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/configuration/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     return { error: "Errore nella modifica" };
@@ -2521,7 +2682,8 @@ export async function EditConfigurationVisibilityCondition(
 }
 
 export async function DeleteConfigurationVisibilityCondition(
-  visibilityConditionId: string
+  visibilityConditionId: string,
+  socketId: string
 ) {
   // Ottieni la condizione di visibilità corrente
   const visibilityCondition = await GetConfigurationVisibilityCondition(
@@ -2609,6 +2771,10 @@ export async function DeleteConfigurationVisibilityCondition(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/configuration/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error(err);
@@ -2618,7 +2784,8 @@ export async function DeleteConfigurationVisibilityCondition(
 
 export async function CreateSelectorOptionChange(
   selectorOptionId: string,
-  data: AddNewSelectorOptionChangeType
+  data: AddNewSelectorOptionChangeType,
+  socketId: string
 ) {
   const selectorOption = await GetSelectorOptionById(selectorOptionId);
 
@@ -2760,6 +2927,10 @@ export async function CreateSelectorOptionChange(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     // 5. Ritorna il risultato
     return {
       success: true,
@@ -2772,7 +2943,10 @@ export async function CreateSelectorOptionChange(
   }
 }
 
-export async function DeleteSelectorOptionChange(changeId: string) {
+export async function DeleteSelectorOptionChange(
+  changeId: string,
+  socketId: string
+) {
   // Ottieni il cambiamento corrente
   const selectorOptionChange = await GetSelectorOptionChangeById(changeId);
 
@@ -2877,6 +3051,10 @@ export async function DeleteSelectorOptionChange(changeId: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return {
       success: true,
       updatePath: `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`,
@@ -2889,7 +3067,8 @@ export async function DeleteSelectorOptionChange(changeId: string) {
 
 export async function UpdateSelectorOptionChange(
   selectorOptionChangeId: string,
-  data: EditNewSelectorOptionChangeType
+  data: EditNewSelectorOptionChangeType,
+  socketId: string
 ) {
   const selectorOptionChange = await db.selectorOptionChange.findUnique({
     where: { id: selectorOptionChangeId },
@@ -3001,6 +3180,10 @@ export async function UpdateSelectorOptionChange(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${selector.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     // 5. Ritorna il risultato
     return {
       success: true,
@@ -3013,7 +3196,11 @@ export async function UpdateSelectorOptionChange(
   }
 }
 
-export async function CreateNode(data: CreateNodeType, variantId: string) {
+export async function CreateNode(
+  data: CreateNodeType,
+  variantId: string,
+  socketId: string
+) {
   // Validazione dello schema senza il variantId
   const validationResult = CreateNodeSchema.safeParse(data);
 
@@ -3059,6 +3246,10 @@ export async function CreateNode(data: CreateNodeType, variantId: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return {
       success: true,
       node: newNode,
@@ -3069,7 +3260,7 @@ export async function CreateNode(data: CreateNodeType, variantId: string) {
   }
 }
 
-export async function DeleteNode(nodeId: string) {
+export async function DeleteNode(nodeId: string, socketId: string) {
   // Step 1: Verifica se il nodo esiste
   const node = await db.node.findUnique({
     where: { id: nodeId },
@@ -3153,6 +3344,10 @@ export async function DeleteNode(nodeId: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error("Errore nella cancellazione del nodo:", err);
@@ -3160,7 +3355,11 @@ export async function DeleteNode(nodeId: string) {
   }
 }
 
-export async function UpdateNode(nodeId: string, data: CreateNodeType) {
+export async function UpdateNode(
+  nodeId: string,
+  data: CreateNodeType,
+  socketId: string
+) {
   // Step 1: Verifica se il nodo esiste
   const node = await db.node.findUnique({
     where: { id: nodeId },
@@ -3217,6 +3416,10 @@ export async function UpdateNode(nodeId: string, data: CreateNodeType) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/nodes`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true, node: updatedNode };
   } catch (err) {
     console.error("Errore nell'aggiornamento del nodo:", err);
@@ -3225,7 +3428,8 @@ export async function UpdateNode(nodeId: string, data: CreateNodeType) {
 }
 
 export async function DuplicateSelector(
-  selectorId: string
+  selectorId: string,
+  socketId: string
 ): Promise<{ newSelector?: Selector; error?: string }> {
   // 1. Ottenere il selettore originale
   const originalSelector = await GetSelectorById(selectorId);
@@ -3299,6 +3503,10 @@ export async function DuplicateSelector(
     revalidatePath(
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}/selector/${newSelector.id}`
     );
+
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
 
     return { newSelector };
   } catch (err) {
@@ -3539,7 +3747,8 @@ async function duplicateSelectorVisibilityCondition(
 
 export async function CreateConfigurationChange(
   configurationValueId: string,
-  data: AddNewConfigurationChangeType
+  data: AddNewConfigurationChangeType,
+  socketId: string
 ) {
   // 1. Recupera il ConfigurationValue associato
   const configurationValue = await GetConfigurationValueById(
@@ -3712,6 +3921,10 @@ export async function CreateConfigurationChange(
       `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/configurazione/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     // 13. Ritorna il risultato
     return {
       success: true,
@@ -3724,7 +3937,10 @@ export async function CreateConfigurationChange(
   }
 }
 
-export async function DeleteConfigurationChange(configurationChangeId: string) {
+export async function DeleteConfigurationChange(
+  configurationChangeId: string,
+  socketId: string
+) {
   // 1. Ottieni il cambiamento di configurazione corrente
   const configurationChange = await GetConfigurationChangeById(
     configurationChangeId
@@ -3875,6 +4091,10 @@ export async function DeleteConfigurationChange(configurationChangeId: string) {
       `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/configuration/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error("Errore nella cancellazione:", err);
@@ -3884,7 +4104,8 @@ export async function DeleteConfigurationChange(configurationChangeId: string) {
 
 export async function UpdateConfigurationChange(
   configurationChangeId: string,
-  data: EditConfigurationChangeType
+  data: EditConfigurationChangeType,
+  socketId: string
 ) {
   // 1. Recupera il `ConfigurationChange` associato
   const configurationChange = await GetConfigurationChangeById(
@@ -4010,6 +4231,10 @@ export async function UpdateConfigurationChange(
       `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/configurazione/${configuration.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     // 12. Ritorna il risultato
     return {
       success: true,
@@ -4022,7 +4247,11 @@ export async function UpdateConfigurationChange(
   }
 }
 
-export async function AddNewColor(data: NewColorType, variantId: string) {
+export async function AddNewColor(
+  data: NewColorType,
+  variantId: string,
+  socketId: string
+) {
   // 1. Validazione dello schema
   const validation = NewColorSchema.safeParse(data);
 
@@ -4077,6 +4306,10 @@ export async function AddNewColor(data: NewColorType, variantId: string) {
       `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     // 7. Ritorna il risultato della creazione
     return {
       success: true,
@@ -4089,7 +4322,7 @@ export async function AddNewColor(data: NewColorType, variantId: string) {
   }
 }
 
-export async function DeleteColor(colorId: string) {
+export async function DeleteColor(colorId: string, socketId: string) {
   // Step 1: Verifica se il colore esiste
   const color = await GetColorById(colorId);
 
@@ -4149,6 +4382,10 @@ export async function DeleteColor(colorId: string) {
       `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error("Errore nella cancellazione del colore:", err);
@@ -4156,7 +4393,11 @@ export async function DeleteColor(colorId: string) {
   }
 }
 
-export async function ReorderColors(data: Colors[], variantId: string) {
+export async function ReorderColors(
+  data: Colors[],
+  variantId: string,
+  socketId: string
+) {
   // Trova la variante usando l'ID
   const variant = await GetVariantyById(variantId);
 
@@ -4192,6 +4433,10 @@ export async function ReorderColors(data: Colors[], variantId: string) {
       `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (err) {
     console.error("Errore nel riordinamento dei colori:", err);
@@ -4199,7 +4444,11 @@ export async function ReorderColors(data: Colors[], variantId: string) {
   }
 }
 
-export async function UpdateColor(data: UpdateColorType, colorId: string) {
+export async function UpdateColor(
+  data: UpdateColorType,
+  colorId: string,
+  socketId: string
+) {
   // 1. Validazione dello schema
   const validation = UpdateColorSchema.safeParse(data);
 
@@ -4299,6 +4548,10 @@ export async function UpdateColor(data: UpdateColorType, colorId: string) {
       `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/color/${color.id}`
     );
 
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: true };
   } catch (error) {
     console.error("Errore nell'aggiornamento del colore:", error);
@@ -4306,9 +4559,13 @@ export async function UpdateColor(data: UpdateColorType, colorId: string) {
   }
 }
 
-export async function createNodesAction(variantId: string, nodeNames: string[]) {
+export async function createNodesAction(
+  variantId: string,
+  nodeNames: string[],
+  socketId: string
+) {
   if (!variantId || !Array.isArray(nodeNames)) {
-    return { error: "Dati non validi"}
+    return { error: "Dati non validi" };
   }
 
   try {
@@ -4316,19 +4573,19 @@ export async function createNodesAction(variantId: string, nodeNames: string[]) 
     const variant = await GetVariantyById(variantId);
 
     if (!variant) {
-      return { error: 'Variante non trovata' };
+      return { error: "Variante non trovata" };
     }
 
     const category = await GetCategoryById(variant.categoryId);
 
     if (!category) {
-      return { error: 'Categoria non trovata' };
+      return { error: "Categoria non trovata" };
     }
 
     const trailer = await GetTrailerById(category.trailerId);
 
     if (!trailer) {
-      return { error: 'Rimorchio non trovato' };
+      return { error: "Rimorchio non trovato" };
     }
 
     // Creazione dei nodi
@@ -4344,11 +4601,17 @@ export async function createNodesAction(variantId: string, nodeNames: string[]) 
       })
     );
 
-    revalidatePath("/admin/rimorchi/" + trailer.id + "/" + category.id + "/" + variantId);
+    revalidatePath(
+      "/admin/rimorchi/" + trailer.id + "/" + category.id + "/" + variantId
+    );
 
-    return { message: 'Nodi aggiunti con successo', nodes };
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
+    return { message: "Nodi aggiunti con successo", nodes };
   } catch (error) {
-    console.error('Error creating nodes:', error);
+    console.error("Error creating nodes:", error);
     return { error: "Problema con l'aggiunta dei nodi" };
   }
 }

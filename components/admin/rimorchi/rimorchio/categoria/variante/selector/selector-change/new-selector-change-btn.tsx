@@ -68,6 +68,8 @@ function NewSelectorChangeBtn({
   isFirstNode,
   isIfRec,
   isElseRec,
+  onRevalidate,
+  socketId
 }: {
   selectorOption: SelectorOption;
   configurations: AllConfigurations;
@@ -75,6 +77,8 @@ function NewSelectorChangeBtn({
   isFirstNode: boolean;
   isIfRec: boolean;
   isElseRec: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -127,7 +131,7 @@ function NewSelectorChangeBtn({
     adminLoader.startLoading();
     // console.log("Submitting form", data);
     console.log(form.formState.errors);
-    await CreateSelectorOptionChange(selectorOption.id, data).then((res) => {
+    await CreateSelectorOptionChange(selectorOption.id, data, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -145,6 +149,7 @@ function NewSelectorChangeBtn({
         });
         setIsDialogOpen(false);
         form.reset();
+        onRevalidate();
         // router.refresh();
         // window.location.reload();
       }

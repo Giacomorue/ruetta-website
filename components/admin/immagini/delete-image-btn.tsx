@@ -8,14 +8,14 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { FaTrash } from "react-icons/fa6";
 
-export default function DeleteImageBtn({ imageId }: { imageId: string }) {
+export default function DeleteImageBtn({ imageId, onRevalidate, socketId }: { imageId: string; socketId: string, onRevalidate: () => void }) {
   const router = useRouter();
   const adminLoader = useAdminLoader();
 
   const onDelteImage = async () => {
     adminLoader.startLoading();
     console.log("Deleting image with id:", imageId);
-    await DeleteImageFromDb(imageId).then((res) => {
+    await DeleteImageFromDb(imageId, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         console.error(res.error);
@@ -31,6 +31,7 @@ export default function DeleteImageBtn({ imageId }: { imageId: string }) {
           description: res.success,
         });
         // router.refresh();
+        onRevalidate();
       }
     });
 

@@ -35,6 +35,7 @@ const ImageCarouselPreview: React.FC<ImageCarouselProps> = ({ images, className 
               src={image}
               alt={`Image ${index}`}
               fill
+              sizes="100vw"
             />
             <div className="h-full w-full top-0 left-0 absolute bg-black/5 z-10" />
             {/* <div className="text-white text-sm bottom-3 right-3 z-20 absolute">{index+1} di {images.length}</div> */}

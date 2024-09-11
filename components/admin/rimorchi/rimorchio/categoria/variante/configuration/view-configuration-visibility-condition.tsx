@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import { ConfigurationVisibilityCondition } from "prisma/prisma-client";
 import { GetConfigurationVisibilityCondition } from "@/data/trailer";
@@ -30,19 +32,25 @@ interface Configuration {
 
 type AllConfigurations = Configuration[] | null;
 
-async function ViewConfigurationVisibilityCondition({
+function ViewConfigurationVisibilityCondition({
   visibilityConditionId,
   configuration,
   variantId,
   configurations,
+  allVisibilityCondition,
+  onRevalidate,
+  socketId,
 }: {
   visibilityConditionId: string;
   configuration: ConfigurationType;
   variantId: string;
   configurations: AllConfigurations;
+  socketId: string;
+  onRevalidate: () => void;
+  allVisibilityCondition: ConfigurationVisibilityCondition[];
 }) {
-  const visibilityCondition = await GetConfigurationVisibilityCondition(
-    visibilityConditionId
+  const visibilityCondition = allVisibilityCondition.find(
+    (c) => c.id === visibilityConditionId
   );
 
   if (!visibilityCondition) {
@@ -81,9 +89,13 @@ async function ViewConfigurationVisibilityCondition({
             configurations={configurations}
             configuration={configuration}
             visibilityCondition={visibilityCondition}
+            onRevalidate={onRevalidate}
+            socketId={socketId}
           />
           <DeleteConfigurationVisibilityConditionBtn
             condition={visibilityCondition}
+            onRevalidate={onRevalidate}
+            socketId={socketId}
           />
         </div>
       </div>
@@ -96,6 +108,9 @@ async function ViewConfigurationVisibilityCondition({
             configuration={configuration}
             variantId={variantId}
             visibilityConditionId={visibilityCondition.ifRecId}
+            allVisibilityCondition={allVisibilityCondition}
+            onRevalidate={onRevalidate}
+            socketId={socketId}
           />
         ) : (
           <div>
@@ -118,6 +133,8 @@ async function ViewConfigurationVisibilityCondition({
               isIfRec={true}
               isElseRec={false}
               configuration={configuration}
+              onRevalidate={onRevalidate}
+              socketId={socketId}
             />
           </div>
         )}
@@ -136,6 +153,9 @@ async function ViewConfigurationVisibilityCondition({
             configuration={configuration}
             variantId={variantId}
             visibilityConditionId={visibilityCondition.elseRecId}
+            allVisibilityCondition={allVisibilityCondition}
+            onRevalidate={onRevalidate}
+            socketId={socketId}
           />
         ) : (
           <div>
@@ -158,6 +178,8 @@ async function ViewConfigurationVisibilityCondition({
               isIfRec={false}
               isElseRec={true}
               configuration={configuration}
+              onRevalidate={onRevalidate}
+              socketId={socketId}
             />
           </div>
         )}

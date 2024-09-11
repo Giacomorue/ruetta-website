@@ -1,9 +1,10 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { pusher } from "@/lib/pusherServer";
 import { revalidatePath } from "next/cache";
 
-export async function InsertImageInDb(images: string[]) {
+export async function InsertImageInDb(images: string[], socketId: string) {
   if (!images || images.length === 0) {
     return { error: "Nessuna immagine da inserire." };
   }
@@ -25,6 +26,11 @@ export async function InsertImageInDb(images: string[]) {
       },
     });
     revalidatePath("/admin/immagini");
+
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return {
       success: "Immagini inserite con successo.",
       images: createdImages,
@@ -35,7 +41,7 @@ export async function InsertImageInDb(images: string[]) {
   }
 }
 
-export async function DeleteImageFromDb(imageId: string) {
+export async function DeleteImageFromDb(imageId: string, socketId: string) {
   if (!imageId || imageId === "") {
     return { error: "Id immagine non valido." };
   }
@@ -49,6 +55,11 @@ export async function DeleteImageFromDb(imageId: string) {
       },
     });
     revalidatePath("/admin/immagini");
+
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
     return { success: "Immagine eliminata con successo." };
   } catch (err) {
     console.error("Error:", err);

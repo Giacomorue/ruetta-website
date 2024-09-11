@@ -2,7 +2,7 @@
 
 import React from "react";
 import HeaderBar from "@/components/admin/header-bar";
-import { Variant } from "prisma/prisma-client";
+import { Variant, Prisma } from "prisma/prisma-client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -67,29 +67,9 @@ import {
 import { ImMenu } from "react-icons/im";
 import { MdMenu } from "react-icons/md";
 
-interface ConfigurationValue {
-  id: string;
-  value: string;
-  isFree: boolean;
-  prezzo: number | null;
-  hasText: boolean;
-  text: string | null;
-  configurationId: string;
-}
-
-// Definisci il tipo per Configuration
-interface Configuration {
-  id: string;
-  name: string;
-  defaultValue: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  variantId: string;
-  values: ConfigurationValue[];
-}
-
-// Definisci il tipo per l'array di Configuration o null
-type AllConfigurations = Configuration[] | null;
+type ConfigurationWithValues = Prisma.ConfigurationGetPayload<{
+  include: { values: true };
+}>;
 
 const reorder = <T,>(list: T[], startIndex: number, endIndex: number): T[] => {
   const result = Array.from(list);
@@ -102,10 +82,12 @@ function NewSelectorBtn({
   variant,
   trailerId,
   configurations,
+  socketId,
 }: {
   variant: Variant;
   trailerId: string;
-  configurations: AllConfigurations;
+  configurations: ConfigurationWithValues[];
+  socketId: string;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -164,7 +146,7 @@ function NewSelectorBtn({
     console.log(data);
     adminLoader.startLoading();
     console.log(data);
-    await CreateSelector(data, variant.id).then((res) => {
+    await CreateSelector(data, variant.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -204,24 +186,28 @@ function NewSelectorBtn({
 
   useEffect(() => {
     const selectedConfigurationId = form.watch("configurationToRefer");
-    
+
     if (selectedConfigurationId) {
       const selectedConfiguration = configurations?.find(
         (config) => config.id === selectedConfigurationId
       );
 
-      if(!selectedConfiguration) return;
+      if (!selectedConfiguration) return;
 
       form.setValue("name", selectedConfiguration.name);
-  
+
       if (selectedConfiguration) {
-        const updatedValues = selectedConfiguration.values.map((configValue) => ({
-          label: configValue.value, // Imposta la label al nome della configurazione
-          valueOfConfigurationToRefer: configValue.id, // Imposta il valueOfConfigurationToRefer all'ID del valore
-        }));
-  
+        const updatedValues = selectedConfiguration.values.map(
+          (configValue) => ({
+            label: configValue.value, // Imposta la label al nome della configurazione
+            valueOfConfigurationToRefer: configValue.id, // Imposta il valueOfConfigurationToRefer all'ID del valore
+          })
+        );
+
         replace(updatedValues);
-        setSelectedValues(updatedValues.map((value) => value.valueOfConfigurationToRefer));
+        setSelectedValues(
+          updatedValues.map((value) => value.valueOfConfigurationToRefer)
+        );
       }
     }
   }, [form.watch("configurationToRefer")]);

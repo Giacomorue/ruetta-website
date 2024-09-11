@@ -1,5 +1,5 @@
 import React from "react";
-import { Selector } from "prisma/prisma-client";
+import { Selector, Prisma,SelectorVisibilityCondition } from "prisma/prisma-client";
 import { GetVisibilityConditionById } from "@/data/trailer";
 import { Separator } from "@/components/ui/separator";
 import AddVisibilityConditionBtn from "./add-visibility-condition-btn";
@@ -30,20 +30,25 @@ interface Configuration {
 
 type AllConfigurations = Configuration[] | null;
 
-async function ViewVisibilityCondition({
+
+function ViewVisibilityCondition({
   visibilityConditionId,
   selector,
   variantId,
   configurations,
+  socketId,
+  onRevalidate,
+  visibilityConditions
 }: {
   visibilityConditionId: string;
   selector: Selector;
   variantId: string;
   configurations: AllConfigurations;
+  socketId: string;
+  onRevalidate: () => void;
+  visibilityConditions: SelectorVisibilityCondition[];
 }) {
-  const visibilityCondition = await GetVisibilityConditionById(
-    visibilityConditionId
-  );
+  const visibilityCondition = visibilityConditions.find((c) => c.id === visibilityConditionId);
 
   if (!visibilityCondition) {
     return <p>Errore nel trovare la condizione di visibilità</p>;
@@ -81,8 +86,14 @@ async function ViewVisibilityCondition({
             configurations={configurations}
             selector={selector}
             visibilityCondition={visibilityCondition}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
           />
-          <DeleteVisibilityConditionBtn condition={visibilityCondition} />
+          <DeleteVisibilityConditionBtn 
+            condition={visibilityCondition}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
+          />
         </div>
       </div>
 
@@ -94,6 +105,9 @@ async function ViewVisibilityCondition({
             selector={selector}
             variantId={variantId}
             visibilityConditionId={visibilityCondition.ifRecId}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
+            visibilityConditions={visibilityConditions}
           />
         ) : (
           <div>
@@ -116,6 +130,8 @@ async function ViewVisibilityCondition({
               isIfRec={true}
               isElseRec={false}
               selector={selector}
+              socketId={socketId}
+              onRevalidate={onRevalidate}
             />
           </div>
         )}
@@ -134,6 +150,9 @@ async function ViewVisibilityCondition({
             selector={selector}
             variantId={variantId}
             visibilityConditionId={visibilityCondition.elseRecId}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
+            visibilityConditions={visibilityConditions}
           />
         ) : (
           <div>
@@ -156,6 +175,8 @@ async function ViewVisibilityCondition({
               isIfRec={false}
               isElseRec={true}
               selector={selector}
+              socketId={socketId}
+              onRevalidate={onRevalidate}
             />
           </div>
         )}

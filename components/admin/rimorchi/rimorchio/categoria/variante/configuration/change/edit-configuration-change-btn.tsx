@@ -91,7 +91,11 @@ function EditConfigurationChangeBtn({
   nodes,
   configurationValue,
   configurationChange,
+  onRevalidate,
+  socketId,
 }: {
+  socketId: string;
+  onRevalidate: () => void;
   configurationValue: ConfigurationValue2;
   configurations: AllConfigurations;
   nodes: AllNodes;
@@ -167,6 +171,31 @@ function EditConfigurationChangeBtn({
   });
 
   useEffect(() => {
+
+    form1.setValue("haveIf", configurationChange.haveIf);
+    form1.setValue("configurationId", configurationChange.configurationId || undefined);
+    form1.setValue("checkType", configurationChange.checkType);
+    form1.setValue("expectedValue", configurationChange.expectedValue);
+    form1.setValue("change", configurationChange.change.map((change) => ({
+      nodeId: change.nodeId,
+      visible: change.visible,
+      changePosition: change.changePosition,
+      changeScale: change.changeScale,
+      position: change.position || undefined,
+      scale: change.scale || undefined,
+    })));
+    form1.setValue("elseChange", configurationChange.elseChange.map((change) => ({
+      nodeId: change.nodeId,
+      visible: change.visible,
+      changePosition: change.changePosition,
+      changeScale: change.changeScale,
+      position: change.position || undefined,
+      scale: change.scale || undefined,
+    })));
+
+  }, [configurationChange])
+
+  useEffect(() => {
     setSelectedConfiguration(configurationChange.configurationId || "");
     if (configurations && configurationChange.configurationId) {
       const configuration = configurations.find(
@@ -213,7 +242,7 @@ function EditConfigurationChangeBtn({
 
   const onSubmit = async (data: EditConfigurationChangeType) => {
     adminLoader.startLoading();
-    await UpdateConfigurationChange(configurationChange.id, data).then(
+    await UpdateConfigurationChange(configurationChange.id, data, socketId).then(
       (res) => {
         if (!res) return;
 
@@ -234,6 +263,7 @@ function EditConfigurationChangeBtn({
           // form1.reset();
           // router.refresh();
           // window.location.reload();
+          onRevalidate();
         }
       }
     );

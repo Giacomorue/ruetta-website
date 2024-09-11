@@ -36,6 +36,8 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   configurations: Configuration[];
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 }
 
 export function ConfigurationsDataTable<TData, TValue>({
@@ -43,6 +45,8 @@ export function ConfigurationsDataTable<TData, TValue>({
   data,
   configurations,
   variantId,
+  socketId,
+  onRevalidate,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -81,6 +85,8 @@ export function ConfigurationsDataTable<TData, TValue>({
             configurations={configurations}
             disabled={configurations.length <= 1}
             variantId={variantId}
+            socketId={socketId}
+            onRevalidate={onRevalidate}
           />
           <DataTableViewOptions table={table} />
         </div>

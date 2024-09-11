@@ -37,9 +37,13 @@ import {
 function DeleteValueBtn({
   value,
   disabled,
+  socketId,
+  onRevalidate
 }: {
   value: ConfigurationValue;
   disabled: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -55,7 +59,7 @@ function DeleteValueBtn({
 
   const onDelte = async () => {
     adminLoader.startLoading();
-    await DeleteConfigurationValue(value.id).then((res) => {
+    await DeleteConfigurationValue(value.id, socketId).then((res) => {
       if (!res) return;
       if (res.youCant && res.message) {
         toast({
@@ -81,6 +85,7 @@ function DeleteValueBtn({
           title: "Successo",
           description: "Valore cancellato con successo",
         });
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

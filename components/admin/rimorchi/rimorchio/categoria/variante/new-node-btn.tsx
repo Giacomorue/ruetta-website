@@ -35,7 +35,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { CreateNodeSchema, CreateNodeType } from "@/schemas/schema-trailer";
 import { CreateNode } from "@/actions/trailer";
 
-function NewNodeBtn({ variant }: { variant: Variant }) {
+function NewNodeBtn({ variant, onRevalidate, socketId }: { variant: Variant, socketId: string, onRevalidate: () => void }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -51,7 +51,7 @@ function NewNodeBtn({ variant }: { variant: Variant }) {
   const onSubmit = async (data: CreateNodeType) => {
     adminLoader.startLoading();
 
-    await CreateNode(data, variant.id).then((res) => {
+    await CreateNode(data, variant.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -67,7 +67,7 @@ function NewNodeBtn({ variant }: { variant: Variant }) {
           description: "Nodo creato con successo",
         });
         setIsDialogOpen(false);
-        // router.refresh();
+        onRevalidate();
         form.reset();
       }
     });

@@ -46,11 +46,15 @@ function AddValueToConfigurationBtn({
   trailerId,
   categoryId,
   variantId,
+  socketId,
+  onRevalidate
 }: {
   configuration: Configuration;
   trailerId: string;
   categoryId: string;
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -71,7 +75,7 @@ function AddValueToConfigurationBtn({
   const onSubmit = async (data: AddConfigurationValueType) => {
     adminLoader.startLoading();
     console.log(data);
-    await AddValuesToConfiguration(data, configuration.id).then((res) => {
+    await AddValuesToConfiguration(data, configuration.id, socketId).then((res) => {
       if (!res) return;
       form.reset();
       if (res.error) {
@@ -98,6 +102,7 @@ function AddValueToConfigurationBtn({
             configuration.id
         );
         setIsDialogOpen(false);
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

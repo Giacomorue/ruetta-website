@@ -37,10 +37,14 @@ function EditNodeBtn({
   node,
   isOpen,
   onClose,
+  onRevalidate,
+  socketId
 }: {
   node: NodeColumnType;
   isOpen: boolean;
   onClose: () => void;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
 
@@ -55,7 +59,7 @@ function EditNodeBtn({
   const onSubmit = async (data: CreateNodeType) => {
     adminLoader.startLoading();
 
-    await UpdateNode(node.id, data).then((res) => {
+    await UpdateNode(node.id, data, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -71,6 +75,7 @@ function EditNodeBtn({
           description: "Nodo aggiornato con successo",
         });
         onClose();
+        onRevalidate();
       }
     });
 

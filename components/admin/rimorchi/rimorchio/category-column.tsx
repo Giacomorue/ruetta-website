@@ -43,6 +43,8 @@ export type CategoryColumnType = {
   updatedAt: Date;
   createdAt: Date;
   visible: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 };
 
 export const CategoryColumnSchema: ColumnDef<CategoryColumnType>[] = [
@@ -159,7 +161,7 @@ const CellAction = ({ row }: { row: Row<CategoryColumnType> }) => {
 
   const onDelte = async (id: string) => {
     adminLoader.startLoading();
-    await DeleteCategory(id).then((res) => {
+    await DeleteCategory(id, row.original.socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -174,6 +176,7 @@ const CellAction = ({ row }: { row: Row<CategoryColumnType> }) => {
           title: "Successo",
           description: "Categoria cancellata con successo",
         });
+        row.original.onRevalidate();
       }
     });
     adminLoader.stopLoading();

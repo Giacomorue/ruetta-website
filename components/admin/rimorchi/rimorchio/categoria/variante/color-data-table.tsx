@@ -46,6 +46,8 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   colors: Colors[];
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 }
 
 export function AllColorDataTable<TData, TValue>({
@@ -53,6 +55,8 @@ export function AllColorDataTable<TData, TValue>({
   data,
   colors,
   variantId,
+  onRevalidate,
+  socketId,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -106,6 +110,8 @@ export function AllColorDataTable<TData, TValue>({
             colors={colors}
             disabled={colors.length < 2}
             variantId={variantId}
+            onRevalidate={onRevalidate}
+            socketId={socketId}
           />
           <DataTableViewOptions table={table} />
         </div>

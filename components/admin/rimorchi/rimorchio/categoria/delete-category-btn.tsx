@@ -21,13 +21,13 @@ import { useAdminLoader } from "@/hooks/useAdminLoader";
 import { DeleteCategory } from "@/actions/trailer";
 import { toast } from "@/components/ui/use-toast";
 
-function DeleteCategoryBtn({ category }: { category: Category }) {
+function DeleteCategoryBtn({ category, socketId }: { category: Category, socketId: string }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelte = async () => {
     adminLoader.startLoading();
-    await DeleteCategory(category.id).then((res) => {
+    await DeleteCategory(category.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({

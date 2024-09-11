@@ -71,16 +71,20 @@ type SelectorOptionWithChanges = {
 function DeleteSelectorValueBtn({
   value,
   disabled,
+  onRevalidate,
+  socketId,
 }: {
   value: SelectorOptionWithChanges;
   disabled: boolean;
+  socketId: string;
+  onRevalidate: () => void; 
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
 
   const onDelte = async () => {
     adminLoader.startLoading();
-    await DeleteSelectorValue(value.id).then((res) => {
+    await DeleteSelectorValue(value.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -95,6 +99,7 @@ function DeleteSelectorValueBtn({
           title: "Successo",
           description: "Valore cancellato con successo",
         });
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

@@ -65,9 +65,13 @@ import ReactQuillComponent from "@/components/admin/react-quill-component";
 function EditValueForm({
   value,
   isDefault,
+  onRevalidate,
+  socketId,
 }: {
   value: ConfigurationValue;
   isDefault: boolean;
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -83,9 +87,17 @@ function EditValueForm({
     },
   });
 
+  useEffect(() => {
+    form.setValue("value", value.value);
+    form.setValue("prezzo", value.prezzo || 0);
+    form.setValue("isFree", value.isFree);
+    form.setValue("text", value.text || "");
+    form.setValue("hasText", value.hasText);
+  }, [value])
+
   const onSubmit = async (data: EditConfigurationValueType) => {
     adminLoader.startLoading();
-    await UpdateConfigurationValue(data, value.id).then((res) => {
+    await UpdateConfigurationValue(data, value.id, socketId).then((res) => {
       if (!res) return;
       if (res.error) {
         toast({
@@ -101,7 +113,7 @@ function EditValueForm({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();
@@ -264,7 +276,7 @@ function EditValueForm({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <DeleteValueBtn value={value} disabled />
+                    <DeleteValueBtn value={value} disabled  socketId={socketId} onRevalidate={onRevalidate}/>
                   </TooltipTrigger>
                   <TooltipContent sideOffset={16}>
                     <p>
@@ -275,7 +287,7 @@ function EditValueForm({
                 </Tooltip>
               </TooltipProvider>
             ) : (
-              <DeleteValueBtn value={value} disabled={false} />
+              <DeleteValueBtn value={value} disabled={false} socketId={socketId} onRevalidate={onRevalidate} />
             )}
           </div>
         </form>

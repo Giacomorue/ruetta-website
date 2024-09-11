@@ -46,6 +46,8 @@ interface DataTableProps<TData, TValue> {
   allConfiguration: Configuration[];
   selectors: Selector[];
   variantId: string;
+  socketId: string;
+  onRevalidate: () => void;
 }
 
 export function AllSelectorDataTable<TData, TValue>({
@@ -54,6 +56,8 @@ export function AllSelectorDataTable<TData, TValue>({
   allConfiguration,
   selectors,
   variantId,
+  onRevalidate,
+  socketId,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -107,6 +111,8 @@ export function AllSelectorDataTable<TData, TValue>({
             selectors={selectors}
             disabled={selectors.length <= 1}
             variantId={variantId}
+            onRevalidate={onRevalidate}
+            socketId={socketId}
           />
           <DataTableViewOptions table={table} />
         </div>
