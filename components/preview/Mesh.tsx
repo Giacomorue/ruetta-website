@@ -113,7 +113,7 @@ const Mesh = ({
         // Avvia il caricamento
         adminLoader.startLoading();
 
-        await createNodesAction(variant.id, newNodes).then((res) => {
+        await createNodesAction(variant.id, newNodes, "").then((res) => {
           if (!res) {
             return;
           }

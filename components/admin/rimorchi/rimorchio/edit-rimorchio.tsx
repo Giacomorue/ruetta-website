@@ -49,10 +49,12 @@ function EditRimorchio({
   trailer,
   images,
   socketId,
+  onRevalidate,
 }: {
   trailer: Trailer;
   images: ImageType[] | null;
   socketId: string,
+  onRevalidate: () => void,
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -96,7 +98,7 @@ function EditRimorchio({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();
@@ -231,6 +233,7 @@ function EditRimorchio({
                 <FormLabel>Immagini</FormLabel>
                 <FormControl className="ml-2">
                   <SelectImages
+                    socketId={socketId}
                     images={images}
                     value={field.value || []}
                     onResetLinks={(array) => form.setValue("images", array)}

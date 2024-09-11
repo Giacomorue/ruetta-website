@@ -134,7 +134,7 @@ function RimorchioPage({ trailerId }: { trailerId: string }) {
         columns={CategoryColumnSchema}
         data={categoryForTable}
       />
-      <EditRimorchio trailer={trailer} images={allImages} socketId={socketId??""} />
+      <EditRimorchio trailer={trailer} images={allImages} socketId={socketId??""} onRevalidate={fetchDataWithoutLoading} />
     </div>
   );
 }

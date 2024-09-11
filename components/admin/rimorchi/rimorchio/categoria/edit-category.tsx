@@ -50,11 +50,13 @@ import ReactQuillComponent from "@/components/admin/react-quill-component";
 function EditCategory({
   category,
   canChangeVisibility,
-  socketId
+  socketId,
+  onRevalidate,
 }: {
   category: Category;
   canChangeVisibility: boolean;
   socketId: string,
+  onRevalidate: () => void,
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -94,7 +96,8 @@ function EditCategory({
           title: "Successo",
           description: "Modifiche avvenute con succecsso",
         });
-        router.refresh();
+        // router.refresh();
+        onRevalidate();
       }
     });
     adminLoader.stopLoading();

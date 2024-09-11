@@ -37,12 +37,14 @@ function SelectImages({
   onSelectLink,
   onDeselectLink,
   onResetLinks,
+  socketId,
 }: {
   images: ImageType[] | null;
   value: string[];
   onSelectLink: (link: string) => void;
   onDeselectLink: (link: string) => void;
   onResetLinks: (link: string[]) => void;
+  socketId: string;
 }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [startValue, setStartValue] = useState([""]);
@@ -84,7 +86,7 @@ function SelectImages({
     try {
       await Promise.all(uploadPromises);
       if (links.length > 0) {
-        const res = await InsertImageInDb(links);
+        const res = await InsertImageInDb(links, socketId);
         if (res.error) {
           console.error(res.error);
           toast({

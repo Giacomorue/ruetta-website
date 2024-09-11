@@ -172,6 +172,7 @@ function CategoryPage({
           numberOfActiveVariantion ? numberOfActiveVariantion > 0 : false
         }
         socketId={socketId?? ""}
+        onRevalidate={fetchDataWithoutLoading}
       />
     </div>
   );

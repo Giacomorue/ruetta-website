@@ -352,6 +352,7 @@ function EditVariant({
                 <FormLabel>Immagini</FormLabel>
                 <FormControl className="ml-2">
                   <SelectImages
+                    socketId={socketId}
                     images={images}
                     value={field.value || []}
                     onResetLinks={(array) => form.setValue("images", array)}
