@@ -19,7 +19,8 @@ interface ConfigurationValue2 {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
 }
 
@@ -28,11 +29,13 @@ interface Configuration2 {
   id: string;
   name: string;
   defaultValue: string | null;
+  defaultValuePreventivo: string | null;
   createdAt: Date;
   updatedAt: Date;
   variantId: string; // Aggiungi questa proprietà se manca
   values: ConfigurationValue2[];
 }
+
 
 // Definisci il tipo per l'array di Configuration o null
 type AllConfigurations = Configuration2[] | null;
@@ -49,7 +52,8 @@ type GetAllConfigurationWithConfigurationChangeByConfigurationIdReturnType = {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
   configurationChangeFirstNode: string[];
   configurationElseChangeFirstNode: string[];

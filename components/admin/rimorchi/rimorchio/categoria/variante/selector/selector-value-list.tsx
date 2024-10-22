@@ -20,6 +20,8 @@ import ChangeSelectorValue from "./change-selector-value";
 import { notFound } from "next/navigation";
 
 import { CheckTypeChange } from "prisma/prisma-client";
+import HeaderBar from "@/components/admin/header-bar";
+import Image from "next/image";
 
 interface ConfigurationValue2 {
   id: string;
@@ -27,7 +29,8 @@ interface ConfigurationValue2 {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
 }
 
@@ -50,7 +53,11 @@ type SelectorOptionWithChanges = {
   valueOfConfigurationToRefer: string;
   visible: boolean;
   modalDescription: string;
+  block: boolean;
   images: string[];
+  colorCodePrincipal: string;
+  hasSecondaryColor: boolean;
+  colorCodeSecondary: string;
   order: number;
   createdAt: Date;
   updatedAt: Date;
@@ -201,6 +208,7 @@ function SelectorValueList({
                   <EditSelectorValueForm
                     images={images}
                     value={value}
+                    selector={selector}
                     configurationValueName={confName}
                     socketId={socketId}
                     onRevalidate={onRevalidate}

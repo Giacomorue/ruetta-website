@@ -1,13 +1,11 @@
 import { GetAllImages } from "@/data/images";
 import {
   GetAllCategoryDescByTrailerId,
-  GetAllColorByVariantId,
   GetAllConfigurationWithConfigurationChangeByConfigurationId,
   GetAllNodeByVariantId,
   GetAllSelectorByVariantId,
   GetAllVariantDescByCategoryId,
   GetCategoryById,
-  GetColorById,
   GetConfigurationById,
   GetConfigurationByVariantId,
   GetNodesByVariantId,
@@ -28,17 +26,15 @@ export async function GET(
       trailerId: string;
       categoryId: string;
       variantId: string;
-      colorId: string;
     };
   }
 ) {
-  const { trailerId, categoryId, variantId, colorId } = params;
+  const { trailerId, categoryId, variantId } = params;
 
   try {
     const trailer = await GetTrailerById(trailerId);
     const category = await GetCategoryById(categoryId);
     const variant = await GetVariantyById(variantId);
-    const color = await GetColorById(colorId);
     const images = await GetAllImages();
 
     if (!trailer || !category || !variant) {
@@ -63,20 +59,11 @@ export async function GET(
       );
     }
 
-    if(!color){
-        return NextResponse.json({ message: "Color not found" }, { status: 404 });
-    }
-
-    if(color.variantId!== variantId){
-        return NextResponse.json({ message: "Invalid color" }, { status: 404 });
-    }
-
     return NextResponse.json(
       {
         trailer,
         category,
         variant,
-        color,
         images,
       },
       { status: 200 }

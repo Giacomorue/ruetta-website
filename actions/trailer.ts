@@ -4,7 +4,6 @@ import {
   GetAllSelectorByVariantId,
   GetAllValueBySelectorId,
   GetCategoryById,
-  GetColorById,
   GetConfigurationById,
   GetConfigurationByVariantId,
   GetConfigurationChangeById,
@@ -14,6 +13,7 @@ import {
   GetSelectorOptionById,
   GetSelectorOptionChangeById,
   GetTrailerById,
+  GetVariantByIdWithAllData,
   GetVariantyById,
   GetVisibilityConditionById,
 } from "@/data/trailer";
@@ -60,10 +60,6 @@ import {
   EditSelectorType,
   EditVisibilityConditionSchema,
   EditVisibilityConditionType,
-  NewColorSchema,
-  NewColorType,
-  UpdateColorSchema,
-  UpdateColorType,
 } from "@/schemas/schema-trailer";
 import { revalidatePath } from "next/cache";
 import {
@@ -73,7 +69,6 @@ import {
   Category,
   CheckType,
   CheckTypeChange,
-  Colors,
   ConfigurationValue,
   ConfigurationVisibilityCondition,
   Image,
@@ -87,6 +82,7 @@ import {
   Variant,
   ConfigurationChange,
   ConfigurationChangeAction,
+  Prisma,
 } from "prisma/prisma-client";
 
 export async function CreateTrailer(
@@ -280,7 +276,7 @@ export async function UpdateCategory(
     return { error: "Form non valido" };
   }
 
-  const { name, description, visible } = formValid.data;
+  const { name, description, visible, images } = formValid.data;
 
   try {
     await db.category.update({
@@ -291,6 +287,7 @@ export async function UpdateCategory(
         name,
         description,
         visible,
+        images,
       },
     });
 
@@ -333,6 +330,11 @@ export async function CreateVariant(
         name,
         prezzo,
         categoryId,
+        initialCameraPosition: {
+          x: -20,
+          y: 10,
+          z: 40,
+        },
       },
     });
 
@@ -412,6 +414,11 @@ export async function UpdateVariant(
     has3DModel,
     images,
     descriptionPrev,
+    cameraInitialPositionX,
+    cameraInitialPositionY,
+    cameraInitialPositionZ,
+    nomePrev,
+    fileUrl,
   } = formValid.data;
 
   try {
@@ -428,6 +435,13 @@ export async function UpdateVariant(
         visible,
         configurable,
         has3DModel,
+        nomePrev,
+        initialCameraPosition: {
+          x: cameraInitialPositionX,
+          y: cameraInitialPositionY,
+          z: cameraInitialPositionZ,
+        },
+        fileUrl,
       },
     });
 
@@ -491,9 +505,13 @@ export async function CreateConfiguration(
         name,
         variantId,
         order: newOrder,
+        defaultValuePreventivo: "",
+        scount: 20,
         values: {
           create: values.map((value) => ({
             value,
+            textBig: "",
+            textLittle: "",
           })),
         },
       },
@@ -511,6 +529,7 @@ export async function CreateConfiguration(
       },
       data: {
         defaultValue: defaultValueId,
+        defaultValuePreventivo: defaultValueId,
       },
     });
 
@@ -563,7 +582,7 @@ export async function UpdateConfiguration(
     return { error: "Categoria non trovata" };
   }
 
-  const { name, defaultValue } = formValid.data;
+  const { name, defaultValue, defaultValuePreventivo, scount } = formValid.data;
 
   try {
     await db.configuration.update({
@@ -573,6 +592,8 @@ export async function UpdateConfiguration(
       data: {
         name,
         defaultValue,
+        defaultValuePreventivo,
+        scount,
       },
     });
 
@@ -839,6 +860,7 @@ export async function DuplicateConfiguration(
   }
 
   let newName = `${originalConfig.name} - Copia`;
+
   let count = 1;
 
   // Check if the name already exists and increment the count if necessary
@@ -873,6 +895,8 @@ export async function DuplicateConfiguration(
         name: newName,
         variantId: originalConfig.variantId,
         order: newOrder,
+        defaultValuePreventivo: "",
+        scount: originalConfig.scount,
       },
     });
 
@@ -891,11 +915,14 @@ export async function DuplicateConfiguration(
 
     for (const originalValue of originalConfig.values) {
       const isDefault = originalValue.id === originalConfig.defaultValue;
+      const isDefaultPreventivo =
+        originalValue.id === originalConfig.defaultValuePreventivo;
 
       await duplicateConfigurationValue(
         originalValue.id,
         newConfig.id,
-        isDefault
+        isDefault,
+        isDefaultPreventivo
       );
     }
 
@@ -980,7 +1007,8 @@ async function duplicateVisibilityCondition(
 async function duplicateConfigurationValue(
   configurationValueId: string,
   newConfigurationId: string,
-  isDefault: boolean
+  isDefault: boolean,
+  isDefaultPreventivo: boolean
 ): Promise<void> {
   // Recupera il valore della configurazione originale con tutte le relazioni necessarie
   const configurationValue = await db.configurationValue.findUnique({
@@ -1001,7 +1029,8 @@ async function duplicateConfigurationValue(
       isFree: configurationValue.isFree,
       prezzo: configurationValue.prezzo,
       hasText: configurationValue.hasText,
-      text: configurationValue.text,
+      textBig: configurationValue.textBig,
+      textLittle: configurationValue.textLittle,
       configurationId: newConfigurationId,
     },
   });
@@ -1010,6 +1039,13 @@ async function duplicateConfigurationValue(
     await db.configuration.update({
       where: { id: newConfigurationId },
       data: { defaultValue: newConfigurationValue.id },
+    });
+  }
+
+  if (isDefaultPreventivo) {
+    await db.configuration.update({
+      where: { id: newConfigurationId },
+      data: { defaultValuePreventivo: newConfigurationValue.id },
     });
   }
 
@@ -1276,6 +1312,8 @@ export async function AddValuesToConfiguration(
       data: values.map((value) => ({
         value,
         configurationId,
+        textBig: "",
+        textLittle: "",
       })),
     });
 
@@ -1337,6 +1375,13 @@ export async function DeleteConfigurationValue(id: string, socketId: string) {
   if (configuration.defaultValue === id) {
     return {
       error: "Non puoi cancellare la configurazione di default, cambiala prima",
+    };
+  }
+
+  if (configuration.defaultValuePreventivo === id) {
+    return {
+      error:
+        "Non puoi cancellare la configurazione di default per il preventivo, cambiala prima",
     };
   }
 
@@ -1573,7 +1618,8 @@ export async function UpdateConfigurationValue(
     return { error: "Form non valido" };
   }
 
-  const { value, isFree, prezzo, hasText, text } = formValue.data;
+  const { value, isFree, prezzo, hasText, textBig, textLittle } =
+    formValue.data;
 
   if (!isFree && (prezzo == 0 || prezzo == null || prezzo == undefined)) {
     return {
@@ -1590,7 +1636,8 @@ export async function UpdateConfigurationValue(
         isFree,
         prezzo,
         hasText,
-        text,
+        textBig: textBig ?? "",
+        textLittle: textLittle ?? "",
       },
     });
 
@@ -1986,7 +2033,6 @@ export async function DeleteSelectorValue(id: string, socketId: string) {
     return { error: "Errore nella cancellazione" };
   }
 }
-
 export async function EditSelectorValue(
   data: EditSelectorOptionType,
   id: string,
@@ -2022,7 +2068,16 @@ export async function EditSelectorValue(
     return { error: "Form non valido" };
   }
 
-  const { label, visible, modalDescription, images } = formValid.data;
+  const {
+    label,
+    visible,
+    modalDescription,
+    images,
+    block,
+    colorCodePrincipal,
+    colorCodeSecondary,
+    hasSecondaryColor,
+  } = formValid.data;
 
   try {
     await db.selectorOption.update({
@@ -2032,6 +2087,10 @@ export async function EditSelectorValue(
         visible,
         images,
         modalDescription,
+        block,
+        colorCodePrincipal,
+        colorCodeSecondary,
+        hasSecondaryColor,
       },
     });
 
@@ -2124,7 +2183,7 @@ export async function EditSelector(
     return { error: "Form non valido" };
   }
 
-  const { name, description, visible } = formValid.data;
+  const { name, description, visible, isColorSelector } = formValid.data;
 
   try {
     await db.selector.update({
@@ -2133,6 +2192,7 @@ export async function EditSelector(
         name,
         description,
         visible,
+        isColorSelector,
       },
     });
 
@@ -3355,6 +3415,112 @@ export async function DeleteNode(nodeId: string, socketId: string) {
   }
 }
 
+export async function DeleteAllNodesOfVariant(variantId: string, socketId: string) {
+  // Step 1: Check if the variant exists
+  const variant = await db.variant.findUnique({
+    where: { id: variantId },
+  });
+
+  if (!variant) {
+    return { error: "Variante non trovata" };
+  }
+
+  // Step 2: Get the category associated with the variant
+  const category = await db.category.findUnique({
+    where: { id: variant.categoryId },
+  });
+
+  if (!category) {
+    return { error: "Categoria non trovata" };
+  }
+
+  // Step 3: Get the trailer associated with the category
+  const trailer = await db.trailer.findUnique({
+    where: { id: category.trailerId },
+  });
+
+  if (!trailer) {
+    return { error: "Rimorchio non trovato" };
+  }
+
+  // Step 4: Retrieve all nodes of the variant
+  const nodes = await db.node.findMany({
+    where: { variantId: variantId },
+  });
+
+  if (nodes.length === 0) {
+    return { message: "Non ci sono nodi da eliminare per questa variante" };
+  }
+
+  // Step 5: Collect all node IDs
+  const nodeIds = nodes.map((node) => node.id);
+
+  // Step 6: Check if any nodes are used in configuration changes
+  const configurationChanges = await db.configurationChange.findMany({
+    where: {
+      OR: [
+        {
+          change: {
+            some: {
+              nodeId: {
+                in: nodeIds, // Used as node in a change 'if'
+              },
+            },
+          },
+        },
+        {
+          elseChange: {
+            some: {
+              nodeId: {
+                in: nodeIds, // Used as node in a change 'else'
+              },
+            },
+          },
+        },
+      ],
+    },
+    include: {
+      configurationValue: {
+        include: {
+          configuration: true, // Include the associated configuration
+        },
+      },
+    },
+  });
+
+  if (configurationChanges.length > 0) {
+    const configurationsWithNodes =
+      configurationChanges
+        .map((change) => change.configurationValue.configuration.name)
+        .join(", ") + ".";
+
+    const errorMessage = `Alcuni nodi sono utilizzati nei cambiamenti delle seguenti configurazioni: ${configurationsWithNodes}`;
+    return { message: errorMessage, youCant: true };
+  }
+
+  try {
+    // Step 7: Delete all nodes of the variant
+    await db.node.deleteMany({
+      where: { variantId: variantId },
+    });
+
+    // Step 8: Revalidate the path related to the updated page
+    revalidatePath(
+      `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
+    );
+
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error("Errore nella cancellazione dei nodi:", err);
+    return { error: "Errore nella cancellazione dei nodi" };
+  }
+}
+
+
 export async function UpdateNode(
   nodeId: string,
   data: CreateNodeType,
@@ -3477,6 +3643,7 @@ export async function DuplicateSelector(
         order: newOrder,
         visible: originalSelector.visible,
         variantId: originalSelector.variantId,
+        isColorSelector: originalSelector.isColorSelector,
       },
     });
 
@@ -3541,6 +3708,10 @@ async function duplicateSelectorOption(
       images: option.images,
       order: option.order,
       selectorId: newSelectorId,
+      block: option.block,
+      colorCodePrincipal: option.colorCodePrincipal,
+      colorCodeSecondary: option.colorCodeSecondary,
+      hasSecondaryColor: option.hasSecondaryColor,
     },
   });
 
@@ -4247,318 +4418,6 @@ export async function UpdateConfigurationChange(
   }
 }
 
-export async function AddNewColor(
-  data: NewColorType,
-  variantId: string,
-  socketId: string
-) {
-  // 1. Validazione dello schema
-  const validation = NewColorSchema.safeParse(data);
-
-  if (!validation.success) {
-    return { error: "Dati non validi" };
-  }
-
-  const { name } = validation.data;
-
-  // 2. Recupera la variante associata
-  const variant = await GetVariantyById(variantId);
-
-  if (!variant) {
-    return { error: "Variante non trovata" };
-  }
-
-  // 3. Recupera la categoria associata
-  const category = await GetCategoryById(variant.categoryId);
-
-  if (!category) {
-    return { error: "Categoria non trovata" };
-  }
-
-  // 4. Recupera il trailer associato
-  const trailer = await GetTrailerById(category.trailerId);
-
-  if (!trailer) {
-    return { error: "Rimorchio non trovato" };
-  }
-
-  try {
-    // 5. Ottieni l'ultimo ordine
-    const lastColor = await db.colors.findFirst({
-      where: { variantId: variantId },
-      orderBy: { order: "desc" },
-      select: { order: true },
-    });
-
-    const newOrder = lastColor ? lastColor.order + 1 : 0;
-
-    // 6. Creazione del nuovo colore
-    const newColor = await db.colors.create({
-      data: {
-        name: name,
-        variantId: variantId,
-        order: newOrder,
-      },
-    });
-
-    // 6. Rivalida il percorso
-    revalidatePath(
-      `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/`
-    );
-
-    await pusher.trigger("dashboard-channel", "page-refresh", null, {
-      socket_id: socketId,
-    });
-
-    // 7. Ritorna il risultato della creazione
-    return {
-      success: true,
-      newColor,
-      revalidatePath: `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/`,
-    };
-  } catch (error) {
-    console.error("Errore nella creazione del colore:", error);
-    return { error: "Errore nella creazione del colore" };
-  }
-}
-
-export async function DeleteColor(colorId: string, socketId: string) {
-  // Step 1: Verifica se il colore esiste
-  const color = await GetColorById(colorId);
-
-  if (!color) {
-    return { error: "Colore non trovato" };
-  }
-
-  // Step 2: Verifica se esiste una relazione con la variante
-  const variant = await GetVariantyById(color.variantId);
-
-  if (!variant) {
-    return { error: "Variante non trovata" };
-  }
-
-  // Step 3: Verifica se esiste una relazione con la categoria
-  const category = await GetCategoryById(variant.categoryId);
-
-  if (!category) {
-    return { error: "Categoria non trovata" };
-  }
-
-  // Step 4: Verifica se esiste una relazione con il trailer
-  const trailer = await GetTrailerById(category.trailerId);
-
-  if (!trailer) {
-    return { error: "Rimorchio non trovato" };
-  }
-
-  try {
-    await db.colors.delete({
-      where: { id: colorId },
-    });
-
-    if (variant.has3DModel === true) {
-      // 7. Controlla se ci sono altri colori con modelli 3D per questa variante
-      const otherColorsWith3D = await db.colors.findMany({
-        where: {
-          variantId: variant.id,
-          has3DModel: true,
-        },
-      });
-
-      // 8. Se nessun altro colore ha un modello 3D, aggiorna la variante
-      if (otherColorsWith3D.length === 0) {
-        await db.variant.update({
-          where: { id: variant.id },
-          data: { has3DModel: false },
-        });
-      }
-    }
-
-    // Step 5: Elimina il colore
-    revalidatePath(`/admin/rimorchi/${trailer.id}/${category.id}/`);
-
-    // Step 6: Rivalida il percorso per riflettere i cambiamenti
-    revalidatePath(
-      `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/`
-    );
-
-    await pusher.trigger("dashboard-channel", "page-refresh", null, {
-      socket_id: socketId,
-    });
-
-    return { success: true };
-  } catch (err) {
-    console.error("Errore nella cancellazione del colore:", err);
-    return { error: "Errore nella cancellazione del colore" };
-  }
-}
-
-export async function ReorderColors(
-  data: Colors[],
-  variantId: string,
-  socketId: string
-) {
-  // Trova la variante usando l'ID
-  const variant = await GetVariantyById(variantId);
-
-  if (!variant) {
-    return { error: "Variante non trovata" };
-  }
-
-  const category = await GetCategoryById(variant.categoryId);
-
-  if (!category) {
-    return { error: "Categoria non trovata" };
-  }
-
-  const trailer = await GetTrailerById(category.trailerId);
-
-  if (!trailer) {
-    return { error: "Rimorchio non trovato" };
-  }
-
-  try {
-    // Esegui una transazione per aggiornare l'ordine di ciascun colore
-    await db.$transaction(
-      data.map((color, index) =>
-        db.colors.update({
-          where: { id: color.id },
-          data: { order: index }, // Aggiorna il campo "order" in base all'indice
-        })
-      )
-    );
-
-    // Rivalida il percorso relativo alla pagina aggiornata
-    revalidatePath(
-      `/admin/rimorchi/${category.trailerId}/${category.id}/${variant.id}`
-    );
-
-    await pusher.trigger("dashboard-channel", "page-refresh", null, {
-      socket_id: socketId,
-    });
-
-    return { success: true };
-  } catch (err) {
-    console.error("Errore nel riordinamento dei colori:", err);
-    return { error: "Errore nel riordinamento dei colori" };
-  }
-}
-
-export async function UpdateColor(
-  data: UpdateColorType,
-  colorId: string,
-  socketId: string
-) {
-  // 1. Validazione dello schema
-  const validation = UpdateColorSchema.safeParse(data);
-
-  if (!validation.success) {
-    return { error: "Dati non validi: " + validation.error.message };
-  }
-
-  const {
-    name,
-    description,
-    price,
-    fileUrl,
-    visible,
-    has3DModel,
-    hasSecondaryColor,
-    colorCodePrincipal,
-    colorCodeSecondary,
-    images,
-  } = validation.data;
-
-  // 2. Recupera il colore associato
-  const color = await db.colors.findUnique({
-    where: { id: colorId },
-  });
-
-  if (!color) {
-    return { error: "Colore non trovato" };
-  }
-
-  // 3. Recupera la variante associata
-  const variant = await GetVariantyById(color.variantId);
-
-  if (!variant) {
-    return { error: "Variante non trovata" };
-  }
-
-  // 4. Recupera la categoria associata
-  const category = await GetCategoryById(variant.categoryId);
-
-  if (!category) {
-    return { error: "Categoria non trovata" };
-  }
-
-  // 5. Recupera il trailer associato
-  const trailer = await GetTrailerById(category.trailerId);
-
-  if (!trailer) {
-    return { error: "Rimorchio non trovato" };
-  }
-
-  try {
-    // 6. Verifica se `has3DModel` è stata cambiata da `true` a `false`
-    if (variant.has3DModel === true) {
-      if (color.has3DModel && !has3DModel) {
-        // 7. Controlla se ci sono altri colori con modelli 3D per questa variante
-        const otherColorsWith3D = await db.colors.findMany({
-          where: {
-            variantId: variant.id,
-            has3DModel: true,
-            id: { not: colorId }, // Escludi il colore corrente
-          },
-        });
-
-        // 8. Se nessun altro colore ha un modello 3D, aggiorna la variante
-        if (otherColorsWith3D.length === 0) {
-          await db.variant.update({
-            where: { id: variant.id },
-            data: { has3DModel: false },
-          });
-        }
-      }
-    }
-
-    // 6. Aggiornamento del colore
-    await db.colors.update({
-      where: { id: colorId },
-      data: {
-        name,
-        description,
-        price,
-        fileUrl,
-        visible,
-        has3DModel,
-        hasSecondaryColor,
-        colorCodePrincipal,
-        colorCodeSecondary,
-        images,
-      },
-    });
-
-    // 7. Rivalida il percorso
-    revalidatePath(
-      `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/`
-    );
-
-    revalidatePath(
-      `/admin/rimorchi/${trailer.id}/${category.id}/${variant.id}/color/${color.id}`
-    );
-
-    await pusher.trigger("dashboard-channel", "page-refresh", null, {
-      socket_id: socketId,
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error("Errore nell'aggiornamento del colore:", error);
-    return { error: "Errore nell'aggiornamento del colore" };
-  }
-}
-
 export async function createNodesAction(
   variantId: string,
   nodeNames: string[],
@@ -4613,5 +4472,276 @@ export async function createNodesAction(
   } catch (error) {
     console.error("Error creating nodes:", error);
     return { error: "Problema con l'aggiunta dei nodi" };
+  }
+}
+
+export async function DuplicateVariant(
+  variantId: string,
+  categoryId: string,
+  socketId: string
+) {
+  // Ottieni la variante originale
+  const originalVariant = await GetVariantByIdWithAllData(variantId);
+
+  if (!originalVariant) {
+    return { error: "Variante non trovata" };
+  }
+
+  // Ottieni la categoria target
+  const category = await GetCategoryById(categoryId);
+  if (!category) {
+    return { error: "Categoria non trovata" };
+  }
+
+  // Crea il nuovo nome per la variante duplicata
+  let newName = `${originalVariant.name} - Copia`;
+  let count = 1;
+
+  // Controlla se esiste già una variante con questo nome e incrementa il contatore se necessario
+  while (
+    await db.variant.findFirst({
+      where: { categoryId: categoryId, name: newName },
+    })
+  ) {
+    count++;
+    newName = `${originalVariant.name} - Copia ${count}`;
+  }
+
+  try {
+    // Crea la variante duplicata
+    const newVariant = await db.variant.create({
+      data: {
+        name: newName,
+        prezzo: originalVariant.prezzo,
+        description: originalVariant.description,
+        nomePrev: originalVariant.nomePrev,
+        descriptionPrev: originalVariant.descriptionPrev,
+        initialCameraPosition: originalVariant.initialCameraPosition,
+        visible: originalVariant.visible,
+        configurable: originalVariant.configurable,
+        has3DModel: originalVariant.has3DModel,
+        categoryId: categoryId,
+        images: originalVariant.images,
+        fileUrl: originalVariant.fileUrl,
+      },
+    });
+
+    // 1. Duplica i nodi
+    for (const node of originalVariant.nodes) {
+      await duplicateNode(node, newVariant.id);
+    }
+
+    // 3. Duplica le configurazioni (senza modificare nome/ordine e senza rinfrescare il layout)
+    for (const configuration of originalVariant.configurations) {
+      await duplicateConfigurationWithoutUIUpdate(configuration, newVariant.id);
+    }
+
+    // 4. Duplica i selettori (senza modificare nome/ordine e senza rinfrescare il layout)
+    for (const selector of originalVariant.selectors) {
+      await duplicateSelectorWithoutUIUpdate(selector, newVariant.id);
+    }
+
+    // Aggiorna il layout una sola volta
+    revalidatePath(
+      `/admin/rimorchi/${category.trailerId}/${category.id}/${newVariant.id}`
+    );
+
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
+    return { newVariant };
+  } catch (err) {
+    console.error(err);
+    return { error: "Errore nella duplicazione della variante" };
+  }
+}
+
+async function duplicateNode(originalNode: Node, newVariantId: string) {
+  // Crea il nodo duplicato
+  await db.node.create({
+    data: {
+      name: originalNode.name,
+      alwaysHidden: originalNode.alwaysHidden,
+      variantId: newVariantId,
+    },
+  });
+}
+
+async function duplicateConfigurationWithoutUIUpdate(
+  originalConfig: Prisma.ConfigurationGetPayload<{
+    include: {
+      values: true;
+    };
+  }>,
+  newVariantId: string
+) {
+  // Crea la configurazione duplicata
+  const newConfig = await db.configuration.create({
+    data: {
+      name: originalConfig.name,
+      variantId: newVariantId,
+      order: originalConfig.order,
+      defaultValuePreventivo: originalConfig.defaultValuePreventivo,
+      scount: originalConfig.scount,
+    },
+  });
+
+  if (originalConfig.visibilityConditionId) {
+    const newVisibilityConditionId = await duplicateVisibilityCondition(
+      originalConfig.visibilityConditionId,
+      newConfig.id,
+      true
+    );
+
+    await db.configuration.update({
+      where: { id: newConfig.id },
+      data: { visibilityConditionId: newVisibilityConditionId },
+    });
+  }
+
+  for (const originalValue of originalConfig.values) {
+    const isDefault = originalValue.id === originalConfig.defaultValue;
+    const isDefaultPreventivo =
+      originalValue.id === originalConfig.defaultValuePreventivo;
+
+    await duplicateConfigurationValue(
+      originalValue.id,
+      newConfig.id,
+      isDefault,
+      isDefaultPreventivo
+    );
+  }
+}
+
+async function duplicateSelectorWithoutUIUpdate(
+  originalSelector: Prisma.SelectorGetPayload<{
+    include: {
+      options: true;
+    };
+  }>,
+  newVariantId: string
+) {
+  // Crea il selettore duplicato
+  const newSelector = await db.selector.create({
+    data: {
+      name: originalSelector.name,
+      description: originalSelector.description,
+      configurationToRefer: originalSelector.configurationToRefer,
+      order: originalSelector.order,
+      visible: originalSelector.visible,
+      variantId: newVariantId,
+      isColorSelector: originalSelector.isColorSelector,
+    },
+  });
+
+  // Duplicare le opzioni del selettore
+  for (const option of originalSelector.options) {
+    await duplicateSelectorOption(option.id, newSelector.id);
+  }
+
+  // Duplicare la condizione di visibilità del selettore, se esistente
+  if (originalSelector.visibilityConditionId) {
+    const newVisibilityConditionId = await duplicateSelectorVisibilityCondition(
+      originalSelector.visibilityConditionId,
+      newSelector.id,
+      true
+    );
+
+    await db.selector.update({
+      where: { id: newSelector.id },
+      data: { visibilityConditionId: newVisibilityConditionId },
+    });
+  }
+}
+
+export async function DuplicateConfigurationToVariant(
+  configurationId: string,
+  targetVariantId: string,
+  socketId: string
+) {
+  // Step 1: Retrieve the original configuration
+  const originalConfig = await GetConfigurationById(configurationId);
+
+  if (!originalConfig) {
+    return { error: "Original configuration not found" };
+  }
+
+  // Step 2: Create a new name for the duplicated configuration in the target variant
+  let newName = originalConfig.name;
+  let count = 1;
+
+  // Ensure the name is unique within the target variant
+  while (
+    await db.configuration.findFirst({
+      where: { name: newName, variantId: targetVariantId },
+    })
+  ) {
+    count++;
+    newName = `${originalConfig.name} - Copia ${count}`;
+  }
+
+  // Step 3: Get the last order in the target variant
+  const lastOrder = await db.configuration.findFirst({
+    where: { variantId: targetVariantId },
+    orderBy: { order: "desc" },
+    select: { order: true },
+  });
+
+  const newOrder = lastOrder ? lastOrder.order + 1 : 1;
+
+  try {
+    // Step 4: Create the duplicated configuration in the target variant
+    const newConfig = await db.configuration.create({
+      data: {
+        name: newName,
+        variantId: targetVariantId,
+        order: newOrder,
+        defaultValuePreventivo: originalConfig.defaultValuePreventivo,
+        scount: originalConfig.scount,
+      },
+      include: {
+        variant: true,
+      },
+    });
+
+    // Step 5: Duplicate visibility condition, if it exists
+    if (originalConfig.visibilityConditionId) {
+      const newVisibilityConditionId = await duplicateVisibilityCondition(
+        originalConfig.visibilityConditionId,
+        newConfig.id,
+        true
+      );
+
+      await db.configuration.update({
+        where: { id: newConfig.id },
+        data: { visibilityConditionId: newVisibilityConditionId },
+      });
+    }
+
+    // Step 6: Duplicate all values of the configuration
+    for (const originalValue of originalConfig.values) {
+      const isDefault = originalValue.id === originalConfig.defaultValue;
+      const isDefaultPreventivo =
+        originalValue.id === originalConfig.defaultValuePreventivo;
+
+      await duplicateConfigurationValue(
+        originalValue.id,
+        newConfig.id,
+        isDefault,
+        isDefaultPreventivo
+      );
+    }
+
+    // Emit the final update event
+    await pusher.trigger("dashboard-channel", "page-refresh", null, {
+      socket_id: socketId,
+    });
+
+    // Return the new configuration
+    return { newConfig };
+  } catch (err) {
+    console.error("Error during configuration duplication:", err);
+    return { error: "Error duplicating the configuration" };
   }
 }

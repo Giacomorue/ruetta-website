@@ -12,69 +12,69 @@ import React, { useEffect, useRef, useState } from "react";
 import EditValueForm from "./edit-value-form";
 import ChangeConfigurationValue from "./change/change-configuration-value";
 
-type GetAllConfigurationWithConfigurationChangeByConfigurationIdReturnType =
-  Array<{
+type GetAllConfigurationWithConfigurationChangeByConfigurationIdReturnType = {
+  id: string;
+  value: string;
+  isFree: boolean;
+  prezzo: number | null;
+  hasText: boolean;
+  textBig: string | null;
+  textLittle: string | null;
+  configurationId: string;
+  configurationChangeFirstNode: string[];
+  configurationElseChangeFirstNode: string[];
+
+  configurationChange: Array<{
     id: string;
-    value: string;
-    isFree: boolean;
-    prezzo: number | null;
-    hasText: boolean;
-    text: string | null;
-    configurationId: string;
-    configurationChangeFirstNode: string[];
-    configurationElseChangeFirstNode: string[];
+    haveIf: boolean;
+    configurationId: string | null;
+    checkType: "EQUAL" | "NOTEQUAL";
+    expectedValue: string | null;
+    parentId: string | null;
+    isFirstNode: boolean;
+    ifRecId: string[];
+    elseRecId: string[];
+    createdAt: Date;
+    updatedAt: Date;
+    configurationValueId: string;
 
-    configurationChange: Array<{
+    change: Array<{
       id: string;
-      haveIf: boolean;
-      configurationId: string | null;
-      checkType: "EQUAL" | "NOTEQUAL";
-      expectedValue: string | null;
-      parentId: string | null;
-      isFirstNode: boolean;
-      ifRecId: string[];
-      elseRecId: string[];
-      createdAt: Date;
-      updatedAt: Date;
-      configurationValueId: string;
+      nodeId: string;
+      visible: boolean;
+      changePosition: boolean;
+      changeScale: boolean;
+      position: {
+        x: number;
+        y: number;
+        z: number;
+      } | null;
+      scale: {
+        x: number;
+        y: number;
+        z: number;
+      } | null;
+    }>;
 
-      change: Array<{
-        id: string;
-        nodeId: string;
-        visible: boolean;
-        changePosition: boolean;
-        changeScale: boolean;
-        position: {
-          x: number;
-          y: number;
-          z: number;
-        } | null;
-        scale: {
-          x: number;
-          y: number;
-          z: number;
-        } | null;
-      }>;
-
-      elseChange: Array<{
-        id: string;
-        nodeId: string;
-        visible: boolean;
-        changePosition: boolean;
-        changeScale: boolean;
-        position: {
-          x: number;
-          y: number;
-          z: number;
-        } | null;
-        scale: {
-          x: number;
-          y: number;
-          z: number;
-        } | null;
-      }>;
+    elseChange: Array<{
+      id: string;
+      nodeId: string;
+      visible: boolean;
+      changePosition: boolean;
+      changeScale: boolean;
+      position: {
+        x: number;
+        y: number;
+        z: number;
+      } | null;
+      scale: {
+        x: number;
+        y: number;
+        z: number;
+      } | null;
     }>;
   }>;
+}[];
 
 interface ConfigurationValue2 {
   id: string;
@@ -82,7 +82,8 @@ interface ConfigurationValue2 {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
 }
 
@@ -91,6 +92,7 @@ interface Configuration2 {
   id: string;
   name: string;
   defaultValue: string | null;
+  defaultValuePreventivo: string | null;
   createdAt: Date;
   updatedAt: Date;
   variantId: string; // Aggiungi questa proprietà se manca
@@ -184,11 +186,12 @@ function ConfigurationValueList({
                 hasText: value.hasText,
                 isFree: value.isFree,
                 prezzo: value.prezzo,
-                text: value.text,
+                textBig: value.textBig??"",
+                textLittle: value.textLittle??"",
                 configurationElseChangeFirstNode:
                   value.configurationElseChangeFirstNode,
               }}
-              isDefault={value.id === configuration.defaultValue}
+              isDefault={value.id === configuration.defaultValue || value.id === configuration.defaultValuePreventivo}
               socketId={socketId}
               onRevalidate={onRevalidate}
             />

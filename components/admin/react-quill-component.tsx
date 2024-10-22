@@ -3,15 +3,22 @@
 import React from "react";
 
 import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 function ReactQuillComponent({
   value,
   onChange,
+  big,
+  onBlur,
+  onFocus,
 }: {
   value: string;
   onChange: (value: string) => void;
+  big?: boolean;
+  onBlur?: () => void;
+  onFocus?: () => void;
 }) {
   const modules = {
     toolbar: [
@@ -33,8 +40,10 @@ function ReactQuillComponent({
       theme="snow"
       value={value}
       onChange={onChange}
-      className="h-[200px]"
+      className={!!big ? "h-[500px]" : "h-[200px]"}
       modules={modules}
+      onBlur={onBlur}
+      onFocus={onFocus}
     />
   );
 }

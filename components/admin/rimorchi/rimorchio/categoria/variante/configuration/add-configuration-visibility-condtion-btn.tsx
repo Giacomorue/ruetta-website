@@ -52,7 +52,8 @@ interface ConfigurationValue {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
 }
 

@@ -35,7 +35,7 @@ function NavbarPreview() {
         />
 
         {/* Desktop button */}
-        <div className="bg-primary text-primary-foreground text-[16px] px-8 py-2 rounded-[10px] shadow-sm transition-all duration-150 hover:opacity-80 cursor-pointer z-10 hidden md:flex">
+        <div className="bg-primary text-primary-foreground text-[16px]  py-2 shadow-sm transition-all duration-150 hover:bg-primary/90 cursor-pointer z-10 hidden md:flex h-12 rounded-[10px] px-8 text-center flex-col items-center justify-center">
           Contattaci
         </div>
 

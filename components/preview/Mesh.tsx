@@ -8,7 +8,6 @@ import { OrbitControls } from "@react-three/drei";
 
 import {
   Category,
-  Colors,
   Configuration,
   ConfigurationChange,
   ConfigurationChangeAction,
@@ -27,6 +26,7 @@ import { useAdminLoader } from "@/hooks/useAdminLoader";
 import { createNodesAction } from "@/actions/trailer";
 import { toast } from "../ui/use-toast";
 import CanvasLoader from "../CanvasLoader";
+import { useRouter } from "next/navigation";
 
 export type VariantData = Variant & {
   nodes: (Node & {
@@ -41,7 +41,6 @@ export type VariantData = Variant & {
     })[];
     configurationVisibilityCondition: ConfigurationVisibilityCondition[];
   })[];
-  colors: Colors[];
   selectors: (Selector & {
     options: (SelectorOption & {
       selectorOptionChange: (SelectorOptionChange & {
@@ -55,18 +54,17 @@ export type VariantData = Variant & {
 
 const Mesh = ({
   variant,
-  currentColor,
   configurations,
   updateShadowCounter,
 }: {
   variant: VariantData;
-  currentColor: Colors;
   configurations: { configurationId: string; valueId: string }[];
   updateShadowCounter: () => void;
 }) => {
   const adminLoader = useAdminLoader();
+  const router = useRouter();
 
-  const gltf = useLoader(GLTFLoader, `${currentColor.fileUrl}`, (loader) => {
+  const gltf = useLoader(GLTFLoader, `${variant.fileUrl}`, (loader) => {
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath("/draco-gltf/"); // Assicurati che questo percorso corrisponda alla posizione dei file decoder Draco
     loader.setDRACOLoader(dracoLoader);
@@ -74,7 +72,7 @@ const Mesh = ({
 
   useEffect(() => {
     updateShadowCounter();
-  }, [gltf])
+  }, [gltf]);
 
   function traverseNodes(node: any, variant: VariantData, newNodes: string[]) {
     // Controlla se il nodo esiste già nella variante
@@ -131,6 +129,7 @@ const Mesh = ({
               title: "Nodi creati con successo",
               description: `${newNodes.length} nodi aggiunti.`,
             });
+            router.refresh();
           }
         });
 
@@ -146,7 +145,6 @@ const Mesh = ({
 
   useEffect(() => {
     variant.nodes.forEach((node) => {
-
       if (node.alwaysHidden === true) {
         if (gltf.nodes[node.name]) {
           gltf.nodes[node.name].visible = false;
@@ -159,11 +157,12 @@ const Mesh = ({
         (c) => c.id === currentConfig.configurationId
       );
 
+      // console.log(configuration, currentConfig);
+
       if (!configuration) continue;
       analizeConfigurationValue(configuration, currentConfig, configurations);
     }
-
-  }, [configurations, currentColor]);
+  }, [configurations]);
 
   const analizeConfigurationValue = (
     configuration: {
@@ -189,7 +188,9 @@ const Mesh = ({
   ) => {
     for (const value of configuration.values) {
       if (value.id === currentConfig.valueId) {
+        // console.log(value.configurationChangeFirstNode.length);
         if (value.configurationChangeFirstNode.length > 0) {
+
           //RICORSIONE CON AZIONI
           for (const action of value.configurationChangeFirstNode) {
             const change = value.configurationChange.find(

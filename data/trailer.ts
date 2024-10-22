@@ -351,33 +351,6 @@ export const GetConfigurationChangeById = async (id: string) => {
   }
 };
 
-export const GetColorById = async (id: string) => {
-  try {
-    return await db.colors.findUnique({
-      where: {
-        id,
-      },
-    });
-  } catch (err) {
-    return null;
-  }
-};
-
-export const GetAllColorByVariantId = async (variantId: string) => {
-  try {
-    return await db.colors.findMany({
-      where: {
-        variantId,
-      },
-      orderBy: {
-        order: "asc",
-      },
-    });
-  } catch (err) {
-    return [];
-  }
-};
-
 export const GetVariantDataByAccessibleUUID = async (
   accessibleUUID: string
 ) => {
@@ -387,9 +360,6 @@ export const GetVariantDataByAccessibleUUID = async (
         accessibleUUID,
       },
       include: {
-        colors: {
-          orderBy: { order: "asc" },
-        },
         nodes: {
           include: {
             configurationChangeAction: true,
@@ -436,3 +406,46 @@ export const GetVariantDataByAccessibleUUID = async (
     return null;
   }
 };
+
+export async function GetVariantByIdWithAllData(variantId: string) {
+  return await db.variant.findUnique({
+    where: { id: variantId },
+    include: {
+      nodes: {
+        include: {
+          configurationChangeAction: true, // Include le azioni di cambio dei nodi
+        },
+      },
+      configurations: {
+        include: {
+          values: {
+            include: {
+              configurationChange: {
+                include: {
+                  change: true, // Include le azioni di cambio per i valori di configurazione
+                  elseChange: true, // Include le azioni di elseChange per i valori di configurazione
+                },
+              },
+            },
+          },
+          configurationVisibilityCondition: true, // Include le condizioni di visibilità della configurazione
+        },
+      },
+      selectors: {
+        include: {
+          options: {
+            include: {
+              selectorOptionChange: {
+                include: {
+                  change: true, // Include le azioni di cambio per le opzioni del selettore
+                  elseChange: true, // Include le azioni di elseChange per le opzioni del selettore
+                },
+              },
+            },
+          },
+          selectorVisibilityCondition: true, // Include le condizioni di visibilità del selettore
+        },
+      },
+    },
+  });
+}

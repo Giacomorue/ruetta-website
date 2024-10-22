@@ -82,7 +82,8 @@ function EditValueForm({
       value: value.value,
       prezzo: value.prezzo || 0,
       isFree: value.isFree,
-      text: value.text || "",
+      textBig: value.textBig || "",
+      textLittle: value.textLittle || "",
       hasText: value.hasText,
     },
   });
@@ -91,9 +92,10 @@ function EditValueForm({
     form.setValue("value", value.value);
     form.setValue("prezzo", value.prezzo || 0);
     form.setValue("isFree", value.isFree);
-    form.setValue("text", value.text || "");
+    form.setValue("textBig", value.textBig || "");
+    form.setValue("textLittle", value.textLittle || "");
     form.setValue("hasText", value.hasText);
-  }, [value])
+  }, [value]);
 
   const onSubmit = async (data: EditConfigurationValueType) => {
     adminLoader.startLoading();
@@ -131,8 +133,12 @@ function EditValueForm({
 
   const watchedFields = useWatch({
     control: form.control,
-    name: ["value", "isFree", "prezzo", "hasText", "text"],
+    name: ["value", "isFree", "prezzo", "hasText", "textBig", "textLittle"],
   });
+
+  const [inputValue, setInputValue] = useState<string>(
+    value.prezzo ? value.prezzo.toString() : ""
+  );
 
   useEffect(() => {
     const [
@@ -140,7 +146,8 @@ function EditValueForm({
       watchedisFree,
       watchedPrezzo,
       watchedhasText,
-      watchedText,
+      watchedTextBig,
+      watchedTextLittle,
     ] = watchedFields;
 
     const isChanged =
@@ -148,7 +155,8 @@ function EditValueForm({
       watchedisFree !== value.isFree ||
       watchedPrezzo !== value.prezzo ||
       watchedhasText !== value.hasText ||
-      watchedText !== value.text;
+      watchedTextBig !== value.textBig ||
+      watchedTextLittle !== value.textLittle;
 
     setIsModified(isChanged);
   }, [watchedFields, value]);
@@ -230,42 +238,78 @@ function EditValueForm({
             <FormField
               control={form.control}
               name="prezzo"
-              render={({ field }) => (
-                <FormItem className="space-y-1 w-full">
-                  <FormLabel>Prezzo</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Prezzo"
-                      type="number"
-                      min="0"
-                      onChange={(e) =>
-                        form.setValue("prezzo", parseFloat(e.target.value))
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                // Stato locale per gestire il valore dell'input temporaneo
+
+                return (
+                  <FormItem className="space-y-1 w-full">
+                    <FormLabel>Prezzo</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Prezzo"
+                        type="text" // Imposta il tipo su "text" per consentire l'inserimento del segno meno
+                        value={inputValue}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Aggiorna lo stato locale dell'input
+                          setInputValue(value);
+
+                          // Se il valore è un numero valido o è una stringa vuota
+                          if (value === "" || value === "-" || value === "-0") {
+                            // Lascia che l'input accetti "-" o "-0"
+                            form.setValue("prezzo", undefined);
+                          } else {
+                            // Prova a convertire in numero
+                            const parsedValue = parseFloat(value);
+                            if (!isNaN(parsedValue)) {
+                              // Se il valore è un numero valido, aggiorna il form
+                              form.setValue("prezzo", parsedValue);
+                            }
+                          }
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
           )}
 
           {form.getValues("hasText") && (
-            <FormField
-              control={form.control}
-              name="text"
-              render={({ field }) => (
-                <FormItem className="mb-5 pb-12">
-                  <FormLabel>Descrizione Sito</FormLabel>
-                  <FormControl className="h-[100px] ">
-                    <ReactQuillComponent
-                      value={field.value || ""}
-                      onChange={(value) => form.setValue("text", value)}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <div>
+              <FormField
+                control={form.control}
+                name="textBig"
+                render={({ field }) => (
+                  <FormItem className="mb-5 pb-12">
+                    <FormLabel>Descrizione grande preventivo</FormLabel>
+                    <FormControl className="h-[100px] ">
+                      <ReactQuillComponent
+                        value={field.value || ""}
+                        onChange={(value) => form.setValue("textBig", value)}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="textLittle"
+                render={({ field }) => (
+                  <FormItem className="mb-5 pb-12">
+                    <FormLabel>Descrizione preventivo piccola</FormLabel>
+                    <FormControl className="h-[100px] ">
+                      <ReactQuillComponent
+                        value={field.value || ""}
+                        onChange={(value) => form.setValue("textLittle", value)}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
           )}
 
           <div className="flex md:flex-row gap-3 flex-col">
@@ -276,18 +320,29 @@ function EditValueForm({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <DeleteValueBtn value={value} disabled  socketId={socketId} onRevalidate={onRevalidate}/>
+                    <DeleteValueBtn
+                      value={value}
+                      disabled
+                      socketId={socketId}
+                      onRevalidate={onRevalidate}
+                    />
                   </TooltipTrigger>
                   <TooltipContent sideOffset={16}>
                     <p>
                       Non puoi cancellare il valore che è di predefinito alla
-                      configurazione
+                      configurazione del preventivo o alla configurazione del
+                      configuratore.
                     </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             ) : (
-              <DeleteValueBtn value={value} disabled={false} socketId={socketId} onRevalidate={onRevalidate} />
+              <DeleteValueBtn
+                value={value}
+                disabled={false}
+                socketId={socketId}
+                onRevalidate={onRevalidate}
+              />
             )}
           </div>
         </form>

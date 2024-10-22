@@ -16,6 +16,7 @@ export const CreateNewSottocategoriaSchema = z.object({
   name: z.string().min(3, { message: "Inserisci un nome valido" }),
   description: z.optional(z.string()),
   visible: z.optional(z.boolean()),
+  images: z.optional(z.array(z.string())),
 });
 
 export type CreateNewSottocategoriaType = z.infer<
@@ -26,11 +27,16 @@ export const CreateNewVariantSchema = z.object({
   name: z.string().min(3, { message: "Inserisci un nome valido" }),
   prezzo: z.number().min(0, { message: "Inserisci un numero valido" }),
   description: z.optional(z.string()),
+  nomePrev: z.optional(z.string()),
   descriptionPrev: z.optional(z.string()),
   images: z.optional(z.array(z.string())),
   visible: z.optional(z.boolean()),
   configurable: z.optional(z.boolean()),
   has3DModel: z.optional(z.boolean()),
+  cameraInitialPositionX: z.optional(z.number()),
+  cameraInitialPositionY: z.optional(z.number()),
+  cameraInitialPositionZ: z.optional(z.number()),
+  fileUrl: z.optional(z.string()),
 });
 
 export type CreateNewVariantType = z.infer<typeof CreateNewVariantSchema>;
@@ -49,6 +55,10 @@ export type CreateNewConfigurationType = z.infer<
 export const EditConfigurationSchema = z.object({
   name: z.string().min(3, { message: "Inserisci un nome valido" }),
   defaultValue: z.string().min(2, { message: "Inserisci un valore valido" }),
+  defaultValuePreventivo: z
+    .string()
+    .min(2, { message: "Inserisci un valore valido" }),
+  scount: z.number({ message: "Inserisci un numero valido" }),
 });
 
 export type EditConfigurationType = z.infer<typeof EditConfigurationSchema>;
@@ -68,7 +78,8 @@ export const EditConfigurationValueSchema = z.object({
   isFree: z.optional(z.boolean()),
   prezzo: z.optional(z.number({ message: "Inserisci un valore numerico" })),
   hasText: z.optional(z.boolean()),
-  text: z.optional(z.string()),
+  textBig: z.optional(z.string()),
+  textLittle: z.optional(z.string()),
 });
 
 export type EditConfigurationValueType = z.infer<
@@ -96,6 +107,7 @@ export const EditSelectorSchema = z.object({
   name: z.string().min(3, { message: "Inserisci un nome valido" }),
   description: z.optional(z.string()),
   visible: z.optional(z.boolean()),
+  isColorSelector: z.optional(z.boolean()),
 });
 
 export type EditSelectorType = z.infer<typeof EditSelectorSchema>;
@@ -114,6 +126,10 @@ export const EditSelectorOptionSchema = z.object({
   visible: z.optional(z.boolean()),
   modalDescription: z.optional(z.string()),
   images: z.optional(z.array(z.string())),
+  block: z.optional(z.boolean()),
+  colorCodePrincipal: z.optional(z.string()),
+  hasSecondaryColor: z.optional(z.boolean()),
+  colorCodeSecondary: z.optional(z.string()),
 });
 
 export type EditSelectorOptionType = z.infer<typeof EditSelectorOptionSchema>;
@@ -460,32 +476,3 @@ export const EditConfigurationChangeSchema = z
 export type EditConfigurationChangeType = z.infer<
   typeof EditConfigurationChangeSchema
 >;
-
-export const NewColorSchema = z.object({
-  name: z.string().min(3, { message: "Inserisci un nome valido" }),
-});
-
-export type NewColorType = z.infer<typeof NewColorSchema>;
-
-export const UpdateColorSchema = z.object({
-  name: z.string().min(1, { message: "Il nome è obbligatorio" }),
-  description: z.string().optional(),
-  price: z.number().optional(),
-  fileUrl: z.string().optional(),
-  visible: z.boolean().optional(),
-  has3DModel: z.boolean().optional(),
-  hasSecondaryColor: z.boolean().optional(),
-  colorCodePrincipal: z.string().regex(/^#[0-9A-Fa-f]{6}$/, {
-    message:
-      "Il codice colore principale deve essere un colore esadecimale valido",
-  }),
-  colorCodeSecondary: z.string().regex(/^#[0-9A-Fa-f]{6}$/, {
-    message:
-      "Il codice colore secondario deve essere un colore esadecimale valido",
-  }),
-  images: z
-    .array(z.string().url({ message: "Deve essere un URL valido" }))
-    .optional(),
-});
-
-export type UpdateColorType = z.infer<typeof UpdateColorSchema>;

@@ -7,7 +7,6 @@ import {
   Configuration,
   Selector,
   Node,
-  Colors,
   ConfigurationValue,
   SelectorOption,
   Prisma,
@@ -30,13 +29,11 @@ import { SelectorColumnSchema, SelectorColumnType } from "./selector-column";
 import NewNodeBtn from "./new-node-btn";
 import { NodeDataTable } from "./node-data-table";
 import { NodeColumnSchema, NodeColumnType } from "./node-column";
-import NewColorBtn from "./new-color-btn";
-import { AllColorDataTable } from "./color-data-table";
-import { ColorColumnSchema } from "./color-column";
 import EditVariant from "./edit-variant";
 import { useAdminLoader } from "@/hooks/useAdminLoader";
 import { useRouter } from "next/navigation";
 import { disconnectPusher, getPusherClient } from "@/lib/pusherClient";
+import DeleteAllNodesBtn from "./delete-all-nodes-btn";
 
 type SelectorWithOptions = Prisma.SelectorGetPayload<{
   include: { options: true };
@@ -62,7 +59,6 @@ function VariantPage({
     useState<ConfigurationWithValues[]>();
   const [allSelector, setAllSelector] = useState<SelectorWithOptions[]>();
   const [allNode, setAllNode] = useState<Node[]>([]);
-  const [allColor, setAllColor] = useState<Colors[]>([]);
   const adminLoading = useAdminLoader();
   const router = useRouter();
   const [socketId, setSocketId] = useState<string>();
@@ -71,7 +67,8 @@ function VariantPage({
     adminLoading.startLoading();
     try {
       const response = await fetch(
-        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId, { cache: "no-cache" }
+        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId,
+        { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -88,11 +85,11 @@ function VariantPage({
       }
 
       setVariant(data.variant);
-      setImages(data.images);
+      // setImages(data.images);
       setAllConfiguration(data.allConfiguration);
+      console.log("All configuration", data.allConfiguration);
       setAllSelector(data.allSelector);
       setAllNode(data.allNode);
-      setAllColor(data.allColor);
     } catch (error) {
       console.error("Errore durante il fetching dei dati", error);
       router.push("/admin/rimorchi/404");
@@ -104,7 +101,8 @@ function VariantPage({
   const fetchDataWithoutLoading = async () => {
     try {
       const response = await fetch(
-        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId, { cache: "no-cache" }
+        "/api/trailerPage/" + trailerId + "/" + categoryId + "/" + variantId,
+        { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -125,7 +123,6 @@ function VariantPage({
       setAllConfiguration(data.allConfiguration);
       setAllSelector(data.allSelector);
       setAllNode(data.allNode);
-      setAllColor(data.allColor);
     } catch (error) {
       console.error("Errore durante il fetching dei dati", error);
       router.push("/admin/rimorchi/404");
@@ -208,28 +205,6 @@ function VariantPage({
       }))
     : [];
 
-  const allColorForTable = allColor.map((color) => ({
-    id: color.id,
-    name: color.name,
-    description: color.description || "",
-    price: color.price || undefined,
-    fileUrl: color.fileUrl || "",
-    visible: color.visible,
-    has3DModel: color.has3DModel,
-    colorCodePrincipal: color.colorCodePrincipal,
-    images: color.images || [],
-    createdAt: new Date(color.createdAt),
-    updatedAt: new Date(color.updatedAt),
-    variantId: color.variantId,
-    order: color.order,
-    hasSecondaryColor: color.hasSecondaryColor,
-    colorCodeSecondary: color.colorCodeSecondary || "",
-    socketId: socketId ?? "",
-    onRevalidate: fetchDataWithoutLoading,
-  }));
-
-  const has3DModelColor = allColor.some((color) => color.has3DModel);
-
   return (
     <div>
       <HeaderBar
@@ -292,31 +267,22 @@ function VariantPage({
 
       <div className="my-3">
         <HeaderBar title={"Nodi dei modelli 3D"} subtitle>
-          <NewNodeBtn
-            variant={variant}
-            socketId={socketId ?? ""}
-            onRevalidate={fetchDataWithoutLoading}
-          />
+          <div className="flex flex-row gap-2 items-center">
+            <DeleteAllNodesBtn variant={variant} socketId={socketId??""} onRevalidate={fetchDataWithoutLoading} />
+            <NewNodeBtn
+              variant={variant}
+              socketId={socketId ?? ""}
+              onRevalidate={fetchDataWithoutLoading}
+            />
+          </div>
         </HeaderBar>
         <NodeDataTable columns={NodeColumnSchema} data={allNodeForTable} />
       </div>
-      <HeaderBar title={"Colori"} subtitle>
-        <NewColorBtn variant={variant} socketId={socketId ?? ""} />
-      </HeaderBar>
-
-      <AllColorDataTable
-        columns={ColorColumnSchema}
-        data={allColorForTable}
-        variantId={variantId}
-        colors={allColor}
-        onRevalidate={fetchDataWithoutLoading}
-        socketId={socketId??""}
-      />
 
       <EditVariant
         variant={variant}
         images={images}
-        canSet3DModel={has3DModelColor}
+        canSet3DModel={false}
         canSetConfigurabile={selectorVisible}
         socketId={socketId ?? ""}
         onRevalidate={fetchDataWithoutLoading}

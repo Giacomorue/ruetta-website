@@ -80,7 +80,8 @@ function EditSelectorForm({
       isFree: boolean;
       prezzo: number | null;
       hasText: boolean;
-      text: string | null;
+      textBig: string | null;
+      textLittle: string | null;
       configurationId: string;
     }[];
   } & {
@@ -103,13 +104,15 @@ function EditSelectorForm({
       name: selector.name,
       description: selector.description || "",
       visible: !canSetVisible ? false : selector.visible,
+      isColorSelector: selector.isColorSelector || false,
     },
   });
 
   useEffect(() => {
     form.setValue("name", selector.name);
     form.setValue("description", selector.description || "");
-    form.setValue("visible",!canSetVisible? false : selector.visible);
+    form.setValue("visible", !canSetVisible ? false : selector.visible);
+    form.setValue("isColorSelector", selector.isColorSelector || false);
   }, [selector]);
 
   useEffect(() => {
@@ -155,16 +158,17 @@ function EditSelectorForm({
 
   const watchedFields = useWatch({
     control: form.control,
-    name: ["name", "description", "visible"],
+    name: ["name", "description", "visible", "isColorSelector"],
   });
 
   useEffect(() => {
-    const [watchedName, watchedDescription, watchedVisible] = watchedFields;
+    const [watchedName, watchedDescription, watchedVisible, watchedIsColor] = watchedFields;
 
     let isChanged =
       watchedName !== selector.name ||
       watchedDescription !== selector.description ||
-      watchedVisible !== selector.visible;
+      watchedVisible !== selector.visible ||
+      watchedIsColor!== selector.isColorSelector;
 
     setIsModified(isChanged);
   }, [watchedFields, selector]);
@@ -239,6 +243,29 @@ function EditSelectorForm({
                       (puoi rendere visibile solo quando almeno un valore del
                       selettore è visibile)
                     </span>
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="isColorSelector"
+            render={({ field }) => (
+              <FormItem
+                className={`relative rounded-md border border-input bg-transparent shadow px-4 py-2`}
+              >
+                <FormLabel>Colore</FormLabel>
+                <div className="flex flex-row items-center gap-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(check) => field.onChange(check)}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Attiva questa sunta per rendere questo selettore un colore{" "}
                   </FormDescription>
                 </div>
               </FormItem>

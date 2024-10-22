@@ -203,7 +203,7 @@ function SelectorPage({
     : [];
 
   const canChangeVisibiliy =
-    selector.options.filter((f) => f.visible === true).length >= 2;
+    selector.options.filter((f) => f.visible === true).length >= 1;
 
   return (
     <div>

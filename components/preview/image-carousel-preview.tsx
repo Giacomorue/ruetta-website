@@ -31,7 +31,7 @@ const ImageCarouselPreview: React.FC<ImageCarouselProps> = ({ images, className 
         {images.map((image, index) => (
           <div className="embla__slide w-full h-full relative" key={index}>
             <Image
-              className="object-cover"
+              className="object-cover rounded-[10px]"
               src={image}
               alt={`Image ${index}`}
               fill

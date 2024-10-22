@@ -51,6 +51,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import SelectImages from "@/components/admin/select-images";
 import ReactQuillComponent from "@/components/admin/react-quill-component";
+import Select3DModel from "./color/select-3d-model";
 
 function EditVariant({
   variant,
@@ -58,14 +59,14 @@ function EditVariant({
   canSet3DModel,
   canSetConfigurabile,
   onRevalidate,
-  socketId
+  socketId,
 }: {
   variant: Variant;
   images: ImageType[] | null;
   canSetConfigurabile: boolean;
   canSet3DModel: boolean;
-  socketId: string,
-  onRevalidate: () => void,
+  socketId: string;
+  onRevalidate: () => void;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -76,25 +77,45 @@ function EditVariant({
       name: variant.name,
       prezzo: variant.prezzo,
       description: variant.description || "",
+      nomePrev: variant.nomePrev,
       descriptionPrev: variant.descriptionPrev,
       images: variant.images,
       visible: variant.visible,
       configurable: canSetConfigurabile ? variant.configurable : false,
       has3DModel: variant.has3DModel,
+      cameraInitialPositionX: variant.initialCameraPosition.x || -20,
+      cameraInitialPositionY: variant.initialCameraPosition.y || 10,
+      cameraInitialPositionZ: variant.initialCameraPosition.z || 40,
+      fileUrl: variant.fileUrl || "",
     },
   });
 
   useEffect(() => {
-
     form.setValue("name", variant.name);
     form.setValue("prezzo", variant.prezzo);
     form.setValue("description", variant.description || "");
     form.setValue("descriptionPrev", variant.descriptionPrev);
     form.setValue("images", variant.images);
     form.setValue("visible", variant.visible);
-    form.setValue("configurable", canSetConfigurabile? variant.configurable : false);
+    form.setValue(
+      "configurable",
+      canSetConfigurabile ? variant.configurable : false
+    );
     form.setValue("has3DModel", variant.has3DModel);
-
+    form.setValue(
+      "cameraInitialPositionX",
+      variant.initialCameraPosition.x || -20
+    );
+    form.setValue(
+      "cameraInitialPositionY",
+      variant.initialCameraPosition.y || 10
+    );
+    form.setValue(
+      "cameraInitialPositionZ",
+      variant.initialCameraPosition.z || 40
+    );
+    form.setValue("nomePrev", variant.nomePrev);
+    form.setValue("fileUrl", variant.fileUrl);
   }, [variant]);
 
   const onSubmit = async (data: CreateNewVariantType) => {
@@ -142,6 +163,11 @@ function EditVariant({
       "visible",
       "configurable",
       "has3DModel",
+      "cameraInitialPositionX",
+      "cameraInitialPositionY",
+      "cameraInitialPositionZ",
+      "nomePrev",
+      "fileUrl",
     ],
   });
 
@@ -155,6 +181,11 @@ function EditVariant({
       watchedVisible,
       watchedConfigurable,
       watchedHas3DModel,
+      watchedCameraInitialPositionX,
+      watchedCameraInitialPositionY,
+      watchedCameraInitialPositionZ,
+      watchedNomePrev,
+      watchedFileUrl,
     ] = watchedFields;
 
     let isChanged =
@@ -164,7 +195,12 @@ function EditVariant({
       watchedDescriptionPrev !== variant.descriptionPrev ||
       JSON.stringify(watchedImages) !== JSON.stringify(variant.images) ||
       watchedVisible !== variant.visible ||
-      watchedHas3DModel !== variant.has3DModel;
+      watchedHas3DModel !== variant.has3DModel ||
+      watchedCameraInitialPositionX !== variant.initialCameraPosition.x ||
+      watchedCameraInitialPositionY !== variant.initialCameraPosition.y ||
+      watchedCameraInitialPositionZ !== variant.initialCameraPosition.z ||
+      watchedNomePrev !== variant.nomePrev ||
+      watchedFileUrl !== variant.fileUrl;
 
     if (canSetConfigurabile) {
       isChanged = isChanged || watchedConfigurable !== variant.configurable;
@@ -231,6 +267,21 @@ function EditVariant({
           />
           <FormField
             control={form.control}
+            name="nomePrev"
+            render={({ field }) => (
+              <FormItem className="mb-5 pb-12">
+                <FormLabel>Nome Preventivo</FormLabel>
+                <FormControl className="h-[100px] ">
+                  <ReactQuillComponent
+                    value={field.value || ""}
+                    onChange={(value) => form.setValue("nomePrev", value)}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="descriptionPrev"
             render={({ field }) => (
               <FormItem className="mb-5 pb-12">
@@ -286,7 +337,7 @@ function EditVariant({
               render={({ field }) => (
                 <FormItem
                   className={`relative rounded-md border border-input bg-transparent shadow px-4 py-2 ${
-                    canSet3DModel
+                    form.watch("fileUrl") !== ""
                       ? ""
                       : "after:w-full after:h-full after:bg-black/5 after:absolute after:top-0 after:left-0 cursor-not-allowed"
                   }`}
@@ -298,7 +349,7 @@ function EditVariant({
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={(check) => field.onChange(check)}
-                        disabled={!canSet3DModel}
+                        disabled={form.watch("fileUrl") === ""}
                       />
                     </FormControl>
                     <FormDescription>
@@ -343,6 +394,130 @@ function EditVariant({
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="fileUrl"
+            render={({ field }) => (
+              <FormItem className="space-x-3 py-3">
+                <FormLabel>Modello 3D</FormLabel>
+                <FormControl>
+                  <Select3DModel
+                    value={field.value || ""}
+                    onSelectModel={(link) => {
+                      form.setValue("fileUrl", link);
+                      if (link === "") {
+                        if (form.watch("has3DModel") === true) {
+                          form.setValue("has3DModel", false);
+                        }
+                      }
+                    }}
+                  />
+                </FormControl>
+                <div className="mt-2">
+                  {field.value !== "" ? (
+                    <p className="text-sm text-muted-foreground flex flex-row items-center gap-2">
+                      <span>Modello selezionato: {field.value}</span>
+                      <Button
+                        onClick={() => {
+                          form.setValue("fileUrl", "");
+                          if (form.watch("has3DModel") === true) {
+                            form.setValue("has3DModel", false);
+                          }
+                        }}
+                      >
+                        <FaTrash />
+                      </Button>
+                    </p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Nessun modello selezionato
+                    </p>
+                  )}
+                </div>
+              </FormItem>
+            )}
+          />
+
+          {form.watch("has3DModel") && (
+            <div>
+              <FormLabel>Posizione iniziale della camera</FormLabel>
+              <div className="flex flex-col items-center md:flex-row gap-3 h-full pt-1">
+                <FormField
+                  control={form.control}
+                  name="cameraInitialPositionX"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center gap-2 w-full h-full">
+                      <FormLabel>X:</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="X"
+                          type="number"
+                          onChange={(e) =>
+                            form.setValue(
+                              "cameraInitialPositionX",
+                              parseFloat(e.target.value)
+                            )
+                          }
+                          className="!mt-0 !pt-0"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cameraInitialPositionY"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center gap-2 w-full">
+                      <FormLabel>Y:</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="X"
+                          type="number"
+                          onChange={(e) =>
+                            form.setValue(
+                              "cameraInitialPositionY",
+                              parseFloat(e.target.value)
+                            )
+                          }
+                          className="!mt-0 !pt-0"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cameraInitialPositionZ"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-center gap-2 w-full">
+                      <FormLabel>Z:</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="X"
+                          type="number"
+                          onChange={(e) =>
+                            form.setValue(
+                              "cameraInitialPositionZ",
+                              parseFloat(e.target.value)
+                            )
+                          }
+                          className="!mt-0 !pt-0"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          )}
 
           <FormField
             control={form.control}

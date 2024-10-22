@@ -193,3 +193,12 @@ html {
       -1.8em -1.8em 0 0em rgba(31, 31, 31, 1);
   }
 }
+
+/* Global CSS or Component-specific CSS */
+.resizable-container {
+  position: relative;
+  resize: vertical; /* Allow only vertical resizing */
+  overflow: auto; /* Add scroll if needed */
+  min-height: 200px; /* Minimum height */
+  max-height: 600px; /* Maximum height */
+}

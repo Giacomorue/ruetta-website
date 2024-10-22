@@ -19,7 +19,8 @@ interface ConfigurationValue2 {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
 }
 
@@ -104,12 +105,14 @@ function ChangeSelectorValue({
 
   const isDisabled = !hasConfigurations;
 
+  const configurationValueName = configuration.values.find((v) => v.id === value.valueOfConfigurationToRefer)?.value;
+
   return (
     <div className="px-4 py-2">
       <HeaderBar title={"Cambiamenti del valore " + value.label} subtitle />
       <p className="text-md text-muted-foreground mb-3">
         Il cambiamento principale che fa è impostare la configurazione{" "}
-        {configuration.name} al valore {value.label}
+        {configuration.name} al valore <span className="underline font-semibold underline-offset-2">{configurationValueName??value.label}</span>
       </p>
 
       {/* Visualizza i cambiamenti già inseriti */}

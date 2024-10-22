@@ -1,12 +1,12 @@
 import { DataTable } from "@/components/admin/data-table";
 import HeaderBar from "@/components/admin/header-bar";
-import { ColorColumnSchema } from "@/components/admin/rimorchi/rimorchio/categoria/variante/color-column";
-import { AllColorDataTable } from "@/components/admin/rimorchi/rimorchio/categoria/variante/color-data-table";
+// import { ColorColumnSchema } from "@/components/admin/rimorchi/rimorchio/categoria/variante/color-column";
+// import { AllColorDataTable } from "@/components/admin/rimorchi/rimorchio/categoria/variante/color-data-table";
 import { ConfigurationColumnSchema } from "@/components/admin/rimorchi/rimorchio/categoria/variante/configuration-column";
 import { ConfigurationsDataTable } from "@/components/admin/rimorchi/rimorchio/categoria/variante/configurations-data-table";
 import DeleteVariantBtn from "@/components/admin/rimorchi/rimorchio/categoria/variante/delete-variante-btn";
 import EditVariant from "@/components/admin/rimorchi/rimorchio/categoria/variante/edit-variant";
-import NewColorBtn from "@/components/admin/rimorchi/rimorchio/categoria/variante/new-color-btn";
+// import NewColorBtn from "@/components/admin/rimorchi/rimorchio/categoria/variante/new-color-btn";
 import NewConfiguration from "@/components/admin/rimorchi/rimorchio/categoria/variante/new-configuration-btn";
 import NewNodeBtn from "@/components/admin/rimorchi/rimorchio/categoria/variante/new-node-btn";
 import NewSelectorBtn from "@/components/admin/rimorchi/rimorchio/categoria/variante/new-selector-btn";
@@ -18,7 +18,6 @@ import VariantPage from "@/components/admin/rimorchi/rimorchio/categoria/variant
 import { Button } from "@/components/ui/button";
 import { GetAllImages } from "@/data/images";
 import {
-  GetAllColorByVariantId,
   GetAllSelectorByVariantId,
   GetConfigurationByVariantId,
   GetConfigurationValueById,

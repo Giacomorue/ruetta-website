@@ -23,7 +23,8 @@ interface ConfigurationValue2 {
   isFree: boolean;
   prezzo: number | null;
   hasText: boolean;
-  text: string | null;
+  textBig: string | null;
+  textLittle: string | null;
   configurationId: string;
 }
 
@@ -32,6 +33,7 @@ interface Configuration2 {
   id: string;
   name: string;
   defaultValue: string | null;
+  defaultValuePreventivo: string | null;
   createdAt: Date;
   updatedAt: Date;
   variantId: string; // Aggiungi questa proprietà se manca

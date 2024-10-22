@@ -2,7 +2,7 @@
 
 import HeaderBar from "@/components/admin/header-bar";
 import React, { useEffect, useState } from "react";
-import { Category, Trailer, Variant } from "prisma/prisma-client";
+import { Category, Trailer, Variant, Image } from "prisma/prisma-client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
@@ -27,6 +27,7 @@ function CategoryPage({
   const [allVariant, setAllVariant] = useState<Variant[]>([]);
   const [numberOfActiveVariantion, setNumberOfActiveVariantion] =
     useState<number>();
+  const [images, setImages] = useState<Image[]>();
   const adminLoading = useAdminLoader();
   const router = useRouter();
   const [socketId, setSocketId] = useState<string>();
@@ -53,6 +54,7 @@ function CategoryPage({
       setAllVariant(data.allVariant);
       setCategory(data.category);
       setNumberOfActiveVariantion(data.numberOfActiveVariantion);
+      setImages(data.images);
     } catch (error) {
       console.error("Errore durante il fetching dei dati", error);
       router.push("/admin/rimorchi/404");
@@ -82,6 +84,7 @@ function CategoryPage({
       setAllVariant(data.allVariant);
       setCategory(data.category);
       setNumberOfActiveVariantion(data.numberOfActiveVariantion);
+      setImages(data.images);
     } catch (error) {
       console.error("Errore durante il fetching dei dati", error);
       router.push("/admin/rimorchi/404");
@@ -167,6 +170,7 @@ function CategoryPage({
         data={allVariantForTable}
       />
       <EditCategory
+        images={images ? images : []}
         category={category}
         canChangeVisibility={
           numberOfActiveVariantion ? numberOfActiveVariantion > 0 : false

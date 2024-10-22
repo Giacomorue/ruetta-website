@@ -50,6 +50,7 @@ import ReactQuillComponent from "@/components/admin/react-quill-component";
 function EditCategory({
   category,
   canChangeVisibility,
+  images,
   socketId,
   onRevalidate,
 }: {
@@ -57,6 +58,7 @@ function EditCategory({
   canChangeVisibility: boolean;
   socketId: string,
   onRevalidate: () => void,
+  images: ImageType[]
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -67,6 +69,7 @@ function EditCategory({
       name: category.name,
       description: category.description || "",
       visible: category.visible,
+      images: category.images,
     },
   });
 
@@ -115,15 +118,16 @@ function EditCategory({
 
   const watchedFields = useWatch({
     control: form.control,
-    name: ["name", "description", "visible"],
+    name: ["name", "description", "visible", "images"],
   });
 
   useEffect(() => {
-    const [watchedName, watchedDescription, watchedVisible] = watchedFields;
+    const [watchedName, watchedDescription, watchedVisible, watchedImages] = watchedFields;
 
     const isChanged =
       watchedName !== category.name ||
       watchedDescription !== category.description ||
+      JSON.stringify(watchedImages) !== JSON.stringify(category.images) ||
       watchedVisible !== category.visible;
 
     setIsModified(isChanged);
@@ -192,6 +196,69 @@ function EditCategory({
                       visibile)
                     </span>
                   </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="images"
+            render={({ field }) => (
+              <FormItem className="space-x-3 py-3">
+                <FormLabel>Immagini</FormLabel>
+                <FormControl className="ml-2">
+                  <SelectImages
+                    socketId={socketId}
+                    images={images}
+                    value={field.value || []}
+                    onResetLinks={(array) => form.setValue("images", array)}
+                    onSelectLink={(link) => {
+                      const value = [...(field.value || []), link];
+                      form.setValue("images", value);
+                    }}
+                    onDeselectLink={(link) => {
+                      const value = [
+                        ...(field.value?.filter((l) => l !== link) || []),
+                      ];
+                      form.setValue("images", value);
+                    }}
+                  />
+                </FormControl>
+                <div>
+                  {field.value?.length !== 0 ? (
+                    <div className="flex flex-row items-center flex-wrap gap-2">
+                      {field.value?.map((image) => (
+                        <div
+                          key={image}
+                          className="h-36 w-36 relative group rounded-xl overflow-hidden"
+                        >
+                          <ImageL
+                            className="object-contain"
+                            fill
+                            src={image || ""}
+                            alt={"Img"}
+                          />
+                          <Button
+                            className="w-full h-full absolute top-0 left-0 z-10 opacity-0 group-hover:opacity-100 transition-all duration-100"
+                            onClick={() => {
+                              const value = [
+                                ...(field.value?.filter((l) => l !== image) ||
+                                  []),
+                              ];
+                              form.setValue("images", value);
+                            }}
+                          >
+                            <FaTrash className="w-10 h-10 text-white" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      Nessuna immagine selezionata
+                    </p>
+                  )}
                 </div>
               </FormItem>
             )}

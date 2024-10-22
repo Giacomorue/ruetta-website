@@ -1,7 +1,6 @@
 import { GetAllImages } from "@/data/images";
 import {
   GetAllCategoryDescByTrailerId,
-  GetAllColorByVariantId,
   GetAllConfigurationWithConfigurationChangeByConfigurationId,
   GetAllNodeByVariantId,
   GetAllSelectorByVariantId,

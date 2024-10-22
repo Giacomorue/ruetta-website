@@ -39,6 +39,8 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  images String[]
+
   trailerId String  @db.ObjectId
   trailer   Trailer @relation(fields: [trailerId], references: [id], onDelete: Cascade)
 
@@ -48,16 +50,21 @@ model Category {
 model Variant {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name   String
-  prezzo Float
-  description String? @default("")
-  descriptionPrev String @default("")
+  name            String
+  prezzo          Float
+  description     String? @default("")
+  nomePrev        String  @default("")
+  descriptionPrev String  @default("")
 
-  accessibleUUID String @default(uuid()) @unique
+  initialCameraPosition Position
+
+  accessibleUUID String @unique @default(uuid())
 
   visible      Boolean @default(false)
   configurable Boolean @default(false)
   has3DModel   Boolean @default(false)
+
+  fileUrl      String  @default("")
 
   images String[]
 
@@ -69,8 +76,11 @@ model Variant {
 
   nodes          Node[]
   configurations Configuration[]
-  colors   Colors[]
+  // colors         Colors[]
   selectors      Selector[]
+
+  requestOfPrev RequestOfPrev[]
+  prev          Prev[]
 }
 
 model Node {
@@ -89,113 +99,116 @@ model Node {
 }
 
 model Configuration {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  defaultValue String?
+  id                     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String
+  defaultValue           String?
+  defaultValuePreventivo String
+
+  scount Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  order       Int
+  order Int
 
   variantId String  @db.ObjectId
   variant   Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
-  visibilityConditionId  String?
+  visibilityConditionId String?
 
-  values ConfigurationValue[]
+  values                           ConfigurationValue[]
   configurationVisibilityCondition ConfigurationVisibilityCondition[]
 }
 
 model ConfigurationVisibilityCondition {
-  id                    String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  configurationId       String @db.ObjectId
-  checkType             CheckType @default(EQUAL)
-  expectedValue         String
+  configurationId String    @db.ObjectId
+  checkType       CheckType @default(EQUAL)
+  expectedValue   String
 
-  ifVisible             Boolean @default(true)
-  elseVisible           Boolean @default(false)
+  ifVisible   Boolean @default(true)
+  elseVisible Boolean @default(false)
 
-  parentId              String? @db.ObjectId
-  
-  isFirstNode           Boolean @default(false)
+  parentId String? @db.ObjectId
 
-  ifRecId               String? @db.ObjectId
-  elseRecId             String? @db.ObjectId
+  isFirstNode Boolean @default(false)
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @default(now()) @updatedAt
+  ifRecId   String? @db.ObjectId
+  elseRecId String? @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   parentConfigurationId String        @db.ObjectId
   configuration         Configuration @relation(fields: [parentConfigurationId], references: [id], onDelete: Cascade)
 }
 
 model ConfigurationValue {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  value       String
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  value String
 
-  isFree Boolean @default(true)
-  prezzo Float? @default(0)
-  hasText Boolean @default(false)
-  text String? @default("")
+  isFree     Boolean @default(true)
+  prezzo     Float?  @default(0)
+  hasText    Boolean @default(false)
+  textBig    String
+  textLittle String
 
   configurationId String        @db.ObjectId
   configuration   Configuration @relation(fields: [configurationId], references: [id], onDelete: Cascade)
 
   configurationChange ConfigurationChange[]
 
-  configurationChangeFirstNode String[]
+  configurationChangeFirstNode     String[]
   configurationElseChangeFirstNode String[]
 }
 
 model ConfigurationChange {
-  id                    String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  haveIf                Boolean @default(false)
+  haveIf Boolean @default(false)
 
-  configurationId       String? @db.ObjectId
-  checkType             CheckTypeChange @default(EQUAL)
-  expectedValue         String?
+  configurationId String?         @db.ObjectId
+  checkType       CheckTypeChange @default(EQUAL)
+  expectedValue   String?
 
-  change                ConfigurationChangeAction[] @relation("ChangeActions")
-  elseChange            ConfigurationChangeAction[] @relation("ElseActions")
+  change     ConfigurationChangeAction[] @relation("ChangeActions")
+  elseChange ConfigurationChangeAction[] @relation("ElseActions")
 
-  parentId              String? @db.ObjectId
-  
-  isFirstNode           Boolean @default(false)
+  parentId String? @db.ObjectId
 
-  ifRecId               String[] @db.ObjectId
-  elseRecId             String[] @db.ObjectId
+  isFirstNode Boolean @default(false)
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @default(now()) @updatedAt
+  ifRecId   String[] @db.ObjectId
+  elseRecId String[] @db.ObjectId
 
-  configurationValueId      String   @db.ObjectId
-  configurationValue        ConfigurationValue @relation(fields: [configurationValueId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  configurationValueId String             @db.ObjectId
+  configurationValue   ConfigurationValue @relation(fields: [configurationValueId], references: [id], onDelete: Cascade)
 }
 
 model ConfigurationChangeAction {
-  id                        String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  nodeId                   String @db.ObjectId
-  node                     Node   @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+  nodeId String @db.ObjectId
+  node   Node   @relation(fields: [nodeId], references: [id], onDelete: Cascade)
 
-  visible                  Boolean
+  visible Boolean
 
-  changePosition          Boolean @default(false)
-  changeScale             Boolean @default(false)
+  changePosition Boolean @default(false)
+  changeScale    Boolean @default(false)
 
-  position                 Position?
-  scale                     Scale?
-
+  position Position?
+  scale    Scale?
 
   // Relazione con SelectorOptionChange per il ramo 'change'
-  configurationChangeId    String? @db.ObjectId
-  ConfigurationChange      ConfigurationChange? @relation("ChangeActions", fields: [configurationChangeId], references: [id], onDelete: Cascade)
+  configurationChangeId String?              @db.ObjectId
+  ConfigurationChange   ConfigurationChange? @relation("ChangeActions", fields: [configurationChangeId], references: [id], onDelete: Cascade)
 
   // Relazione con SelectorOptionChange per il ramo 'elseChange'
-  configurationElseChangeId String? @db.ObjectId
+  configurationElseChangeId String?              @db.ObjectId
   configurationElseChange   ConfigurationChange? @relation("ElseActions", fields: [configurationElseChangeId], references: [id], onDelete: Cascade)
 }
 
@@ -211,40 +224,41 @@ type Scale {
   z Float? @default(0)
 }
 
-model Colors {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+// model Colors {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  name        String
-  description String @default("")
-  price       Float @default(0)
-  fileUrl     String @default("")
-  
-  visible Boolean @default(false)
-  has3DModel Boolean @default(false)
+//   name        String
+//   description String @default("")
+//   price       Float  @default(0)
+//   fileUrl     String @default("")
 
-  order      Int 
+//   visible    Boolean @default(false)
+//   has3DModel Boolean @default(false)
 
-  colorCodePrincipal String @default("#ffffff")
-  hasSecondaryColor  Boolean @default(false)
-  colorCodeSecondary String @default("#ffffff")
+//   order Int
 
-  images String[]
+//   colorCodePrincipal String  @default("#ffffff")
+//   hasSecondaryColor  Boolean @default(false)
+//   colorCodeSecondary String  @default("#ffffff")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+//   images String[]
 
-  variantId String  @db.ObjectId
-  variant   Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @default(now()) @updatedAt
+
+//   variantId String  @db.ObjectId
+//   variant   Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+// }
 
 model Selector {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String?
+  id                   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String
+  description          String?
   configurationToRefer String
-  order       Int 
+  order                Int
 
-  visible Boolean @default(false)
+  visible         Boolean @default(false)
+  isColorSelector Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -252,22 +266,28 @@ model Selector {
   variantId String  @db.ObjectId
   variant   Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
-  options              SelectorOption[]
-  visibilityConditionId  String?
+  options                     SelectorOption[]
+  visibilityConditionId       String?
   selectorVisibilityCondition SelectorVisibilityCondition[]
 }
 
 model SelectorOption {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  label String
+  id                          String @id @default(auto()) @map("_id") @db.ObjectId
+  label                       String
   valueOfConfigurationToRefer String
 
   visible Boolean @default(false)
 
-  modalDescription String @default("")
-  images String[]
+  modalDescription String   @default("")
+  images           String[]
 
-  order Int 
+  colorCodePrincipal String  @default("#ffffff")
+  hasSecondaryColor  Boolean @default(false)
+  colorCodeSecondary String  @default("#ffffff")
+
+  order Int
+
+  block Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -281,42 +301,42 @@ model SelectorOption {
 }
 
 model SelectorOptionChange {
-  id                    String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  haveIf                Boolean @default(false)
+  haveIf Boolean @default(false)
 
-  configurationId       String? @db.ObjectId
-  checkType             CheckTypeChange @default(EQUAL)
-  expectedValue         String?
+  configurationId String?         @db.ObjectId
+  checkType       CheckTypeChange @default(EQUAL)
+  expectedValue   String?
 
-  change                SelectorOptionChangeAction[] @relation("ChangeActions")
-  elseChange            SelectorOptionChangeAction[] @relation("ElseActions")
+  change     SelectorOptionChangeAction[] @relation("ChangeActions")
+  elseChange SelectorOptionChangeAction[] @relation("ElseActions")
 
-  parentId              String? @db.ObjectId
-  
-  isFirstNode           Boolean @default(false)
+  parentId String? @db.ObjectId
 
-  ifRecId               String[] @db.ObjectId
-  elseRecId             String[] @db.ObjectId
+  isFirstNode Boolean @default(false)
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @default(now()) @updatedAt
+  ifRecId   String[] @db.ObjectId
+  elseRecId String[] @db.ObjectId
 
-  selectorOptionId      String   @db.ObjectId
-  selectorOption        SelectorOption @relation(fields: [selectorOptionId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  selectorOptionId String         @db.ObjectId
+  selectorOption   SelectorOption @relation(fields: [selectorOptionId], references: [id], onDelete: Cascade)
 }
 
 model SelectorOptionChangeAction {
-  id                        String @id @default(auto()) @map("_id") @db.ObjectId
-  configurationToChangeId   String @db.ObjectId
-  newValueValue             String?
+  id                      String  @id @default(auto()) @map("_id") @db.ObjectId
+  configurationToChangeId String  @db.ObjectId
+  newValueValue           String?
 
   // Relazione con SelectorOptionChange per il ramo 'change'
-  selectorOptionChangeId    String? @db.ObjectId
-  selectorOptionChange      SelectorOptionChange? @relation("ChangeActions", fields: [selectorOptionChangeId], references: [id], onDelete: Cascade)
+  selectorOptionChangeId String?               @db.ObjectId
+  selectorOptionChange   SelectorOptionChange? @relation("ChangeActions", fields: [selectorOptionChangeId], references: [id], onDelete: Cascade)
 
   // Relazione con SelectorOptionChange per il ramo 'elseChange'
-  selectorOptionElseChangeId String? @db.ObjectId
+  selectorOptionElseChangeId String?               @db.ObjectId
   selectorOptionElseChange   SelectorOptionChange? @relation("ElseActions", fields: [selectorOptionElseChangeId], references: [id], onDelete: Cascade)
 }
 
@@ -326,24 +346,24 @@ enum CheckTypeChange {
 }
 
 model SelectorVisibilityCondition {
-  id                    String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  configurationId       String @db.ObjectId
-  checkType             CheckType @default(EQUAL)
-  expectedValue         String
+  configurationId String    @db.ObjectId
+  checkType       CheckType @default(EQUAL)
+  expectedValue   String
 
-  ifVisible             Boolean @default(true)
-  elseVisible           Boolean @default(false)
+  ifVisible   Boolean @default(true)
+  elseVisible Boolean @default(false)
 
-  parentId              String? @db.ObjectId
-  
-  isFirstNode           Boolean @default(false)
+  parentId String? @db.ObjectId
 
-  ifRecId               String? @db.ObjectId
-  elseRecId             String? @db.ObjectId
+  isFirstNode Boolean @default(false)
 
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @default(now()) @updatedAt
+  ifRecId   String? @db.ObjectId
+  elseRecId String? @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   selectorId String   @db.ObjectId
   selector   Selector @relation(fields: [selectorId], references: [id], onDelete: Cascade)
@@ -357,6 +377,100 @@ enum CheckType {
 model Image {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   link      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Person {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  ragioneSociale String
+  citta          String
+  codiceFiscale  String? @default("")
+  partitaIva     String? @default("")
+  telefono       String? @default("")
+  email          String? @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  //Preventivi
+  requestOfPrev RequestOfPrev[]
+  prev          Prev[]
+}
+
+model RequestOfPrev {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  personId String? @db.ObjectId
+  person   Person? @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  ragioneSociale String?
+  citta          String?
+  codiceFiscale  String? @default("")
+  partitaIva     String? @default("")
+  telefono       String? @default("")
+  email          String? @default("")
+
+  variantId String  @db.ObjectId
+  variant   Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  //List of configuration
+  configurations RequestConfiguration[]
+
+  prevId String? @db.ObjectId
+
+  isPrevCompleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+type RequestConfiguration {
+  configurationId      String
+  configurationValueId String
+
+  configurationName                   String
+  configurationScount                 Float
+  configurationValueName              String
+  configurationValueDescriptionBig    String
+  configurationValueDescriptionLittle String
+  configurationValuePrice             Float
+  configugrationHasText               Boolean
+  configugrationHasPrice              Boolean
+}
+
+model Prev {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  personId String? @db.ObjectId
+  person   Person? @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  ragioneSociale String?
+  citta          String?
+  codiceFiscale  String? @default("")
+  partitaIva     String? @default("")
+  telefono       String? @default("")
+  email          String? @default("")
+
+  variantId String?  @db.ObjectId
+  variant   Variant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  variantName            String
+  variantPrezzo          Float
+  variantDescription     String? @default("")
+  variantNomePrev        String  @default("")
+  variantDescriptionPrev String  @default("")
+
+  protocolloNumber Int
+  protocolloFull   String
+
+  contributo Boolean?
+
+  originalFile String?
+  editedFile   String[]
+
+  originalFileForPrint String?
+  editedFileForPrint   String[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }

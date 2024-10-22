@@ -6,7 +6,6 @@ import { useEffect } from "react";
 
 import {
   Category,
-  Colors,
   Configuration,
   ConfigurationChange,
   ConfigurationChangeAction,
@@ -26,7 +25,7 @@ import Image from "next/image";
 import NavbarPreview from "./navbar-preview";
 import FooterPrreview from "./footer-preview";
 import ImageCarouselPreview from "./image-carousel-preview";
-import ColorList from "./color-list";
+// import ColorList from "./color-list";
 import TrailerCanvas from "./TrailerCanvas";
 import Mesh from "./Mesh";
 import CanvasLoader from "../CanvasLoader";
@@ -35,6 +34,8 @@ import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import { AiOutlineFullscreenExit, AiOutlineFullscreen } from "react-icons/ai";
 import { ImSpinner2 } from "react-icons/im";
+import ScrollToTopButton from "./ScrollToTop";
+import DescriptionComponent from "./description-component";
 
 export type VariantData = Variant & {
   nodes: (Node & {
@@ -49,7 +50,6 @@ export type VariantData = Variant & {
     })[];
     configurationVisibilityCondition: ConfigurationVisibilityCondition[];
   })[];
-  colors: Colors[];
   selectors: (Selector & {
     options: (SelectorOption & {
       selectorOptionChange: (SelectorOptionChange & {
@@ -61,13 +61,11 @@ export type VariantData = Variant & {
   })[];
 };
 
-
 const DEBOUNCE_TIME = 100;
 
 // { variant }: { variant: VariantData }
 
-function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
-
+function PreviewComponent({ accessibleUUID }: { accessibleUUID: string }) {
   const [variant, setVariant] = useState<VariantData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +78,10 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
     const fetchData = async () => {
       try {
         setLoading(true); // Imposta lo stato di caricamento
-        const response = await fetch(`/api/preview/${accessibleUUID}`, { method: "GET", cache: "no-cache" });
+        const response = await fetch(`/api/preview/${accessibleUUID}`, {
+          method: "GET",
+          cache: "no-cache",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch variant data");
         }
@@ -101,11 +102,9 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
   const [configurations, setConfigurations] = useState<
     { configurationId: string; valueId: string }[]
   >([]);
-  const [color, setColor] = useState<Colors | null>(null);
 
   useEffect(() => {
-
-    if(!variant) return;
+    if (!variant) return;
 
     const queryParams = new URLSearchParams(window.location.search);
     const updatedParams = new URLSearchParams();
@@ -113,32 +112,6 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
       configurationId: string;
       valueId: string;
     }> = [];
-
-    const colorParam = queryParams.get("color");
-
-    const visibileColors = variant.colors.filter(
-      (c) => c.visible === true && c.has3DModel === variant.has3DModel
-    );
-
-    if (visibileColors.length > 0) {
-      const isValidColor = visibileColors.find(
-        (color) => color.name === colorParam
-      );
-
-      if (colorParam && isValidColor) {
-        // Se il colore esiste nella variante, lo mantieni
-        updatedParams.set("color", colorParam);
-        setColor(isValidColor);
-      } else {
-        // Se il colore non esiste, imposti il primo colore disponibile
-        const firstColor = visibileColors[0];
-        updatedParams.set("color", firstColor.name);
-        setColor(firstColor);
-      }
-    } else if (colorParam) {
-      // Se non ci sono colori e il parametro color è presente, lo rimuovi
-      updatedParams.delete("color");
-    }
 
     variant.configurations.forEach((config) => {
       const currentUrlValue = queryParams.get(config.name);
@@ -182,10 +155,6 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
       const isValidConfig = variant.configurations.some(
         (config) => config.name === key
       );
-
-      if (!isValidConfig && key !== "color") {
-        queryParams.delete(key);
-      }
     });
 
     // Solo se ci sono cambiamenti rispetto all'URL attuale, aggiorna l'URL
@@ -199,59 +168,12 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleClickColor = (color: Colors) => {
-
-    if(!variant) return;
-
-    const params = new URLSearchParams(window.location.search);
-
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    configurations.forEach((conf) => {
-      const config = variant.configurations.find(
-        (c) => c.id === conf.configurationId
-      );
-
-      if (config) {
-        const selectedValue = config.values.find(
-          (value) => value.id === conf.valueId
-        );
-        if (selectedValue) {
-          // Imposta il parametro URL per ciascuna configurazione
-          params.set(config.name, selectedValue.value);
-        }
-      }
-    });
-
-    
-    if (!color.visible) {
-      return null;
-    }
-
-    setColor(color);
-
-    // Aggiungi il parametro color alla query params
-    params.set("color", color.name);
-
-    const url = `${window.location.pathname}?${params.toString()}`;
-
-    // Esegui `router.replace` con un leggero ritardo per permettere l'aggiornamento della UI
-    timeoutRef.current = setTimeout(() => {
-      router.replace(url, {
-        scroll: false,
-      });
-    }, DEBOUNCE_TIME); // Debounce leggero
-  };
-
   const handleOptionClick = (
     selector: Selector,
     option: SelectorOption,
     configName: string
   ) => {
-
-    if(!variant) return;
+    if (!variant) return;
 
     const params = new URLSearchParams(window.location.search);
 
@@ -274,8 +196,6 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
         }
       }
     });
-
-    
 
     // Trova la configurazione associata al selettore
     const selectedConfiguration = variant.configurations.find(
@@ -314,8 +234,7 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
     newValueId: string,
     params: URLSearchParams
   ) => {
-
-    if(!variant) return;
+    if (!variant) return;
 
     const configuration = variant.configurations.find(
       (c) => c.id === configurationId
@@ -482,27 +401,28 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
 
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => { setIsClient(true) }, []);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
+    setShadowCounter((prev) => prev + 1);
+  }, [configurations, setIsClient]);
 
-    setShadowCounter(prev => prev + 1);
-
-  }, [color, configurations, setIsClient]);
-
-  if(!isClient || !variant) return (
-    <div className="z-[100] flex flex-col items-center justify-center inset-0 bg-background/30 fixed top-0 left-0 h-[100vh] w-[100vw]">
-      <ImSpinner2 className="animate-spin w-20 h-20 text-primary" />
-    </div>
-  );
+  if (!isClient || !variant)
+    return (
+      <div className="z-[100] flex flex-col items-center justify-center inset-0 bg-background/30 fixed top-0 left-0 h-[100vh] w-[100vw]">
+        <ImSpinner2 className="animate-spin w-20 h-20 text-primary" />
+      </div>
+    );
 
   const haveSelectorVisible = variant.selectors.some((s) => s.visible === true);
 
-  if(!haveSelectorVisible) {
+  if (!haveSelectorVisible) {
     notFound();
   }
 
-  const hasColor = variant.colors.some((c) => c.visible === true);
+  // const hasColor = variant.colors.some((c) => c.visible === true);
 
   return (
     <div className="h-[100dvh] w-screen md:max-h-screen max-w-full bg-white flex flex-col">
@@ -524,14 +444,15 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
         >
           {variant.has3DModel ? (
             <div className="h-full w-full rounded-[10px] overflow-hidden relative">
-              <TrailerCanvas shadowCounter={shadowCounter}>
+              <TrailerCanvas shadowCounter={shadowCounter} variant={variant}>
                 <>
-                  {color ? (
+                  {variant.fileUrl ? (
                     <Mesh
                       variant={variant}
-                      currentColor={color}
                       configurations={configurations}
-                      updateShadowCounter={() => setShadowCounter(prev => prev + 1)}
+                      updateShadowCounter={() =>
+                        setShadowCounter((prev) => prev + 1)
+                      }
                     />
                   ) : (
                     <CanvasLoader />
@@ -584,12 +505,11 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
               />
               <h1 className="text-[48px] font-semibold">{variant.name}</h1>
             </div>
-            <div
-              dangerouslySetInnerHTML={{ __html: variant.description ?? "" }}
-              className="text-[16px] text-muted-foreground pt-1"
-            />
+            {/* <div className="text-[16px] text-muted-foreground pt-1"> */}
+              <DescriptionComponent description={variant.description ?? ""} />
+            {/* </div> */}
             <div className="w-full h-[1px] bg-muted-foreground my-8" />
-            {hasColor && color && (
+            {/* {hasColor && color && (
               <>
                 <h1 className="text-[32px]">Colore</h1>
                 <div className="text-[16px] text-muted-foreground pb-4 pt-1">
@@ -603,12 +523,13 @@ function PreviewComponent({accessibleUUID} : { accessibleUUID: string}) {
                 />
                 <div className="w-full h-[1px] bg-muted-foreground my-8" />
               </>
-            )}
+            )} */}
             <SelectorList
               variant={variant}
               onOptionClick={handleOptionClick}
               configurations={configurations}
             />
+            <ScrollToTopButton />
           </div>
         </div>
       </div>

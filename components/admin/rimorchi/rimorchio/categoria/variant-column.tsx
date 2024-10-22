@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { ArrowUpDown, Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -35,6 +35,8 @@ import {
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+
+import DuplicateVariantDialog from "./duplicate-variant-dialog";
 
 export type VariantColumnType = {
   trailerId: string;
@@ -259,6 +261,7 @@ const CellAction = ({ row }: { row: Row<VariantColumnType> }) => {
   const router = useRouter();
   const adminLoader = useAdminLoader();
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
 
   const onDelte = async (id: string) => {
     adminLoader.startLoading();
@@ -285,40 +288,49 @@ const CellAction = ({ row }: { row: Row<VariantColumnType> }) => {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 p-0">
-          <span className="sr-only">Open menu</span>
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="space-y-1">
-        <DropdownMenuLabel>Azioni</DropdownMenuLabel>
-        <DropdownMenuItem
-          onClick={() => {
-            router.push(
-              "/admin/rimorchi/" +
-                row.original.trailerId +
-                "/" +
-                row.original.categoryId +
-                "/" +
-                row.original.id
-            );
-          }}
-          className="gap-2 items-center flex flex-row"
-        >
-          <Edit className="w-4 h-4" />
-          Modifica
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="gap-2 items-center flex flex-row bg-destructive text-destructive-foreground p-2"
-          onClick={() => setAlertDialogOpen(true)}
-        >
-          <Trash className="w-4 h-4" />
-          Elimina
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-      <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="space-y-1">
+          <DropdownMenuLabel>Azioni</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => {
+              router.push(
+                "/admin/rimorchi/" +
+                  row.original.trailerId +
+                  "/" +
+                  row.original.categoryId +
+                  "/" +
+                  row.original.id
+              );
+            }}
+            className="gap-2 items-center flex flex-row"
+          >
+            <Edit className="w-4 h-4" />
+            Modifica
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setDuplicateDialogOpen(true)} // Open the duplicate dialog
+            className="gap-2 items-center flex flex-row"
+          >
+            <Copy className="w-4 h-4" />
+            Duplica
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="gap-2 items-center flex flex-row bg-destructive text-destructive-foreground p-2"
+            onClick={() => setAlertDialogOpen(true)}
+          >
+            <Trash className="w-4 h-4" />
+            Elimina
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+
+        <AlertDialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
@@ -340,6 +352,19 @@ const CellAction = ({ row }: { row: Row<VariantColumnType> }) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </DropdownMenu>
+      </DropdownMenu>
+
+      {/* Dialog for duplicating the variant */}
+      {duplicateDialogOpen && (
+        <DuplicateVariantDialog
+          variantId={row.original.id}
+          currentCategoryId={row.original.categoryId}
+          trailerId={row.original.trailerId}
+          open={duplicateDialogOpen}
+          onClose={() => setDuplicateDialogOpen(false)}
+        />
+      )}
+    </>
   );
+
 };

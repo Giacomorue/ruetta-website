@@ -38,6 +38,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import DuplicateConfigurationToVariantDialog from "./duplicate-configuration-in-external-variant-dialog";
 
 export type ConfigurationColumnType = {
   id: string;
@@ -176,6 +177,7 @@ const CellNome = ({ row }: { row: Row<ConfigurationColumnType> }) => {
 const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
   const router = useRouter();
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
   const adminLoader = useAdminLoader();
 
   const pathname = usePathname();
@@ -288,6 +290,13 @@ const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
           Duplica
         </DropdownMenuItem>
         <DropdownMenuItem
+          onClick={() => setDuplicateDialogOpen(true)}
+          className="gap-2 items-center flex flex-row"
+        >
+          <Copy className="w-4 h-4" />
+          Duplica in altra variante
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className="gap-2 items-center flex flex-row bg-destructive text-destructive-foreground p-2"
           onClick={() => setAlertDialogOpen(true)}
         >
@@ -295,6 +304,16 @@ const CellAction = ({ row }: { row: Row<ConfigurationColumnType> }) => {
           Elimina
         </DropdownMenuItem>
       </DropdownMenuContent>
+
+      {/* Duplicate Configuration in Another Variant Dialog */}
+      <DuplicateConfigurationToVariantDialog
+        configurationId={row.original.id}
+        currentVariantId={variantId}
+        trailerId={trailerId}
+        open={duplicateDialogOpen}
+        onClose={() => setDuplicateDialogOpen(false)}
+      />
+
       <Dialog open={alertDialogOpen} onOpenChange={setAlertDialogOpen}>
         <DialogContent>
           <DialogHeader>

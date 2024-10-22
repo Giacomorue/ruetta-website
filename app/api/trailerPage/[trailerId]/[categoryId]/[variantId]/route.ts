@@ -1,5 +1,5 @@
 import { GetAllImages } from "@/data/images";
-import { GetAllCategoryDescByTrailerId, GetAllColorByVariantId, GetAllSelectorByVariantId, GetAllVariantDescByCategoryId, GetCategoryById, GetConfigurationByVariantId, GetNodesByVariantId, GetNumberOfVariantVisibleInCategoryById, GetTrailerById, GetVariantDataByAccessibleUUID, GetVariantyById } from "@/data/trailer";
+import { GetAllCategoryDescByTrailerId, GetAllSelectorByVariantId, GetAllVariantDescByCategoryId, GetCategoryById, GetConfigurationByVariantId, GetNodesByVariantId, GetNumberOfVariantVisibleInCategoryById, GetTrailerById, GetVariantDataByAccessibleUUID, GetVariantyById } from "@/data/trailer";
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, { params }: { params: { trailerId: string; categoryId: string, variantId: string } }) {
@@ -13,7 +13,6 @@ export async function GET(req: NextRequest, { params }: { params: { trailerId: s
     const allConfiguration = await GetConfigurationByVariantId(variantId);
     const allSelector = await GetAllSelectorByVariantId(variantId);
     const allNode = await GetNodesByVariantId(variantId);
-    const allColor = await GetAllColorByVariantId(variantId);
 
     if (!trailer ||!category ||!variant) {
       return NextResponse.json({ message: 'Not found' }, { status: 404 });
@@ -31,7 +30,7 @@ export async function GET(req: NextRequest, { params }: { params: { trailerId: s
       return NextResponse.json({ message: 'Trailer not found' }, { status: 404 });
     }
 
-    return NextResponse.json({trailer, category, variant, images, allConfiguration, allSelector, allNode, allColor}, { status: 200 });
+    return NextResponse.json({trailer, category, variant, images, allConfiguration, allSelector, allNode}, { status: 200 });
   } catch (error) {
     console.error('Error fetching variant data:', error);
     return NextResponse.json({ message: 'Error fetching variant data' }, { status: 500 });

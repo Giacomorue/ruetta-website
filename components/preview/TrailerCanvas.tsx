@@ -13,24 +13,29 @@ import {
 import CanvasLoader from "../CanvasLoader";
 import { Leva, useControls } from "leva";
 import * as THREE from "three";
+import { Variant } from "prisma/prisma-client";
 
 export default function TrailerCanvas({
   children,
   shadowCounter,
+  variant,
 }: {
   children: React.ReactNode;
   shadowCounter: number;
+  variant: Variant;
 }) {
   const div = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [performanceLevel, setPerformanceLevel] = useState<"low" | "medium" | "high">("medium");
+  const [performanceLevel, setPerformanceLevel] = useState<
+    "low" | "medium" | "high"
+  >("medium");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 }
+      { threshold: 0.02 }
     );
 
     const canvasElement = document.querySelector("#canvas-container");
@@ -149,9 +154,21 @@ export default function TrailerCanvas({
               resolution={512}
               frames={1}
               position={[0, -4, 0]}
-              scale={performanceLevel === "high" ? 30 : performanceLevel === "medium" ? 25 : 20}
+              scale={
+                performanceLevel === "high"
+                  ? 30
+                  : performanceLevel === "medium"
+                  ? 25
+                  : 20
+              }
               blur={1}
-              opacity={performanceLevel === "high" ? 0.5 : performanceLevel === "medium" ? 0.4 : 0.2}
+              opacity={
+                performanceLevel === "high"
+                  ? 0.5
+                  : performanceLevel === "medium"
+                  ? 0.4
+                  : 0.2
+              }
               far={20}
               key={shadowCounter}
             />
@@ -159,10 +176,21 @@ export default function TrailerCanvas({
           </Suspense>
           <Hangar />
           <ambientLight intensity={getLightIntensity()} />
-          <directionalLight position={[10, 50, 10]} intensity={getLightIntensity()} />
+          <directionalLight
+            position={[10, 50, 10]}
+            intensity={getLightIntensity()}
+          />
           <Leva hidden />
           <PerformanceMonitor />
-          <PerspectiveCamera position={[-20, 10, 40]} fov={50} makeDefault />
+          <PerspectiveCamera
+            position={[
+              variant.initialCameraPosition.x ?? -20,
+              variant.initialCameraPosition.y ?? 10,
+              variant.initialCameraPosition.z ?? 40,
+            ]}
+            fov={50}
+            makeDefault
+          />
         </Canvas>
       )}
     </div>
