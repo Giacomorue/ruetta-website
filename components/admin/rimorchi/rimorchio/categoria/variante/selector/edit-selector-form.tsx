@@ -69,6 +69,7 @@ function EditSelectorForm({
   configurations,
   onRevalidate,
   socketId,
+  images,
 }: {
   selector: Selector;
   canSetVisible: boolean;
@@ -94,6 +95,7 @@ function EditSelectorForm({
   })[];
   socketId: string;
   onRevalidate: () => void;
+  images: ImageType[] | null;
 }) {
   const adminLoader = useAdminLoader();
   const router = useRouter();
@@ -105,6 +107,9 @@ function EditSelectorForm({
       description: selector.description || "",
       visible: !canSetVisible ? false : selector.visible,
       isColorSelector: selector.isColorSelector || false,
+      moreInfoModal: selector.moreInfoModal || false,
+      moreInfoDescription: selector.moreInfoDescription || "",
+      moreInfoImages: selector.moreInfoImages || [],
     },
   });
 
@@ -113,6 +118,9 @@ function EditSelectorForm({
     form.setValue("description", selector.description || "");
     form.setValue("visible", !canSetVisible ? false : selector.visible);
     form.setValue("isColorSelector", selector.isColorSelector || false);
+    form.setValue("moreInfoModal", selector.moreInfoModal);
+    form.setValue("moreInfoDescription", selector.moreInfoDescription || "");
+    form.setValue("moreInfoImages", selector.moreInfoImages || []);
   }, [selector]);
 
   useEffect(() => {
@@ -158,17 +166,37 @@ function EditSelectorForm({
 
   const watchedFields = useWatch({
     control: form.control,
-    name: ["name", "description", "visible", "isColorSelector"],
+    name: [
+      "name",
+      "description",
+      "visible",
+      "isColorSelector",
+      "moreInfoModal",
+      "moreInfoDescription",
+      "moreInfoImages",
+    ],
   });
 
   useEffect(() => {
-    const [watchedName, watchedDescription, watchedVisible, watchedIsColor] = watchedFields;
+    const [
+      watchedName,
+      watchedDescription,
+      watchedVisible,
+      watchedIsColor,
+      watchedMoreInfoModal,
+      watchedMoreInfoDescription,
+      watchedMoreInfoImages,
+    ] = watchedFields;
 
     let isChanged =
       watchedName !== selector.name ||
       watchedDescription !== selector.description ||
       watchedVisible !== selector.visible ||
-      watchedIsColor!== selector.isColorSelector;
+      watchedIsColor !== selector.isColorSelector ||
+      watchedMoreInfoModal !== selector.moreInfoModal ||
+      watchedMoreInfoDescription !== selector.moreInfoDescription ||
+      JSON.stringify(watchedMoreInfoImages) !==
+        JSON.stringify(selector.moreInfoImages);
 
     setIsModified(isChanged);
   }, [watchedFields, selector]);
@@ -271,6 +299,117 @@ function EditSelectorForm({
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="moreInfoModal"
+            render={({ field }) => (
+              <FormItem
+                className={`relative rounded-md border border-input bg-transparent shadow px-4 py-2`}
+              >
+                <FormLabel>Più informazioni Modal</FormLabel>
+                <div className="flex flex-row items-center gap-2">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(check) => field.onChange(check)}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Attiva questa spunta per attivare il modal &quot;Maggiori
+                    informazioni&quot; all&apos;interno del selettore{" "}
+                  </FormDescription>
+                </div>
+              </FormItem>
+            )}
+          />
+
+          {form.watch("moreInfoModal") && (
+            <>
+              <FormField
+                control={form.control}
+                name="moreInfoDescription"
+                render={({ field }) => (
+                  <FormItem className="mb-5 pb-12">
+                    <FormLabel>Descrizione Modal</FormLabel>
+                    <FormControl className="h-[100px] ">
+                      <ReactQuillComponent
+                        value={field.value || ""}
+                        onChange={(value) =>
+                          form.setValue("moreInfoDescription", value)
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="moreInfoImages"
+                render={({ field }) => (
+                  <FormItem className="space-x-3 py-3">
+                    <FormLabel>Immagini</FormLabel>
+                    <FormControl className="ml-2">
+                      <SelectImages
+                        socketId={socketId}
+                        images={images}
+                        value={field.value || []}
+                        onResetLinks={(array) =>
+                          form.setValue("moreInfoImages", array)
+                        }
+                        onSelectLink={(link) => {
+                          const value = [...(field.value || []), link];
+                          form.setValue("moreInfoImages", value);
+                        }}
+                        onDeselectLink={(link) => {
+                          const value = [
+                            ...(field.value?.filter((l) => l !== link) || []),
+                          ];
+                          form.setValue("moreInfoImages", value);
+                        }}
+                      />
+                    </FormControl>
+                    <div>
+                      {field.value?.length !== 0 ? (
+                        <div className="flex flex-row items-center flex-wrap gap-2">
+                          {field.value?.map((image) => (
+                            <div
+                              key={image}
+                              className="h-36 w-36 relative group rounded-xl overflow-hidden"
+                            >
+                              <ImageL
+                                className="object-contain"
+                                fill
+                                src={image || ""}
+                                alt={"Img"}
+                              />
+                              <Button
+                                className="w-full h-full absolute top-0 left-0 z-10 opacity-0 group-hover:opacity-100 transition-all duration-100"
+                                onClick={() => {
+                                  const value = [
+                                    ...(field.value?.filter(
+                                      (l) => l !== image
+                                    ) || []),
+                                  ];
+                                  form.setValue("moreInfoImages", value);
+                                }}
+                              >
+                                <FaTrash className="w-10 h-10 text-white" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          Nessuna immagine selezionata
+                        </p>
+                      )}
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
 
           <Button className="" type="submit" disabled={!isModified}>
             Salva modifiche

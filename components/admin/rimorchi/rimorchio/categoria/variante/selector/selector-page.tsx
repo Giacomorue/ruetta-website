@@ -78,7 +78,8 @@ function SelectorPage({
           "/" +
           variantId +
           "/selector/" +
-          selectorId, { cache: "no-cache" }
+          selectorId,
+        { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -126,7 +127,8 @@ function SelectorPage({
           "/" +
           variantId +
           "/selector/" +
-          selectorId, { cache: "no-cache" }
+          selectorId,
+        { cache: "no-cache" }
       );
       const data = await response.json();
 
@@ -275,6 +277,7 @@ function SelectorPage({
         configurations={editConfigurations ? editConfigurations : []}
         socketId={socketId ?? ""}
         onRevalidate={fetchDataWithoutLoading}
+        images={images ? images : []}
       />
       {/* <div className="my-3"></div> */}
       <HeaderBar title="Condizioni di visibilità" subtitle />
@@ -283,7 +286,7 @@ function SelectorPage({
         variantId={variantId}
         allConfiguration={editConfigurations ? editConfigurations : []}
         visibilityConditions={selector.selectorVisibilityCondition}
-        socketId={socketId?? ""}
+        socketId={socketId ?? ""}
         onRevalidate={fetchDataWithoutLoading}
       />
     </div>

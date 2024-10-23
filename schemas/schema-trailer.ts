@@ -108,6 +108,9 @@ export const EditSelectorSchema = z.object({
   description: z.optional(z.string()),
   visible: z.optional(z.boolean()),
   isColorSelector: z.optional(z.boolean()),
+  moreInfoModal: z.optional(z.boolean()),
+  moreInfoDescription: z.optional(z.string()),
+  moreInfoImages: z.optional(z.array(z.string())),
 });
 
 export type EditSelectorType = z.infer<typeof EditSelectorSchema>;

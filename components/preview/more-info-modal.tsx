@@ -14,8 +14,8 @@ interface SelectorDialogProps {
   images: string[];
   name: string;
   description: string;
-  isSelected: boolean;
-  onSelect: () => void; // Funzione per selezionare la configurazione
+  isSelected?: boolean;
+  onSelect?: () => void; // Funzione per selezionare la configurazione
 }
 
 const MoreInfoModal: React.FC<SelectorDialogProps> = ({
@@ -51,7 +51,7 @@ const MoreInfoModal: React.FC<SelectorDialogProps> = ({
   };
 
   const handleSelectAndClose = () => {
-    onSelect();
+    onSelect?.();
     setIsDialogOpen(false); // Chiude il modal
   };
 
@@ -127,11 +127,13 @@ const MoreInfoModal: React.FC<SelectorDialogProps> = ({
                 Chiudi
               </Button>
             </DialogTrigger>
-            <Button onClick={handleSelectAndClose} disabled={isSelected}>
-              {isSelected
-                ? "Configurazione Selezionata"
-                : "Seleziona Configurazione"}
-            </Button>
+            {onSelect && (
+              <Button onClick={handleSelectAndClose} disabled={isSelected}>
+                {isSelected
+                  ? "Configurazione Selezionata"
+                  : "Seleziona Configurazione"}
+              </Button>
+            )}
           </div>
         </DialogContent>
       </Dialog>
@@ -188,4 +190,3 @@ const MoreInfoModal: React.FC<SelectorDialogProps> = ({
 };
 
 export default MoreInfoModal;
-

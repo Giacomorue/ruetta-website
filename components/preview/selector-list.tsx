@@ -407,9 +407,18 @@ function SelectorList({
           >
             <h1 className="text-[32px]">{selector.name}</h1>
             <div
-              className="text-[16px] text-muted-foreground pb-4 pt-1"
+              className={`text-[16px] text-muted-foreground pt-1 ${selector.moreInfoModal ? "" : "pb-4"}`}
               dangerouslySetInnerHTML={{ __html: selector.description ?? "" }}
             />
+            {selector.moreInfoModal && (
+              <div className="mt-0 pb-5">
+                <MoreInfoModal
+                  name={selector.name}
+                  description={selector.moreInfoDescription}
+                  images={selector.moreInfoImages}
+                />
+              </div>
+            )}
             <div className="grid xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
               {realSelector.options.map((option) => {
                 if (option.visible === false) return null;
@@ -444,7 +453,7 @@ function SelectorList({
                             hasSecondaryColor={option.hasSecondaryColor}
                           />
                           <h3
-                            className={`font-semibold max-w-[100px] truncate text-lg ${
+                            className={`font-semibold max-w-[200px] truncate text-lg ${
                               isSelected ? "text-red-600" : "text-neutral-800"
                             }`}
                           >

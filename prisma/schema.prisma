@@ -64,7 +64,7 @@ model Variant {
   configurable Boolean @default(false)
   has3DModel   Boolean @default(false)
 
-  fileUrl      String  @default("")
+  fileUrl String @default("")
 
   images String[]
 
@@ -259,6 +259,10 @@ model Selector {
 
   visible         Boolean @default(false)
   isColorSelector Boolean @default(false)
+
+  moreInfoModal       Boolean  @default(false)
+  moreInfoDescription String   @default("")
+  moreInfoImages      String[] @default([])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

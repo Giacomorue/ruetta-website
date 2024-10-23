@@ -2183,7 +2183,15 @@ export async function EditSelector(
     return { error: "Form non valido" };
   }
 
-  const { name, description, visible, isColorSelector } = formValid.data;
+  const {
+    name,
+    description,
+    visible,
+    isColorSelector,
+    moreInfoDescription,
+    moreInfoImages,
+    moreInfoModal,
+  } = formValid.data;
 
   try {
     await db.selector.update({
@@ -2193,6 +2201,9 @@ export async function EditSelector(
         description,
         visible,
         isColorSelector,
+        moreInfoModal,
+        moreInfoDescription,
+        moreInfoImages,
       },
     });
 
@@ -3415,7 +3426,10 @@ export async function DeleteNode(nodeId: string, socketId: string) {
   }
 }
 
-export async function DeleteAllNodesOfVariant(variantId: string, socketId: string) {
+export async function DeleteAllNodesOfVariant(
+  variantId: string,
+  socketId: string
+) {
   // Step 1: Check if the variant exists
   const variant = await db.variant.findUnique({
     where: { id: variantId },
@@ -3519,7 +3533,6 @@ export async function DeleteAllNodesOfVariant(variantId: string, socketId: strin
     return { error: "Errore nella cancellazione dei nodi" };
   }
 }
-
 
 export async function UpdateNode(
   nodeId: string,
@@ -3644,6 +3657,9 @@ export async function DuplicateSelector(
         visible: originalSelector.visible,
         variantId: originalSelector.variantId,
         isColorSelector: originalSelector.isColorSelector,
+        moreInfoModal: originalSelector.moreInfoModal,
+        moreInfoDescription: originalSelector.moreInfoDescription,
+        moreInfoImages: originalSelector.moreInfoImages,
       },
     });
 
@@ -4632,6 +4648,9 @@ async function duplicateSelectorWithoutUIUpdate(
       visible: originalSelector.visible,
       variantId: newVariantId,
       isColorSelector: originalSelector.isColorSelector,
+      moreInfoDescription: originalSelector.moreInfoDescription,
+      moreInfoImages: originalSelector.moreInfoImages,
+      moreInfoModal: originalSelector.moreInfoModal,
     },
   });
 

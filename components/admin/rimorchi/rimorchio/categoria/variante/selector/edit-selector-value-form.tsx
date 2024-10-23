@@ -642,7 +642,7 @@ function EditSelectorValueForm({
                 <RenderColorPreview />
                 {/* Testo vicino al pallino */}
                 <h3
-                  className={`font-semibold max-w-[100px] truncate text-lg ${"text-neutral-800"}`}
+                  className={`font-semibold max-w-[200px] truncate text-lg ${"text-neutral-800"}`}
                 >
                   {form.watch("label")}
                 </h3>
