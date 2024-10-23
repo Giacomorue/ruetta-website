@@ -445,7 +445,7 @@ function SelectorList({
                       viewport={{ once: false, amount: 0.1 }}
                     >
                       {/* Contenuto per il selettore colore */}
-                      <div className="absolute top-1/2 -translate-y-1/2 -translate-x-[18px]">
+                      {/* <div className="absolute top-1/2 -translate-y-1/2 -translate-x-[18px]"> */}
                         <div className="flex items-center gap-3">
                           <RenderColorPreview
                             primary={option.colorCodePrincipal}
@@ -460,7 +460,7 @@ function SelectorList({
                             {option.label}
                           </h3>
                         </div>
-                      </div>
+                      {/* </div> */}
                     </motion.div>
                   );
                 } else {

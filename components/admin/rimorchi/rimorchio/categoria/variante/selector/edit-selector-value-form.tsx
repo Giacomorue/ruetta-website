@@ -635,7 +635,7 @@ function EditSelectorValueForm({
           >
             {/* <div className="w-[1px] h-full absolute top-0 left-1/2 -translate-x-1/2 bg-primary"></div> */}
             {/* Contenitore flessibile per il pallino e il testo */}
-            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-[18px]">
+            {/* <div className="absolute top-1/2 -translate-y-1/2 -translate-x-[18px]"> */}
               <div className="flex items-center gap-3">
                 {/* Usa gap molto piccolo */}
                 {/* RenderColorPreview per creare il pallino di colore */}
@@ -649,7 +649,7 @@ function EditSelectorValueForm({
               </div>
             </div>
           </div>
-        </div>
+        // </div>
       ) : (
         <div className="my-3 px-4">
           {/* PREVIEW */}
