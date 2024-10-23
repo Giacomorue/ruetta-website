@@ -631,7 +631,7 @@ function EditSelectorValueForm({
       {selector.isColorSelector ? (
         <div className="my-3 px-4">
           <div
-            className={`relative w-80 p-7 rounded-[10px] flex items-center justify-center cursor-pointer border ${"border-neutral-300"}`}
+            className={`relative w-80 h-14 rounded-[10px] flex items-center justify-center cursor-pointer border ${"border-neutral-300"}`}
           >
             {/* <div className="w-[1px] h-full absolute top-0 left-1/2 -translate-x-1/2 bg-primary"></div> */}
             {/* Contenitore flessibile per il pallino e il testo */}

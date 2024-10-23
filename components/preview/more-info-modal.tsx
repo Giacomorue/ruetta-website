@@ -75,7 +75,7 @@ const MoreInfoModal: React.FC<SelectorDialogProps> = ({
             className={`text-sm underline transition-all duration-150 cursor-pointer ${
               isSelected
                 ? "text-primary-foreground hover:text-muted-foreground"
-                : "text-muted-foreground hover:text-primary"
+                : "text-primary hover:text-muted-foreground"
             }`}
             onClick={(e) => e.stopPropagation()}
           >

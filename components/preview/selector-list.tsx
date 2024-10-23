@@ -434,7 +434,7 @@ function SelectorList({
                       onClick={() =>
                         onOptionClick(selector, option, configuration?.name)
                       }
-                      className={`relative w-full p-7 rounded-lg flex items-center justify-center cursor-pointer border ${
+                      className={`relative w-full h-14 rounded-lg flex items-center justify-center cursor-pointer border ${
                         isSelected
                           ? "border-red-600"
                           : "border-neutral-300 hover:border-red-600"
