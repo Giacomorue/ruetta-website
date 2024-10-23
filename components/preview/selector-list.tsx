@@ -416,6 +416,7 @@ function SelectorList({
                   name={selector.name}
                   description={selector.moreInfoDescription}
                   images={selector.moreInfoImages}
+                  color="primary"
                 />
               </div>
             )}

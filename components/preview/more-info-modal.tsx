@@ -16,6 +16,7 @@ interface SelectorDialogProps {
   description: string;
   isSelected?: boolean;
   onSelect?: () => void; // Funzione per selezionare la configurazione
+  color?: "primary" | "secondary",
 }
 
 const MoreInfoModal: React.FC<SelectorDialogProps> = ({
@@ -24,6 +25,7 @@ const MoreInfoModal: React.FC<SelectorDialogProps> = ({
   description,
   isSelected,
   onSelect,
+  color = "secondary",
 }) => {
   const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
@@ -75,7 +77,7 @@ const MoreInfoModal: React.FC<SelectorDialogProps> = ({
             className={`text-sm underline transition-all duration-150 cursor-pointer ${
               isSelected
                 ? "text-primary-foreground hover:text-muted-foreground"
-                : "text-primary hover:text-muted-foreground"
+                : color === "primary" ? "text-primary hover:text-muted-foreground" : "text-muted-foreground hover:text-primary"
             }`}
             onClick={(e) => e.stopPropagation()}
           >
