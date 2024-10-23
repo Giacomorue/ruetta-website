@@ -186,39 +186,40 @@ const Mesh = ({
     currentConfig: { configurationId: string; valueId: string },
     totalConfigurationState: { configurationId: string; valueId: string }[]
   ) => {
-    for (const value of configuration.values) {
-      if (value.id === currentConfig.valueId) {
-        // console.log(value.configurationChangeFirstNode.length);
-        if (value.configurationChangeFirstNode.length > 0) {
-
-          //RICORSIONE CON AZIONI
-          for (const action of value.configurationChangeFirstNode) {
-            const change = value.configurationChange.find(
-              (c) => c.id === action
-            );
-
-            if (!change) continue;
-
-            doConfigurationChangeAction(value, change, totalConfigurationState);
-          }
-        }
-      } else {
+    // Primo passaggio: esegui le azioni per i valori non attivi
+    configuration.values.forEach((value) => {
+      if (value.id !== currentConfig.valueId) {
+        // Se il valore non è attivo, esegui le azioni corrispondenti
         if (value.configurationElseChangeFirstNode.length > 0) {
-          //RICORSIONE CON AZIONI
-
-          // console.log("Value:", value.value, " n:",  value.configurationElseChangeFirstNode.length);
-
           for (const action of value.configurationElseChangeFirstNode) {
-            // console.log(action);
             const change = value.configurationChange.find(
               (c) => c.id === action
             );
-
             if (!change) continue;
-
+            // Esegui le azioni per i valori non attivi
             doConfigurationChangeAction(value, change, totalConfigurationState);
           }
         }
+      }
+    });
+
+    // Secondo passaggio: esegui l'azione per il valore attivo
+    const activeValue = configuration.values.find(
+      (value) => value.id === currentConfig.valueId
+    );
+
+    if (activeValue && activeValue.configurationChangeFirstNode.length > 0) {
+      for (const action of activeValue.configurationChangeFirstNode) {
+        const change = activeValue.configurationChange.find(
+          (c) => c.id === action
+        );
+        if (!change) continue;
+        // Esegui l'azione per il valore attivo
+        doConfigurationChangeAction(
+          activeValue,
+          change,
+          totalConfigurationState
+        );
       }
     }
   };
