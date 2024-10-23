@@ -16,11 +16,10 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DuplicateConfiguration, DuplicateConfigurationToVariant } from "@/actions/trailer"; // Assicurati che la tua funzione per duplicare la configurazione sia importata correttamente
+import { DuplicateConfigurationToVariant } from "@/actions/trailer"; // Assicurati che la tua funzione per duplicare la configurazione sia importata correttamente
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useAdminLoader } from "@/hooks/useAdminLoader";
@@ -33,6 +32,10 @@ export type VariantType = {
   category: {
     id: string;
     name: string;
+    trailer: {
+      id: string;
+      name: string;
+    };
   };
 };
 
@@ -56,17 +59,16 @@ export default function DuplicateConfigurationToVariantDialog({
 
   const adminLoading = useAdminLoader();
 
+  // Fetch varianti, categorie e trailer
   const fetchData = async () => {
     adminLoading.startLoading();
     try {
-      const response = await fetch(
-        `/api/trailer/${trailerId}/category/variant`,
-        {
-          cache: "no-cache",
-        }
-      );
+      const response = await fetch(`/api/variants`, {
+        cache: "no-cache",
+      });
       const data = await response.json();
 
+      // Setta le varianti recuperate dall'API
       setVariants(data.variants);
     } catch (error) {
       console.error("Errore durante il fetching dei dati", error);
@@ -98,6 +100,7 @@ export default function DuplicateConfigurationToVariantDialog({
     };
   }, []);
 
+  // Funzione per duplicare la configurazione
   const onDuplicate = async () => {
     if (!selectedVariant) {
       toast({
@@ -134,9 +137,9 @@ export default function DuplicateConfigurationToVariantDialog({
             title: "Successo",
             description: "Configurazione duplicata con successo.",
           });
-          router.push(
-            `/admin/rimorchi/${trailerId}/${res.newConfig.variant.categoryId}/${res.newConfig.variantId}`
-          );
+          // router.push(
+          //   `/admin/rimorchi/${trailerId}/${res.newConfig.variant.categoryId}/${res.newConfig.variantId}`
+          // );
           onClose();
         }
       });
@@ -172,30 +175,62 @@ export default function DuplicateConfigurationToVariantDialog({
             </SelectTrigger>
             <SelectContent>
               {variants &&
+                // Cicla per i rimorchi, categorie e varianti
                 variants
-                  .filter((variant) => variant.id !== currentVariantId)
                   .reduce((acc, variant) => {
-                    const categoryIndex = acc.findIndex(
-                      (group) => group.categoryId === variant.category.id
+                    const trailerIndex = acc.findIndex(
+                      (group) => group.trailerId === variant.category.trailer.id
                     );
-                    if (categoryIndex === -1) {
+                    if (trailerIndex === -1) {
                       acc.push({
-                        categoryId: variant.category.id,
-                        categoryName: variant.category.name,
-                        variants: [variant],
+                        trailerId: variant.category.trailer.id,
+                        trailerName: variant.category.trailer.name,
+                        categories: [
+                          {
+                            categoryId: variant.category.id,
+                            categoryName: variant.category.name,
+                            variants: [variant],
+                          },
+                        ],
                       });
                     } else {
-                      acc[categoryIndex].variants.push(variant);
+                      const categoryIndex = acc[trailerIndex].categories.findIndex(
+                        (category) => category.categoryId === variant.category.id
+                      );
+                      if (categoryIndex === -1) {
+                        acc[trailerIndex].categories.push({
+                          categoryId: variant.category.id,
+                          categoryName: variant.category.name,
+                          variants: [variant],
+                        });
+                      } else {
+                        acc[trailerIndex].categories[categoryIndex].variants.push(
+                          variant
+                        );
+                      }
                     }
                     return acc;
-                  }, [] as { categoryId: string; categoryName: string; variants: VariantType[] }[])
-                  .map((group) => (
-                    <SelectGroup key={group.categoryId}>
-                      <SelectLabel>{group.categoryName}</SelectLabel>
-                      {group.variants.map((variant) => (
-                        <SelectItem key={variant.id} value={variant.id}>
-                          {variant.name}
-                        </SelectItem>
+                  }, [] as {
+                    trailerId: string;
+                    trailerName: string;
+                    categories: {
+                      categoryId: string;
+                      categoryName: string;
+                      variants: VariantType[];
+                    }[];
+                  }[])
+                  .map((trailer) => (
+                    <SelectGroup key={trailer.trailerId}>
+                      <SelectLabel>{trailer.trailerName}</SelectLabel>
+                      {trailer.categories.map((category) => (
+                        <div key={category.categoryId}>
+                          <SelectLabel>{category.categoryName}</SelectLabel>
+                          {category.variants.map((variant) => (
+                            <SelectItem key={variant.id} value={variant.id}>
+                              {variant.name}
+                            </SelectItem>
+                          ))}
+                        </div>
                       ))}
                     </SelectGroup>
                   ))}
