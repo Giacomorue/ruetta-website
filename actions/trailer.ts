@@ -1251,7 +1251,7 @@ export async function ReorderConfigurations(
 
   try {
     // Esegui una transazione per aggiornare l'ordine di ciascuna configurazione
-    const batchSize = 50; // Puoi modificare la dimensione del batch a seconda dei tuoi requisiti
+    const batchSize = 20; // Puoi modificare la dimensione del batch a seconda dei tuoi requisiti
 
     // Suddividi i dati in batch
     const batches = [];
