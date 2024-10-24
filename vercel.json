@@ -1,15 +1,6 @@
 {
   "functions": {
-    "api/test.js": {
-      "maxDuration": 60
-    },
-    "api/*.js": {
-      "maxDuration": 60
-    },
-    "src/api/*.js": {
-      "maxDuration": 60
-    },
-    "src/app/*.js": {
+    "app/api/*.js": {
       "maxDuration": 60
     },
     "actions/*.ts": {
