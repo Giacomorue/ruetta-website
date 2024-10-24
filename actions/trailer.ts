@@ -1251,14 +1251,26 @@ export async function ReorderConfigurations(
 
   try {
     // Esegui una transazione per aggiornare l'ordine di ciascuna configurazione
-    await db.$transaction(
-      data.map((config, index) =>
-        db.configuration.update({
-          where: { id: config.id },
-          data: { order: index }, // Aggiorna il campo "order" in base all'indice
-        })
-      )
-    );
+    const batchSize = 50; // Puoi modificare la dimensione del batch a seconda dei tuoi requisiti
+
+    // Suddividi i dati in batch
+    const batches = [];
+    for (let i = 0; i < data.length; i += batchSize) {
+      const batch = data.slice(i, i + batchSize);
+      batches.push(batch);
+    }
+
+    // Esegui una transazione per ogni batch
+    for (const batch of batches) {
+      await db.$transaction(
+        batch.map((config, index) =>
+          db.configuration.update({
+            where: { id: config.id },
+            data: { order: index }, // Aggiorna il campo "order" in base all'indice
+          })
+        )
+      );
+    }
 
     // Revalidate the path related to the updated page
     revalidatePath(
